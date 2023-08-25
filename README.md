@@ -1,2 +1,1 @@
-# FYP-WebApp
-FinalYearProject
+# MuseRentalHub
