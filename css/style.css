@@ -6,7 +6,7 @@ body {
 	background: #f1fbff;
 }
 .section-padding {
-	padding: 100px 0;
+	padding: 100px 5px;
 }
 .carousel-item {
 	height: 100vh;
@@ -28,7 +28,7 @@ body {
 	font-size: 18px;
 	line-height: 1.9;
 }
-.carousel-inner:before {
+#first-inner:before {
 	content: '';
 	position: absolute;
 	width: 100%;
@@ -38,16 +38,7 @@ body {
 	background: rgba(0, 0, 0, 0.7);
 	z-index: 1;
 }
-.navbar .getstarted {
-	background: #106eea;
-	margin-left: 30px;
-	border-radius: 4px;
-	font-weight: 400;
-	color: #fff;
-	text-decoration: none;
-	padding: .5rem 1rem;
-	line-height: 2.3;
-}
+
 .navbar-nav a {
 	font-size: 15px;
 	text-transform: uppercase;
@@ -60,24 +51,13 @@ body {
 	font-weight: bold;
 	letter-spacing: 2px;
 }
-.navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover {
-	color: #000;
-}
+
 .navbar-light .navbar-nav .nav-link {
 	color: #000;
 }
-.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
-	color: #000;
-}
-.w-100 {
-	height: 100vh;
-}
-.navbar-toggler {
-	padding: 1px 5px;
-	font-size: 18px;
-	line-height: 0.3;
-	background: #fff;
-}
+
+
+
 .portfolio .card {
 	box-shadow: 15px 15px 40px rgba(0, 0, 0, 0.15);
 }
@@ -108,7 +88,7 @@ body {
 	.navbar-nav {
 		text-align: center;
 	}
-	.carousel-caption {
+	carousel-caption {
 		bottom: 125px;
 	}
 	.carousel-caption h5 {
@@ -129,4 +109,53 @@ body {
 	.card {
 		margin-bottom: 30px;
 	}
+}
+
+
+
+
+
+
+#inner {
+  padding: 1em;
+}
+.Cards {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+ border-radius: 3px;
+}
+#prev-button,
+#next-button {
+  background-color: #b6b6b652;
+  
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (min-width: 768px) {
+  .carousel-item-1 {
+    margin-right: 0;
+    flex: 0 0 33.333333%;
+    display: block;
+  }
+  #inner {
+    display: flex;
+  }
+}
+.Cards .img-wrapper {
+    max-width: 100%;
+    height: 13em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Cards img {
+    max-height: 100%;
+}
+@media (max-width: 767px) {
+  .Cards .img-wrapper {
+    height: 17em;
+  }
 }

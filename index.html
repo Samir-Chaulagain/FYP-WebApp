@@ -8,7 +8,9 @@
 	<title>MuseRentalHUB</title>
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js "></script>
     <link rel="stylesheet" href="css/style.css">
+	<!-- <script src="./js/script.js"></script> -->
   </head>
 
 
@@ -22,7 +24,7 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" href="#carousel">Home</a>
+						<a class="nav-link active" aria-current="page" href="#">Home</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#about">About</a>
@@ -34,14 +36,15 @@
 						<a class="nav-link" href="#events">Events</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#events">Blog</a>
+						<a class="nav-link" href="#blog">Blog</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#contact">Contact</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#signin">Be part</a>
+						<a class="nav-link" href="#login">Be part</a>
 					</li>
+					
 
 				</ul>
 			</div>
@@ -53,7 +56,7 @@
 		<div class="carousel-indicators">
 			<button aria-label="Slide 1" class="active" data-bs-slide-to="0" data-bs-target="#carouselExampleIndicators" type="button"></button> <button aria-label="Slide 2" data-bs-slide-to="1" data-bs-target="#carouselExampleIndicators" type="button"></button> <button aria-label="Slide 3" data-bs-slide-to="2" data-bs-target="#carouselExampleIndicators" type="button"></button>
 		</div>
-		<div class="carousel-inner">
+		<div class="carousel-inner" id="first-inner">
 			<div class="carousel-item active">
 				<img alt="..." class="d-block w-100" src="./img/instrument1.jpg">
 				<div class="carousel-caption">
@@ -80,8 +83,8 @@
 			</div>
 		</div><button class="carousel-control-prev" data-bs-slide="prev" data-bs-target="#carouselExampleIndicators" type="button"><span aria-hidden="true" class="carousel-control-prev-icon"></span> <span class="visually-hidden">Previous</span></button> <button class="carousel-control-next" data-bs-slide="next" data-bs-target="#carouselExampleIndicators" type="button"><span aria-hidden="true" class="carousel-control-next-icon"></span> <span class="visually-hidden">Next</span></button>
 	</div>
-	
-	
+
+
 	<!-- about section starts -->
 	<section class="about section-padding" id="about">
 		<div class="container">
@@ -92,10 +95,19 @@
 				<div class="col-lg-8 col-md-12 col-12 ps-lg-5 mt-md-5">
 					<div class="about-text">
 						<h2>We Provide the Best Quality Instrument For Best<br>
-						Costumer</h2>
-						<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam, labore reiciendis. Assumenda eos quod animi! Soluta nesciunt inventore dolores excepturi provident, culpa beatae tempora, explicabo corporis quibusdam corrupti. Autem, quaerat. Assumenda quo aliquam vel, nostrum explicabo ipsum dolor, ipsa perferendis porro doloribus obcaecati placeat natus iste odio est non earum?
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias distinctio, aut ducimus labore rerum possimus, architecto voluptate dolores, iure repudiandae suscipit aliquid quia veniam molestiae esse. Qui aperiam praesentium placeat!LoreLOREM Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, cumque possimus. Animi obcaecati consequatur ad explicabo fugiat, modi possimus. Provident tenetur nemo exercitationem, enim sunt nostrum voluptates! Quos, placeat natus!
-
+							Costumer</h2>
+						<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam, labore reiciendis. Assumenda eos
+							quod animi! Soluta nesciunt inventore dolores excepturi provident, culpa beatae tempora,
+							explicabo corporis quibusdam corrupti. Autem, quaerat. Assumenda quo aliquam vel, nostrum
+							explicabo ipsum dolor, ipsa perferendis porro doloribus obcaecati placeat natus iste odio est
+							non earum?
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias distinctio, aut ducimus
+							labore rerum possimus, architecto voluptate dolores, iure repudiandae suscipit aliquid quia
+							veniam molestiae esse. Qui aperiam praesentium placeat!LoreLOREM Lorem ipsum dolor sit amet,
+							consectetur adipisicing elit. Ea, cumque possimus. Animi obcaecati consequatur ad explicabo
+							fugiat, modi possimus. Provident tenetur nemo exercitationem, enim sunt nostrum voluptates!
+							Quos, placeat natus!
+	
 						</p><a class="btn btn-warning" href="#services">Learn More</a>
 					</div>
 				</div>
@@ -105,97 +117,327 @@
 	
 	<!-- about section Ends -->
 
-	
-	<!-- services section Starts -->
-	<section class="services section-padding" id="services">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="section-header text-center pb-5">
-						<h2>Our Instrument</h2>
-						<p>Lorem ipsum dolor sit amet, consectetur<br>
-						adipisicing elit. Non, quo.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-white text-center bg-dark pb-2">
-						<div class="card-body">
-							<i class="bi bi-laptop"></i>
-							<h3 class="card-title">Best Quality</h3>
-							<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci eligendi modi temporibus alias iste. Accusantium?</p><button class="btn bg-warning text-dark">Read More</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-white text-center bg-dark pb-2">
-						<div class="card-body">
-							<i class="bi bi-journal"></i>
-							<h3 class="card-title">Availablity</h3>
-							<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci eligendi modi temporibus alias iste. Accusantium?</p><button class="btn bg-warning text-dark">Read More</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-white text-center bg-dark pb-2">
-						<div class="card-body">
-							<i class="bi bi-intersect"></i>
-							<h3 class="card-title">Delivery</h3>
-							<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci eligendi modi temporibus alias iste. Accusantium?</p><button class="btn bg-warning text-dark">Read More</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- services section Ends -->
-	
-	
-	<!-- explore strats -->
+	<!-- Instruments Exploration -->
+
 	<section class="explore section-padding" id="explore">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-header text-center pb-5">
 						<h2>Our Instruments</h2>
-						<p>Lorem ipsum dolor sit amet, consectetur<br>
-						adipisicing elit. Non, quo.</p>
+						<p>Rent Your Dream Instrument</p>
 					</div>
 				</div>
 			</div>
-			<h3 class="text-warning">Available Instrument</h3>
+			<div class="multiple-card-slider">
+
+				<h3 class="text-warning" style="margin-left: 10px;">Available Instrument</h3>
+				
+		<div id="carouselExampleControls1" class="carousel">
+			<div class="carousel-inner" id="inner">
+				<div class="carousel-item-1 active">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Laurel Canyon LA-100 </h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Martin Special X Series Macassar</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Snare Drum Kit</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Flute</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Harmonium</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Piano</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+							</div>
+						</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Amplifier</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+							</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Bass guitar</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+							</div>
+						</div>
+					</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Orchrestal string</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true" id="prev-button" style="margin-left: -12em;"></span>
+				<span class="visually-hidden"></span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true" id="next-button" style="margin-right: -12em;"></span>
+				<span class="visually-hidden"></span>
+			</button>
+		</div>
+	</div>
+	<div class="multiple-card-slider">
+
+		<h3 style="margin-left: 10px; margin-top: 50px; color: rgb(229, 158, 5);">Instrument Packages</h3>
+		<div id="carouselExampleControls2" class="carousel">
+			<div class="carousel-inner" id="inner">
+				<div class="carousel-item-1 active">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages1 </h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages2</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+							</div>
+						</div>
+					</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages3</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages4</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages5</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+								<a href="#" class="btn btn-warning">Learn More</a>
+								<a href="#" class="btn btn-secondary">Rent</a>
+							</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages6</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages7</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages8</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item-1">
+					<div class="Cards">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Packages9</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Rent</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true" id="prev-button" style="margin-left: -12em;"></span>
+				<span class="visually-hidden"></span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true" id="next-button" style="margin-right: -12em;"></span>
+				<span class="visually-hidden"></span>
+			</button>
+		</div>
+	</div>
+	
+
+		
+	</section>
+	<!-- instruments exploration -->
+
+	<!-- events section Starts -->
+	<section class="events section-padding" id="events">
+		<div class="container">
 			<div class="row">
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-light text-center bg-white pb-2">
-						<div class="card-body text-dark">
-							<div class="img-area mb-4"><img alt="" class="img-fluid" src="img/project-1.jpg"></div>
-							<h3 class="card-title">Building Make</h3>
-							<p class="lead">Lorem</p><button class="btn bg-warning text-dark">Learn More</button>
+				<div class="col-md-12">
+					<div class="section-header text-center pb-5">
+						<h2>Our Events</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur<br>
+							adipisicing elit. Non, quo.</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="carousel-item-1">
+					<div class="Cards text-white text-center bg-dark pb-2">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Event 1</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Book</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-light text-center bg-white pb-2">
-						<div class="card-body text-dark">
-							<div class="img-area mb-4"><img alt="" class="img-fluid" src="img/project-2.jpg"></div>
-							<h3 class="card-title">Building Make</h3>
-							<p class="lead">Lorem </p><button class="btn bg-warning text-dark">learn More</button>
+				<div class="carousel-item-1">
+					<div class="Cards text-white text-center bg-dark pb-2">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Event 1</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Book</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-12 col-md-12 col-lg-4">
-					<div class="card text-light text-center bg-white pb-2">
-						<div class="card-body text-dark">
-							<div class="img-area mb-4"><img alt="" class="img-fluid" src="img/project-3.jpg"></div>
-							<h3 class="card-title">Building Make</h3>
-							<p class="lead">Lorem </p><button class="btn bg-warning text-dark">Learn More</button>
+				<div class="carousel-item-1">
+					<div class="Cards text-white text-center bg-dark pb-2">
+						<div class="img-wrapper"><img src="..." class="d-block w-100" alt="..."> </div>
+						<div class="card-body">
+							<h5 class="card-title">Event 1</h5>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+								card's content.</p>
+							<a href="#" class="btn btn-warning">Learn More</a>
+							<a href="#" class="btn btn-secondary">Book</a>
 						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
-	</section><!-- explore ends -->
+	</section>
+	<!-- events section Ends -->
+
 
 	<!-- blog starts -->
 	<section class="blog section-padding" id="blog">
@@ -205,55 +447,13 @@
 					<div class="section-header text-center pb-5">
 						<h2>Our blog</h2>
 						<p>Lorem ipsum dolor sit amet, consectetur<br>
-						adipisicing elit. Non, quo.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-12 col-md-6 col-lg-3">
-					<div class="card text-center">
-						<div class="card-body">
-							<img alt="" class="img-fluid rounded-circle" src="img/blog-1.jpg">
-							<h3 class="card-title py-2">Blog</h3>
-							<p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi ipsam nostrum illo tempora esse quibusdam.</p>
-							<p class="socials"><i class="bi bi-twitter text-dark mx-1"></i> <i class="bi bi-facebook text-dark mx-1"></i> <i class="bi bi-linkedin text-dark mx-1"></i> <i class="bi bi-instagram text-dark mx-1"></i></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-6 col-lg-3">
-					<div class="card text-center">
-						<div class="card-body">
-							<img alt="" class="img-fluid rounded-circle" src="img/blog-2.jpg">
-							<h3 class="card-title py-2">Blog</h3>
-							<p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi ipsam nostrum illo tempora esse quibusdam.</p>
-							<p class="socials"><i class="bi bi-twitter text-dark mx-1"></i> <i class="bi bi-facebook text-dark mx-1"></i> <i class="bi bi-linkedin text-dark mx-1"></i> <i class="bi bi-instagram text-dark mx-1"></i></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-6 col-lg-3">
-					<div class="card text-center">
-						<div class="card-body">
-							<img alt="" class="img-fluid rounded-circle" src="img/blog-3.jpg">
-							<h3 class="card-title py-2">Blog</h3>
-							<p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi ipsam nostrum illo tempora esse quibusdam.</p>
-							<p class="socials"><i class="bi bi-twitter text-dark mx-1"></i> <i class="bi bi-facebook text-dark mx-1"></i> <i class="bi bi-linkedin text-dark mx-1"></i> <i class="bi bi-instagram text-dark mx-1"></i></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-12 col-md-6 col-lg-3">
-					<div class="card text-center">
-						<div class="card-body">
-							<img alt="" class="img-fluid rounded-circle" src="img/blog-4.jpg">
-							<h3 class="card-title py-2">BLog</h3>
-							<p class="card-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi ipsam nostrum illo tempora esse quibusdam.</p>
-							<p class="socials"><i class="bi bi-twitter text-dark mx-1"></i> <i class="bi bi-facebook text-dark mx-1"></i> <i class="bi bi-linkedin text-dark mx-1"></i> <i class="bi bi-instagram text-dark mx-1"></i></p>
-						</div>
+							adipisicing elit. Non, quo.</p>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section><!-- blog ends -->
-
+		</section>
+	<!-- blog ends -->
 
 	<!-- Contact starts -->
 	<section class="contact section-padding" id="contact">
@@ -263,7 +463,7 @@
 					<div class="section-header text-center pb-5">
 						<h2>Contact Us</h2>
 						<p>Lorem ipsum dolor sit amet, consectetur<br>
-						adipisicing elit. Non, quo.</p>
+							adipisicing elit. Non, quo.</p>
 					</div>
 				</div>
 			</div>
@@ -274,14 +474,17 @@
 			</div>
 		</div>
 	</section><!-- contact ends -->
-<section class="contact section-padding" id="contact">
+
+
+	<!-- login/signup starts -->
+	<section class="login section-padding" id="login">
 		<div class="container mt-5 mb-5">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-header text-center pb-5">
 						<h2>Sign in/signup</h2>
 						<p>Lorem ipsum dolor sit amet, consectetur<br>
-						adipisicing elit. Non, quo.</p>
+							adipisicing elit. Non, quo.</p>
 					</div>
 				</div>
 			</div>
@@ -292,6 +495,8 @@
 			</div>
 		</div>
 	</section>
+	<!-- login/signup ends -->
+
 
 	<!-- footer starts -->
 	<footer class="bg-dark p-2 text-center">
@@ -300,10 +505,56 @@
 		</div>
 	</footer>
 	<!-- footer ends -->
-	
-	<!-- All Js -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  </body>
 
+
+	<!-- ALL JS -->
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+		crossorigin="anonymous"></script>
+
+		<!-- Instrument slider  -->
+	<script>
+		// Explore page Card  slider 
+			$(".multiple-card-slider .carousel").each(function () {
+				var currentCarouselId = "#" + $(this).attr("id");
+				const multipleItemCarousel = document.querySelector(currentCarouselId);
+
+				if (window.matchMedia("(min-width:576px)").matches) {
+					const carousel = new bootstrap.Carousel(multipleItemCarousel, {
+						interval: false,
+						wrap: false,
+					});
+					var carouselWidth = $(currentCarouselId + " #inner")[0]
+						.scrollWidth;
+					var cardWidth = $(currentCarouselId + " .carousel-item-1").width();
+					var scrollPosition = 0;
+					$(currentCarouselId + " #next-button").on("click", function () {
+						if (scrollPosition < carouselWidth - cardWidth * 4) {
+							console.log("next");
+							scrollPosition = scrollPosition + cardWidth;
+							$(currentCarouselId + "  #inner").animate(
+								{ scrollLeft: scrollPosition },
+								600
+							);
+						}
+					});
+					$(currentCarouselId + " #prev-button").on("click", function () {
+						if (scrollPosition > 0) {
+							console.log("prev");
+							scrollPosition = scrollPosition - cardWidth;
+							$(currentCarouselId + " #inner").animate(
+								{ scrollLeft: scrollPosition },
+								600
+							);
+						}
+					});
+				} else {
+					$(multipleItemCarousel).addClass("slide");
+				}
+			});
+
+		
+	</script>
 </body>
 </html>
