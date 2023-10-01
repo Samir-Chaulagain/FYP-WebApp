@@ -55,30 +55,37 @@
     </nav>
 
 
-    <div class="container d-grid gap-3 col-md-3 shadow-lg p-3 mb-5 bg-white rounded mt-4">
-        <h2 class="text-uppercase text-center"></h2>
-        
+    <div class="container d-grid gap-3 col-md-5 shadow-lg p-3 mb-5 bg-white rounded mt-4">
+        <h2 class="text-uppercase text-center">Reset password</h2>
+        <p class="text-center text-tertiary">Enter your email address and we'll send you link to reset your password</p>
         <form>
 
-            <div class="mb-4">
-                <input type="email" class="form-control bg-light" placeholder="Enter email" required>
+            <div class="mb-3 justify-content-around">
+                <input type="email" class="form-control bg-light" placeholder="Enter your email address" required>
             </div>
-            <div class="mb-1">
-                <input type="password" class="form-control bg-light" placeholder="Enter password" required>
+            
+            <div class="row justify-content-between mb-4">
+                
+                <p class="text-start col-6">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <a href="/login.html">Back to login</a>
+                </p>
+                
+                  
+                <p class="text-end col-6">Not a member?
+                    <a href="signup.html">Sign-up</a>
+                
+                </p>
             </div>
-            <p class="mb-4 text-end">
-                <a href="">Forgot Password?</a>
-            </p>
+        
+           
 
 
             <div class="col-md-2 mx-auto">
                 <input type="submit" value="Login" class="btn btn-primary text-white" />
             </div>
         </form>
-        <p class="mx-auto">Not a member?
-            <a href="signup.html">Sign-up</a>
-
-        </p>
+       
     </div>
 
 
