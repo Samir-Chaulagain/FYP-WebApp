@@ -6,7 +6,12 @@ from django.conf import settings
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("signup", views.signup, name="signup"),
 ]
+
+
+
+
 # Serve media files only during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

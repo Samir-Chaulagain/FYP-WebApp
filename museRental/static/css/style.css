@@ -1,0 +1,70 @@
+.carousel-item {
+  height: 42rem;
+  background-color: #2a2929;
+  color: white;
+  position: relative;
+}
+
+.container {
+  position: relative;
+  margin-top: 22rem;
+  margin-left: 155px;
+
+  padding-right: 35%;
+}
+
+.overlay-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.5;
+}
+
+.logo {
+  padding-right: 10px;
+  padding-left: 25px;
+}
+
+.logo img {
+  height: 32px;
+  width: 32px;
+}
+
+
+/* ----------footer---------- */
+
+.link-follow {
+  padding: 0;
+}
+.link-follow li {
+  list-style: none;
+  display: block;
+}
+
+.link-follow a {
+  color: #0e0e0e;
+  font-size: 16px;
+
+  
+  align-items: center;
+  height: 36px;
+  display: flex;
+  text-decoration: none;
+  
+}
+.link-follow a:hover {
+  transform: translateY(-2px);
+  color: #726fde;
+}
+.contact a {
+  text-decoration: none;
+  color: #0e0e0e;
+}
+.contact a:hover {
+  transform: translateY(-2px);
+  color: #726fde;
+}

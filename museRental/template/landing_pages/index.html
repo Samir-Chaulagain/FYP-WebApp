@@ -1,55 +1,67 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="main-content">
-    <div id="carouselExampleDark" class="carousel carousel-Light slide " data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-                aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                aria-label="Slide 3"></button>
 
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="{% static 'img/instrument1.jpg'  %}" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <p>Rent Your Favourite Instrument</p>
-
-                </div>
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="overlay-image">
+                <img src="{%static 'img/instrument1.jpg'%}" alt="">
             </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="{% static 'img/instrument2.jpg'  %}" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <p>Rent Sound System for events</p>
 
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{% static 'img/instrument3.jpg'  %}" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <p>Events Booking</p>
-
-                </div>
+            <div class="container text-white">
+                <h1> Rent your Favroite instrument</h1>
+                <p>Are you ready to unleash your inner musician? Whether you're a seasoned pro or just starting your
+                    musical journey, we've
+                    got you covered. Rent your favorite instrument and let the music flow.</p>
+                <a href="" class="btn btn-md btn-primary">Explore more</a>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-item">
+            <div class="overlay-image">
+                <img src="{%static 'img/instrument2.jpg'%}" alt="">
+            </div>
+            <div class="container text-light">
+                <h1> Get Your Tickets Now</h1>
+                <p>Experience the latest and greatest events in your city. From concerts to festivals, we've got you
+                    covered. Book your
+                    tickets now and be part of the magic!
+                </p>
+                <a href="" class="btn btn-md btn-primary">Explore more</a>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="overlay-image">
+                <img src="{%static 'img/instrument3.jpg'%}" alt="">
+            </div>
+            <div class="container">
+                <h1> Sound That Sets the Stage</h1>
+                <p>Elevate your event with top-notch sound accessories. From speakers to microphones, we've got the
+                    gear to make your event
+                    unforgettable.</p>
+                <a href="" class="btn btn-md btn-primary">Explore more</a>
+            </div>
+        </div>
+
 
     </div>
-    <div class="d-grid col-md-1 mx-auto">
-        <a href="explore.html" id="explore-btn" class="btn btn-primary mt-4">Explore</a>
-
-    </div>
-
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
-
 {%endblock %}
