@@ -1,0 +1,4 @@
+django==4.2.6
+readline==6.2.4.2
+pyreadline3
+
