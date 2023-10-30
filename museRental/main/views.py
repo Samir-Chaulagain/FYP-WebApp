@@ -18,6 +18,11 @@ from readline import get_current_history_length
 def index(request):
     return render(request, 'landing_pages/index.html')
 
+def about(request):
+    return render(request, 'landing_pages/about.html')
+def contact(request):
+    return render(request, 'landing_pages/contact.html')
+
 def blog(request):
     posts = Post.objects.all()
     return render(request, 'landing_pages/blog.html', {'posts': posts})

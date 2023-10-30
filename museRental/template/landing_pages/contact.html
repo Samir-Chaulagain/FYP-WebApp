@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container m-5 p-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 justify-content-center">
+            <h2 class="fw-bold">Get Connected With Us</h2>
+            <hr class="hr-heading" />
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum dolorum ab quasi possimus maiores amet
+                officiis quaerat nihil adipisci aut corporis deleniti facilis voluptatibus laboriosam dolor aliquid
+                impedit ducimus doloremque quas odit tempora pariatur, expedita itaque quis. Dicta hic nostrum magnam
+                earum magni temporibus?
+            </p>
+
+        </div>
+        <div class="col-md-4 mt-2 ms-4">
+            <form>
+                <div class="mb-4">
+                    <input type="text" class="form-control bg-light" placeholder="Enter name">
+                </div>
+                <div class="mb-4">
+                    <input type="email" class="form-control bg-light" placeholder="Enter email">
+                </div>
+                <div class="input-group mb-4">
+
+                    <textarea class="form-control bg-light " rows="5" placeholder="Enter your message"></textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <input type="submit" value="Submit" class="btn btn-primary text-white" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{%endblock %}
