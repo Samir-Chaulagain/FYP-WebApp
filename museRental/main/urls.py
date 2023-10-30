@@ -7,10 +7,9 @@ from django.conf import settings
 urlpatterns = [
     path("", views.index, name="index"),
     path("signup", views.signup, name="signup"),
+    path("blog", views.blog, name="blog"),
+     path('post/<str:pk>', views.post, name='post'),
 ]
-
-
-
 
 # Serve media files only during development
 if settings.DEBUG:

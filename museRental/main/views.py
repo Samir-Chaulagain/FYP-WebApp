@@ -1,4 +1,5 @@
 
+from .models import Post
 import readline
 from django.conf import settings
 from django.http import HttpResponse
@@ -16,6 +17,10 @@ from readline import get_current_history_length
 
 def index(request):
     return render(request, 'landing_pages/index.html')
+
+def blog(request):
+    posts = Post.objects.all()
+    return render(request, 'landing_pages/blog.html', {'posts': posts})
 
 
 @csrf_protect
@@ -84,3 +89,11 @@ def signup(request):
         
         
     return render(request, "landing_pages/signup.html")
+
+
+# Create your views here.
+
+
+def post(request, pk):
+    posts = Post.objects.get(id=pk)
+    return render(request, 'posts.html', {'posts': posts})

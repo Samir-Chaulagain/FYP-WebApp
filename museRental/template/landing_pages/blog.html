@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-0 mx-auto">
+    <h2 class="text-center pb-4">
+        Our blog
+    </h2>
+    {% for post in posts reversed %}
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card mb-5 shadow-sm">
+                <img src="img/inst1.jpg" class="img-fluid" />
+
+                <div class="card-body">
+                    <div class="card-title">
+                        <h2>{{post.title}}</h2>
+                    </div>
+                    <div class="card-text">
+                        <p>
+                            {{post.body|truncatewords:20}}
+                        </p>
+                        <p>
+                            {{post.created_at}}
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+<!-- 
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card mb-5 shadow-sm">
+                <img src="img/inst1.jpg" class="img-fluid" />
+
+                <div class="card-body">
+                    <div class="card-title">
+                        <h2>This is the blog title</h2>
+                    </div>
+                    <div class="card-text">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Deleniti corporis quis ab. Exercitationem et quibusdam
+                            impedit? Sint vitae labore nulla sit, dignissimos non tempore,
+                            maxime facere, quod harum aliquid in...
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card mb-5 shadow-sm">
+                <img src="img/inst1.jpg" class="img-fluid" />
+
+                <div class="card-body">
+                    <div class="card-title">
+                        <h2>This is the blog title</h2>
+                    </div>
+                    <div class="card-text">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                            Deleniti corporis quis ab. Exercitationem et quibusdam
+                            impedit? Sint vitae labore nulla sit, dignissimos non tempore,
+                            maxime facere, quod harum aliquid in...
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
+                </div>
+            </div>
+        </div>-->
+
+    </div>
+</div> 
+{%endblock %}
