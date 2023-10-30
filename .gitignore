@@ -1,4 +1,7 @@
+.env
+.env.*
 # Django #
+
 *.log
 *.pot
 *.pyc
@@ -99,7 +102,7 @@ celerybeat-schedule.*
 # Environments 
 .env 
 .venv 
-env/ 
+
 venv/ 
 ENV/ 
 env.bak/ 

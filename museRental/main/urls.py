@@ -10,10 +10,8 @@ urlpatterns = [
     path("blog", views.blog, name="blog"),
     path("contact", views.contact, name="contact"),
     path("about", views.about, name="about"),
-     path('post/<str:pk>', views.post, name='post'),
+     path('post/<str:pk>', views.post, name='post'), 
 ]
 
-# Serve media files only during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
