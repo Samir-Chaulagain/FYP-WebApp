@@ -5,15 +5,11 @@ from django.conf import settings
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("signup/", views.signup, name="signup"),
+    
     path("blog/", views.blog, name="blog"),
     path("contact/", views.contact, name="contact"),
     path("about/", views.about, name="about"),
-     path('post/<str:pk>', views.post, name='post'), 
-
-
-
-
+    path('post/<str:pk>', views.post, name='post'), 
     path('items/', views.items, name='items'),
     path('items/new/', views.new, name='new'),
     path('items/<int:pk>/', views.detail, name='detail'),
