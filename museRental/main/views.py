@@ -26,12 +26,21 @@ def index(request):
 
 def about(request):
     return render(request, 'landing_pages/about.html')
-def contact(request):
-    return render(request, 'landing_pages/contact.html')
+def explore(request):
+    return render(request, 'landing_pages/explore.html')
+
+def events(request):
+    return render(request, 'landing_pages/events.html')
 
 def blog(request):
     posts = Post.objects.all()
     return render(request, 'landing_pages/blog.html', {'posts': posts})
+
+def contact(request):
+    return render(request, 'landing_pages/contact.html')
+
+
+# def 
 
 
 @csrf_protect
@@ -100,6 +109,11 @@ def signup(request):
         
         
     return render(request, "landing_pages/signup.html")
+
+
+
+
+    
 
 
 # Create your views here.
