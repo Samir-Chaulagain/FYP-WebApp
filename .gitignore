@@ -1,14 +1,20 @@
 __pycache__
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
 *.swp
 .sqlite3
 .env
- museRental/main/__pycache__
+ 
 
  # Django #
 *.log
 *.pot
 *.pyc
-__pycache__
+.pyc
+/__pycache__/
+__pycache__/
 db.sqlite3
 media
 
