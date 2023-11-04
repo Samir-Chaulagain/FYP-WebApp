@@ -50,6 +50,6 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
-
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
+
