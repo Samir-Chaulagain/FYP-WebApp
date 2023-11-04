@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="container d-grid gap-3 col-md-5 shadow-lg p-3 mb-5 bg-white rounded mt-4 mx-auto">
+        <h2 class="text-uppercase text-center">Reset password</h2>
+        <p class="text-center text-tertiary">Enter your email address and we'll send you link to reset your password</p>
+        <form>
+            <div class="mb-3 justify-content-around">
+                <input type="email" class="form-control bg-light" placeholder="Enter your email address">
+            </div>
+            <div class="row justify-content-between mb-4">
+
+                <p class="text-start col-6">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <a href="{%url 'login'%}">Back to login</a>
+                </p>
+                <p class="text-end col-6">Not a member?
+                    <a href="{% url 'signup' %}">Sign-up</a>
+                </p>
+            </div>
+            <div class="col-md-2 mx-auto">
+                <a href="changepass.html" id="explore-btn" class="btn btn-primary  text-white">Send mail</a>
+            </div>
+        </form>
+
+    </div>
+{%endblock%}
