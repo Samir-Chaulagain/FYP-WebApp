@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 def SignupPage(request):
     if request.method=='POST':
+        username=request.POST.get('username')
         fname=request.POST.get('fname')
         lname=request.POST.get('lname')
         email=request.POST.get('email')
@@ -21,7 +22,7 @@ def SignupPage(request):
             return HttpResponse("Your password and confrom password are not Same!!")
         else:
 
-            my_user=User.objects.create_user(username=email,  # Use email as the username
+            my_user=User.objects.create_user(username=username,  # Use email as the username
                 email=email,
                 password=pass1,
                 first_name=fname,
@@ -34,9 +35,9 @@ def SignupPage(request):
 
 def LoginPage(request):
     if request.method=='POST':
-        username=request.POST.get('username')
+        email=request.POST.get('email')
         pass1=request.POST.get('pass')
-        user=authenticate(request,username=username,password=pass1)
+        user=authenticate(request,email=email,password=pass1)
         if user is not None:
             login(request,user)
             return redirect('main:index')
@@ -50,3 +51,5 @@ def LogoutPage(request):
     return redirect('login')
 
 
+def resetPassword(request):
+    return render(request,'accounts/resetpass.html')
