@@ -3,7 +3,8 @@
 {% block title %}Items{% endblock %}
 
 {% block content %}
-    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100">
+
+<!-- <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100">
         <div class="col-span-1">
             <form method="get" action="{% url 'items' %}">
                 <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find yout instrument">
@@ -49,11 +50,95 @@
                 {% endfor %}
             </div>
         </div>
+    </div> -->
+
+
+
+<!-- explore page -->
+{% load static %}
+
+
+<div class="container mt-4 mx-auto">
+    <div class="row justify-content-between">
+        {% for item in items %}
+        <div class="col-lg-4 col-md-6 col-sm-12 ">
+            <div class="card Boxshadow h-100" style="width: 18rem;">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" style="height: 196px">
+                            
+                            <img class="card-img-top img-fluid"src="{%static 'img/instrument1.jpg'%}" alt="First slide" >
+                            
+                        </div>
+                        <div class="carousel-item"  style="height: 196px">
+                            <img class="card-img-top img-fluid" src="{%static 'img/instrument2.jpg'%}" alt="">
+                            
+                        </div>
+                        <div class="carousel-item"  style="height: 196px">
+                            <img class="card-img-top img-fluid" src="{%static 'img/instrument3.jpg'%}" alt="">
+                            
+                        </div>
+                
+                
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+                
+                <div class="card-body ">
+                    <h5 class="card-title ">{{ item.name }}</h5>
+                    <hr>
+                    <p class="card-text "><mark><em>Model:</em></mark> SAA</p>
+                    <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Launch demo modal
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        
     </div>
-
-
-
-
+   
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
 
 
 

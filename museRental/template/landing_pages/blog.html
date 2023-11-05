@@ -24,54 +24,35 @@
                             {{post.created_at}}
                         </p>
                     </div>
-                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
+                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        view more </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <img src="{{ post.image.url }}" alt="">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{post.title}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{post.body}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
         {% endfor %}
-<!-- 
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-5 shadow-sm">
-                <img src="img/inst1.jpg" class="img-fluid" />
-
-                <div class="card-body">
-                    <div class="card-title">
-                        <h2>This is the blog title</h2>
-                    </div>
-                    <div class="card-text">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Deleniti corporis quis ab. Exercitationem et quibusdam
-                            impedit? Sint vitae labore nulla sit, dignissimos non tempore,
-                            maxime facere, quod harum aliquid in...
-                        </p>
-                    </div>
-                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="card mb-5 shadow-sm">
-                <img src="img/inst1.jpg" class="img-fluid" />
-
-                <div class="card-body">
-                    <div class="card-title">
-                        <h2>This is the blog title</h2>
-                    </div>
-                    <div class="card-text">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                            Deleniti corporis quis ab. Exercitationem et quibusdam
-                            impedit? Sint vitae labore nulla sit, dignissimos non tempore,
-                            maxime facere, quod harum aliquid in...
-                        </p>
-                    </div>
-                    <a href="#" class="btn btn-outline-primary rounded-0 float-end">Read More</a>
-                </div>
-            </div>
-        </div>-->
-
     </div>
-</div> 
+</div>
+
+</div>
+</div>
 {%endblock %}
