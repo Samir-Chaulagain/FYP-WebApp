@@ -52,4 +52,6 @@ def LogoutPage(request):
 
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
+def changePassword(request):
+    return render(request,'accounts/changepass.html')
 

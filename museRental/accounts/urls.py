@@ -10,6 +10,7 @@ urlpatterns = [
     path('login/',views.LoginPage,name='login'),
     path('logout/',views.LogoutPage,name='logout'),
     path('reset/',views.resetPassword,name='reset_pass'),
+    path('changepassword/',views.changePassword,name='change_pass'),
     
     
 ]
