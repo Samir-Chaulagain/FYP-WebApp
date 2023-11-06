@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('', include('accounts.urls')),
     path('', include('explore.urls')),
+    path('', include('event.urls')),
    
 ]
 

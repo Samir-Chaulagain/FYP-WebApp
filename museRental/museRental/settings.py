@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'main',
     'accounts',
     'explore',
+    'event',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
