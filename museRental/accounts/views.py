@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
-
+# Customer and Owner signup login
 
 def SignupPage(request):
     if request.method=='POST':
