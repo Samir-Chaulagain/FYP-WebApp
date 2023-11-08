@@ -1,57 +1,82 @@
-from pyexpat.errors import messages
-from django.shortcuts import render,HttpResponse,redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+from django.conf import settings
+from django.contrib import auth
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect , get_object_or_404
+from django.urls import reverse, reverse_lazy
+
+from .forms import *
+from .permission import user_is_customer 
 
 
-# Create your views here.
-# Customer and Owner signup login
 
-def SignupPage(request):
-    if request.method=='POST':
-        username=request.POST.get('username')
-        fname=request.POST.get('fname')
-        lname=request.POST.get('lname')
-        email=request.POST.get('email')
-        pass1=request.POST.get('pass1')
-        pass2=request.POST.get('pass2')
-        phonenumber=request.POST.get('phonenumber')
+def customer_registration(request):
+    if request.method == 'POST':
+        form = CustomerRegistrationForm(request.POST, request.FILES)  # Ensure request.FILES is passed
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.pdf_document = request.FILES.get('pdf_document')  # Use get() to avoid KeyError
+            user.save()
+            messages.success(request, 'Your Profile Was Successfully Created!')
+            return redirect('accounts:login')
+    else:
+        form = CustomerRegistrationForm()
+# 
+    context = {
+        'form': form
+    }
 
-        if pass1!=pass2:
-            return HttpResponse("Your password and confrom password are not Same!!")
-        else:
-
-            my_user=User.objects.create_user(username=username,  # Use email as the username
-                email=email,
-                password=pass1,
-                first_name=fname,
-                last_name=lname)
-            my_user.save()
-            return redirect('login')
-        
-    return render (request,'accounts/signup.html')
+    return render(request, 'accounts/customer-registration.html', context)
 
 
-def LoginPage(request):
-    if request.method=='POST':
-        email=request.POST.get('email')
-        pass1=request.POST.get('pass')
-        user=authenticate(request,email=email,password=pass1)
-        if user is not None:
-            login(request,user)
-            return redirect('main:index')
-        else:
-            return HttpResponse ("Username or Password is incorrect!!!")
+def lessor_registration(request):
+    if request.method == 'POST':
+        form = LessorRegistrationForm(request.POST, request.FILES)  # Include request.FILES to handle file uploads
+        if form.is_valid():
+            lessor = form.save(commit=False)
+            lessor.pdf_document = request.FILES.get('pdf_document')  # Get uploaded PDF file
+            lessor.save()
+            messages.success(request, 'Your Profile Was Successfully Created!')
+            return redirect('accounts:login')
+    else:
+        form = LessorRegistrationForm()
 
-    return render (request,'accounts/login.html')
+    context = {
+        'form': form
+    }
 
-def LogoutPage(request):
-    logout(request)
-    return redirect('login')
+    return render(request, 'accounts/lessor-registration.html', context)
 
-def resetPassword(request):
-    return render(request,'accounts/resetpass.html')
-def changePassword(request):
-    return render(request,'accounts/changepass.html')
+def user_logIn(request):
 
+    """
+    Provides users to logIn
+
+    """
+
+    form = UserLoginForm(request.POST or None)
+    
+
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    else:
+        if request.method == 'POST':
+            if form.is_valid():
+                auth.login(request, form.get_user())
+                return HttpResponseRedirect(get_success_url(request))
+    context = {
+        'form': form,
+    }
+
+    return render(request,'accounts/login.html',context)
+
+
+def user_logOut(request):
+    """
+    Provide the ability to logout
+    """
+    auth.logout(request)
+    messages.success(request, 'You are Successfully logged out')
+    return redirect('accounts:login')
