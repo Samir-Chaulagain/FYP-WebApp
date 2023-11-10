@@ -48,7 +48,7 @@ def lessor_registration(request):
 
     return render(request, 'accounts/lessor-registration.html', context)
 
-def user_logIn(request):
+def customer_logIn(request):
 
     """
     Provides users to logIn
@@ -70,7 +70,31 @@ def user_logIn(request):
         'form': form,
     }
 
-    return render(request,'accounts/login.html',context)
+    return render(request,'accounts/customer_login.html',context)
+
+def lessor_logIn(request):
+
+    """
+    Provides users to logIn
+
+    """
+
+    form = UserLoginForm(request.POST or None)
+    
+
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    else:
+        if request.method == 'POST':
+            if form.is_valid():
+                auth.login(request, form.get_user())
+                return HttpResponseRedirect(get_success_url(request))
+    context = {
+        'form': form,
+    }
+
+    return render(request,'accounts/lessor-login.html',context)
 
 
 def user_logOut(request):
