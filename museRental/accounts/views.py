@@ -13,94 +13,51 @@ from .permission import user_is_customer
 
 def customer_registration(request):
     if request.method == 'POST':
-        form = CustomerRegistrationForm(request.POST, request.FILES)  # Ensure request.FILES is passed
+        form = CustomerRegistrationForm(request.POST)
+
         if form.is_valid():
-            user = form.save(commit=False)
-            user.pdf_document = request.FILES.get('pdf_document')  # Use get() to avoid KeyError
-            user.save()
-            messages.success(request, 'Your Profile Was Successfully Created!')
-            return redirect('accounts:login')
+            form.save()
+
+            return redirect('/customer_login/')
     else:
         form = CustomerRegistrationForm()
-# 
-    context = {
-        'form': form
-    }
 
-    return render(request, 'accounts/customer-registration.html', context)
+    return render(request, 'accounts/customer-registration.html', {
+        'form': form
+    })
 
 
 def lessor_registration(request):
     if request.method == 'POST':
-        form = LessorRegistrationForm(request.POST, request.FILES)  # Include request.FILES to handle file uploads
+        form = LessorRegistrationForm(request.POST)
+
         if form.is_valid():
-            lessor = form.save(commit=False)
-            lessor.pdf_document = request.FILES.get('pdf_document')  # Get uploaded PDF file
-            lessor.save()
-            messages.success(request, 'Your Profile Was Successfully Created!')
-            return redirect('accounts:login')
+            form.save()
+
+            return redirect('/lessor_login/')
     else:
         form = LessorRegistrationForm()
 
-    context = {
+    return render(request, 'accounts/lessor-registration.html', {
         'form': form
-    }
-
-    return render(request, 'accounts/lessor-registration.html', context)
-
-def customer_logIn(request):
-
-    """
-    Provides users to logIn
-
-    """
-
-    form = CustomerLoginForm(request.POST or None)
-    
-
-    if request.user.is_authenticated:
-        return redirect('/')
-    
-    else:
-        if request.method == 'POST':
-            if form.is_valid():
-                auth.login(request, form.get_user())
-                return HttpResponseRedirect(get_success_url(request))
-    context = {
-        'form': form,
-    }
-
-    return render(request,'accounts/customer-login.html',context)
-
-def lessor_logIn(request):
-
-    """
-    Provides users to logIn
-
-    """
-
-    form = lessorLoginForm(request.POST or None)
-    
-
-    if request.user.is_authenticated:
-        return redirect('/')
-    
-    else:
-        if request.method == 'POST':
-            if form.is_valid():
-                auth.login(request, form.get_user())
-                return HttpResponseRedirect(get_success_url(request))
-    context = {
-        'form': form,
-    }
-
-    return render(request,'accounts/lessor-login.html',context)
+    })
 
 
-def user_logOut(request):
+
+
+
+
+def customer_logOut(request):
     """
     Provide the ability to logout
     """
     auth.logout(request)
     messages.success(request, 'You are Successfully logged out')
-    return redirect('accounts:login')
+    return redirect('accounts:customer_login')
+def lessor_logOut(request):
+    """
+    Provide the ability to logout
+    """
+    auth.logout(request)
+    messages.success(request, 'You are Successfully logged out')
+    return redirect('accounts:lessor_login')

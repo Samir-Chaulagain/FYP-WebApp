@@ -34,18 +34,47 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'main:contact' %}">Contact</a>
                 </li>
+
+                {% if user.is_authenticated and user.role == 'customer' %}
+                <div class="dropdown show ">
+                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Customer
+                    </a>
+                
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'accounts:customer_login'%}">Customer</a>
+                        <a class="dropdown-item" href="{% url 'accounts:lessor_login'%}">Lessor</a>
+                
+                    </div>
+                </div>
+                {% elif user.is_authenticated and user.role == 'lessor' %}
                 <div class="dropdown show ">
                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Be Part
+                        Lessor
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'accounts:customer_registration'%}">Customer</a>
-                        <a class="dropdown-item" href="{% url 'accounts:lessor_registration'%}">Lessor</a>
+                        <a class="dropdown-item" href="{% url 'accounts:customer_login'%}"></a>
+                        <a class="dropdown-item" href="{% url 'accounts:lessor_login'%}">Lessor</a>
 
                     </div>
                 </div>
+                {% else %}
+                <div class="dropdown show ">
+                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Be Part
+                    </a>
+                
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'accounts:customer_registration' %}">Customer</a>
+                        <a class="dropdown-item" href="{% url 'accounts:lessor_registration' %}">lessor</a>
+                
+                    </div>
+                </div>
+                
                 <div class="dropdown show ">
                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -58,6 +87,9 @@
                 
                     </div>
                 </div>
+
+                {% endif %}
+
 
             </ul>
         </div>
