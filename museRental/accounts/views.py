@@ -13,22 +13,14 @@ from .permission import user_is_customer
 
 def customer_registration(request):
     if request.method == 'POST':
-<<<<<<< HEAD
-        form = CustomerRegistrationForm(request.POST)  # Ensure request.FILES is passed
-        if form.is_valid():
-            user = form.save(commit=False)
-            
-            user.save()
-            messages.success(request, 'Your Profile Was Successfully Created!')
-            return redirect('accounts:login')
-=======
+
         form = CustomerRegistrationForm(request.POST)
 
         if form.is_valid():
             form.save()
 
             return redirect('/customer_login/')
->>>>>>> origin/signup-login
+
     else:
         form = CustomerRegistrationForm()
 
@@ -39,21 +31,14 @@ def customer_registration(request):
 
 def lessor_registration(request):
     if request.method == 'POST':
-<<<<<<< HEAD
-        form = LessorRegistrationForm(request.POST)  # Include request.FILES to handle file uploads
-        if form.is_valid():
-            lessor = form.save(commit=False)
-            lessor.save()
-            messages.success(request, 'Your Profile Was Successfully Created!')
-            return redirect('accounts:login')
-=======
+
         form = LessorRegistrationForm(request.POST)
 
         if form.is_valid():
             form.save()
 
             return redirect('/lessor_login/')
->>>>>>> origin/signup-login
+
     else:
         form = LessorRegistrationForm()
 
@@ -73,6 +58,7 @@ def customer_logOut(request):
     auth.logout(request)
     messages.success(request, 'You are Successfully logged out')
     return redirect('accounts:customer_login')
+
 def lessor_logOut(request):
     """
     Provide the ability to logout
