@@ -55,7 +55,7 @@ def customer_logIn(request):
 
     """
 
-    form = UserLoginForm(request.POST or None)
+    form = CustomerLoginForm(request.POST or None)
     
 
     if request.user.is_authenticated:
@@ -70,7 +70,7 @@ def customer_logIn(request):
         'form': form,
     }
 
-    return render(request,'accounts/customer_login.html',context)
+    return render(request,'accounts/customer-login.html',context)
 
 def lessor_logIn(request):
 
@@ -79,7 +79,7 @@ def lessor_logIn(request):
 
     """
 
-    form = UserLoginForm(request.POST or None)
+    form = lessorLoginForm(request.POST or None)
     
 
     if request.user.is_authenticated:
