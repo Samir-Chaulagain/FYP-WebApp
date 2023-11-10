@@ -49,14 +49,12 @@ class User(AbstractUser):
     role = models.CharField(choices=ROLE, max_length=10)
     gender = models.CharField(choices=gender, max_length=1)
     phone_number = models.CharField(max_length=10, null=True, blank=True)
-    pdf_document = models.FileField(upload_to='pdf_documents/')
+    
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    # Add related_name attributes to resolve the conflicts
-    groups = models.ManyToManyField(Group, verbose_name=_("groups"), blank=True, help_text=_("The groups this user belongs to. A user will get all permissions granted to each of their groups."), related_name="user_accounts_groups")
-    user_permissions = models.ManyToManyField(Permission, verbose_name=_("user permissions"), blank=True, help_text=_("Specific permissions for this user."), related_name="user_accounts_permissions")
+   
 
     def __str__(self):
         return self.email

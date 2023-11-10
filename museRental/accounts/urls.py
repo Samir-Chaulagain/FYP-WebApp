@@ -8,7 +8,7 @@ urlpatterns = [
 
      path('customer/register/', views.customer_registration, name='customer-registration'),
     path('lessor/register/', views.lessor_registration, name='lessor-registration'),
-    # path('profile/edit/<int:id>/', views.customer_edit_profile, name='edit-profile'),
+    path('profile/edit/<int:id>/', views.customer_edit_profile, name='edit-profile'),
     path('login/',views.user_logIn, name='login'),
     path('logout/',views.user_logOut,name='logout'),
     # path('reset/',views.resetPassword,name='reset_pass'),

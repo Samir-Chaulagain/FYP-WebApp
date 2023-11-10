@@ -13,10 +13,10 @@ from .permission import user_is_customer
 
 def customer_registration(request):
     if request.method == 'POST':
-        form = CustomerRegistrationForm(request.POST, request.FILES)  # Ensure request.FILES is passed
+        form = CustomerRegistrationForm(request.POST)  # Ensure request.FILES is passed
         if form.is_valid():
             user = form.save(commit=False)
-            user.pdf_document = request.FILES.get('pdf_document')  # Use get() to avoid KeyError
+            
             user.save()
             messages.success(request, 'Your Profile Was Successfully Created!')
             return redirect('accounts:login')
@@ -32,10 +32,9 @@ def customer_registration(request):
 
 def lessor_registration(request):
     if request.method == 'POST':
-        form = LessorRegistrationForm(request.POST, request.FILES)  # Include request.FILES to handle file uploads
+        form = LessorRegistrationForm(request.POST)  # Include request.FILES to handle file uploads
         if form.is_valid():
             lessor = form.save(commit=False)
-            lessor.pdf_document = request.FILES.get('pdf_document')  # Get uploaded PDF file
             lessor.save()
             messages.success(request, 'Your Profile Was Successfully Created!')
             return redirect('accounts:login')
