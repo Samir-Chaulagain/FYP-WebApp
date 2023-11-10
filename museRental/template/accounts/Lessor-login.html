@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/bgrr.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover;">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+            <h1 class="text-white font-weight-bold">Login as lessor</h1>
+            <div class="custom-breadcrumbs">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto">
+    <h2 class="text-uppercase text-center">Login</h2>
+    <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <input type="email" class="form-control bg-light" placeholder="Enter email" required>
+        </div>
+        <div class="mb-1">
+            <input type="password" class="form-control bg-light" placeholder="Enter password" required>
+        </div>
+        <p class="mb-4 text-end">
+            <a href="">Forgot Password?</a>
+        </p>
+
+
+        <div class="col-md-2 mx-auto">
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+    <p class="mx-auto">Not a member?
+        <a href="accounts:lessor_registration"">Sign-up</a>
+
+        </p>
+    </div>
+
+{%endblock%}
