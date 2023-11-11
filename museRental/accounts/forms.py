@@ -86,7 +86,7 @@ class LessorRegistrationForm(UserCreationForm):
         self.fields['email'].label = "Email :"
         self.fields['phone_number'].label = "Phone Number :"
         self.fields['gender'].label = "Gender :"
-        # self.fields['pdf_document'].label = "Upload your CV :"
+        
 
         self.fields['first_name'].widget.attrs.update(
             {

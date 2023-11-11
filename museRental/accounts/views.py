@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect , get_object_or_404
 from django.urls import reverse, reverse_lazy
 
 from .forms import *
-from accounts.views import *
+from main.views import *
 from .permission import user_is_customer 
 
 
@@ -56,28 +56,13 @@ def user_logIn(request):
             login(request, user)
             
             # messages.success(request, "Logged In Sucessfully!!")
-            return render(request, "main:index")
+            return render(request, "landing_pages/index.html",)
         else:
             messages.error(request, "Bad Credentials!!")
-            return redirect('main:blog')
-    
+            return redirect('main:blog')    
     
 
     return render(request,'accounts/customer-login.html')
-
-
-
-# def get_success_url(request):
-
-#     """
-#     Handle Success Url After LogIN
-
-#     """
-#     if 'next' in request.GET and request.GET['next'] != '':
-#         return request.GET['next']
-#     else:
-#         return reverse('main:index')   
-
 
 def user_logOut(request):
     """
