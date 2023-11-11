@@ -35,29 +35,31 @@
                     <a class="nav-link" href="{% url 'main:contact' %}">Contact</a>
                 </li>
 
-                {% if user.is_authenticated and user.role == 'customer' %}
+                {% if user.is_authenticated and user.role == 'lessor' %}
                 <div class="dropdown show ">
                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                        Customer
+                        lessor
                     </a>
                 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'accounts:customer_login'%}">Customer</a>
-                        <a class="dropdown-item" href="{% url 'accounts:lessor_login'%}">Lessor</a>
+                        <a class="dropdown-item" href="{% url 'accounts:login'%}">Customer</a>
+                        <a class="dropdown-item" href="{% url 'accounts:login'%}">Lessor</a>
+                        <a href="{% url 'accounts:logout' %}">Logout</a>
                 
                     </div>
                 </div>
-                {% elif user.is_authenticated and user.role == 'lessor' %}
+                {% elif user.is_authenticated %}
                 <div class="dropdown show ">
                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Lessor
+                        Customer
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'accounts:customer_login'%}"></a>
-                        <a class="dropdown-item" href="{% url 'accounts:lessor_login'%}">Lessor</a>
+                        <a class="dropdown-item" href="{% url 'accounts:login'%}"></a>
+                        <a class="dropdown-item" href="{% url 'accounts:login'%}">Customer</a>
+                        <a href="{% url 'accounts:logout' %}">Logout</a>
 
                     </div>
                 </div>
@@ -82,8 +84,8 @@
                     </a>
                 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'accounts:customer_login'%}">Customer</a>
-                        <a class="dropdown-item" href="{% url 'accounts:lessor_login'%}">Lessor</a>
+                        <a class="dropdown-item" href="{% url 'accounts:login'%}">login</a>
+                        
                 
                     </div>
                 </div>
