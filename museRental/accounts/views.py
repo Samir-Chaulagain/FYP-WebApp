@@ -23,7 +23,9 @@ def customer_registration(request):
             'form':form
         }
 
+
     return render(request,'accounts/customer-registration.html',context)
+
 
 
 
@@ -44,6 +46,7 @@ def lessor_registration(request):
 def user_logIn(request):
 
     if request.method == 'POST':
+
         username = request.POST['email']
         pass1 = request.POST['password']
         
@@ -83,5 +86,7 @@ def user_logOut(request):
     logout(request)
     messages.success(request, 'You are Successfully logged out')
 
+
     return redirect('accounts:login')
+
 
