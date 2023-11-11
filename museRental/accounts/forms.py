@@ -160,3 +160,27 @@ class CustomerProfileEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", 'phone_number',"gender"]
+
+class LessorProfileEditForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(LessorProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update(
+            {
+                'placeholder': 'Enter First Name',
+            }
+        )
+        self.fields['last_name'].widget.attrs.update(
+            {
+                'placeholder': 'Enter Last Name',
+            }
+        )
+        self.fields['phone_number'].widget.attrs.update(
+            {
+                'placeholder': 'Enter Phone Number',
+            }
+        )
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", 'phone_number',"gender"]
