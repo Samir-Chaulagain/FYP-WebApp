@@ -85,8 +85,6 @@ def user_logOut(request):
     """
     logout(request)
     messages.success(request, 'You are Successfully logged out')
-
-
     return redirect('accounts:login')
 
 
