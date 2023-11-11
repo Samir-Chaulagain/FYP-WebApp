@@ -1,7 +1,6 @@
-from django.conf import settings
-from django.contrib import auth
+
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect , get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -41,6 +40,7 @@ def lessor_registration(request):
 
     return render(request,'accounts/lessor-registration.html',context)
 
+
 def user_logIn(request):
 
     if request.method == 'POST':
@@ -53,10 +53,10 @@ def user_logIn(request):
             login(request, user)
             
             # messages.success(request, "Logged In Sucessfully!!")
-            return render(request, "landing_pages/index.html")
+            return render(request, "main:index")
         else:
             messages.error(request, "Bad Credentials!!")
-            return redirect('main:index')
+            return redirect('main:blog')
     
     
 
@@ -80,7 +80,7 @@ def user_logOut(request):
     """
     Provide the ability to logout
     """
-    auth.logout(request)
+    logout(request)
     messages.success(request, 'You are Successfully logged out')
 
     return redirect('accounts:login')

@@ -18,9 +18,9 @@
 <div class="container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto">
     <h2 class="text-uppercase text-center">Login</h2>
     <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
-    <form method="post" action="">
+    <form method="post">
         {% csrf_token %}
-
+        
         <div class="mb-4">
             <input type="email" class="form-control bg-light" id="email" name="email" placeholder="Enter email" required>
         </div>
