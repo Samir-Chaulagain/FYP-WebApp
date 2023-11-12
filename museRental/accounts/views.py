@@ -50,6 +50,22 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
+<<<<<<< Updated upstream
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
+=======
+@user_is_lessor
+# ADD ITEMS
+def upload_instrument(request):
+    if('email' not in request.session):
+        return redirect('/signin/')
+    email = request.session.get('email')
+    lessor_email= User.objects.get(Owner_email=email)
+    
+    return render(request,"explore/add-instrument.html",{'owner':lessor_email})
+# Edit Items
+# Manage items
+# Views 
+>>>>>>> Stashed changes
 
+# Create Packages
