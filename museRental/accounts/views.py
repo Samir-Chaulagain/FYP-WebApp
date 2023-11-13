@@ -81,6 +81,7 @@ def user_logOut(request):
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
 
+<<<<<<< Updated upstream
 @user_is_lessor
 # ADD ITEMS
 def upload_instrument(request):
@@ -93,6 +94,59 @@ def upload_instrument(request):
 # Edit Items
 # Manage items
 # Views 
+=======
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def customer_edit_profile(request, id=id):
+
+    """
+    Handle customer Profile Update Functionality
+
+    """
+
+    user = get_object_or_404(User, id=id)
+    form = CustomerProfileEditForm(request.POST or None, instance=user)
+    if form.is_valid():
+        form = form.save()
+        messages.success(request, 'Your Profile Was Successfully Updated!')
+        return redirect(reverse("accounts:edit-profile", kwargs={
+                                    'id': form.id
+                                    }))
+    context={
+        
+            'form':form
+        }
+
+    return render(request,'accounts/customer-edit-profile.html',context)
+
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def lessor_edit_profile(request, id=id):
+
+    """
+    Handle customer Profile Update Functionality
+
+    """
+    # user=request.user
+    user = get_object_or_404(User, id=id)
+    form = LessorProfileEditForm(request.POST or None, instance=user)
+    if form.is_valid():
+        form = form.save()
+        messages.success(request, 'Your Profile Was Successfully Updated!')
+        return redirect(reverse("accounts:edit-profile", kwargs={
+                                    'id': form.id
+                                    }))
+    context={
+        
+            'form':form
+        }
+
+    return render(request,'accounts/customer-edit-profile.html',context)
+
+
+>>>>>>> Stashed changes
 
 
 # Create Packages
