@@ -1,55 +1,82 @@
-from pyexpat.errors import messages
-from django.shortcuts import render,HttpResponse,redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect , get_object_or_404
+
+from django.urls import reverse, reverse_lazy
+# importing forms and views
+from .forms import *
+from main.views import *
+from .models import User
+
+# getting permission
+from .permission import user_is_customer, user_is_lessor 
+
+# for loginrequired
 from django.contrib.auth.decorators import login_required
 
 
-# Create your views here.
 
+def customer_registration(request):
 
-def SignupPage(request):
-    if request.method=='POST':
-        username=request.POST.get('username')
-        fname=request.POST.get('fname')
-        lname=request.POST.get('lname')
-        email=request.POST.get('email')
-        pass1=request.POST.get('pass1')
-        pass2=request.POST.get('pass2')
-        phonenumber=request.POST.get('phonenumber')
-
-        if pass1!=pass2:
-            return HttpResponse("Your password and confrom password are not Same!!")
-        else:
-
-            my_user=User.objects.create_user(username=username,  # Use email as the username
-                email=email,
-                password=pass1,
-                first_name=fname,
-                last_name=lname)
-            my_user.save()
-            return redirect('login')
+    
+    form = CustomerRegistrationForm(request.POST or None)
+    if form.is_valid():
+        form = form.save()
+        return redirect('accounts:login')
+    context={
         
-    return render (request,'accounts/signup.html')
+            'form':form
+        }
 
 
-def LoginPage(request):
-    if request.method=='POST':
-        email=request.POST.get('email')
-        pass1=request.POST.get('pass')
-        user=authenticate(request,email=email,password=pass1)
+    return render(request,'accounts/customer-registration.html',context)
+
+
+
+
+def lessor_registration(request):
+   
+    form = LessorRegistrationForm(request.POST or None)
+    if form.is_valid():
+        form = form.save()
+        return redirect('accounts:login')
+    context={
+        
+            'form':form
+        }
+
+    return render(request,'accounts/lessor-registration.html',context)
+
+
+def user_logIn(request):
+
+    if request.method == 'POST':
+
+        email = request.POST['email']
+        pass1 = request.POST['password']
+        
+        user = authenticate(email=email, password=pass1)
+        
         if user is not None:
-            login(request,user)
-            return redirect('main:index')
+            login(request, user)
+            
+            # messages.success(request, "Logged In Sucessfully!!")
+            return render(request, "landing_pages/index.html",)
         else:
-            return HttpResponse ("Username or Password is incorrect!!!")
+            messages.error(request, "Bad Credentials!!")
+            return redirect('main:blog')    
+    
 
-    return render (request,'accounts/login.html')
+    return render(request,'accounts/login.html')
 
-def LogoutPage(request):
+def user_logOut(request):
+    """
+    Provide the ability to logout
+    """
     logout(request)
     return redirect('login')
-
 
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
