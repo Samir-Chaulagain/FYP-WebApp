@@ -50,10 +50,10 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
-<<<<<<< Updated upstream
+
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
-=======
+
 @user_is_lessor
 # ADD ITEMS
 def upload_instrument(request):
@@ -66,6 +66,6 @@ def upload_instrument(request):
 # Edit Items
 # Manage items
 # Views 
->>>>>>> Stashed changes
+
 
 # Create Packages
