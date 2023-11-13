@@ -76,25 +76,11 @@ def user_logOut(request):
     Provide the ability to logout
     """
     logout(request)
-    return redirect('login')
+    return redirect('accounts:login')
 
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
 
-<<<<<<< Updated upstream
-@user_is_lessor
-# ADD ITEMS
-def upload_instrument(request):
-    if('email' not in request.session):
-        return redirect('/signin/')
-    email = request.session.get('email')
-    lessor_email= User.objects.get(Owner_email=email)
-    
-    return render(request,"explore/add-instrument.html",{'owner':lessor_email})
-# Edit Items
-# Manage items
-# Views 
-=======
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
@@ -146,7 +132,6 @@ def lessor_edit_profile(request, id=id):
     return render(request,'accounts/customer-edit-profile.html',context)
 
 
->>>>>>> Stashed changes
 
 
 # Create Packages
