@@ -81,7 +81,6 @@ def user_logOut(request):
 def resetPassword(request):
     return render(request,'accounts/resetpass.html')
 
-
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def customer_edit_profile(request, id=id):
