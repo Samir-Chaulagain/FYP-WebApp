@@ -16,9 +16,8 @@ class Category(models.Model):
 
 class Item(models.Model):
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
-
     name = models.CharField(max_length=255)
+    created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
     instrument_model = models.CharField(max_length=60)
     instrument_brand = models.CharField(max_length=60)
@@ -26,6 +25,7 @@ class Item(models.Model):
     instrument_image1 = models.ImageField(upload_to='img/instrument_images/')
     instrument_image2 = models.ImageField(upload_to='img/instrument_images/')
     instrument_image3 = models.ImageField(upload_to='img/instrument_images/')
+
 
     
     

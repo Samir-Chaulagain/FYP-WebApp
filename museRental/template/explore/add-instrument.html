@@ -1,87 +1,105 @@
-{%extends 'Only_owner_navbar.html'%} {% load static %}
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Upload instrument {% endblock %}</title>
-</head>
-
-<body>
-
-    <h1 class="display-4" style="text-align: center;">Upload instrument</h1>
-
-    {%if Message%}
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image"
+    style="background-image: url({% static 'images/bgrr.jpg' %});" id="home-section">
     <div class="container">
-        <div class="alert alert-warning alert-dismissible fade show my-2" role="alert">
-            <strong>{{Message}}!!</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">Add items</h1>
+                <div class="custom-breadcrumbs">
+                    <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                    <a href="#">Items</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>Upload items</strong></span>
+                </div>
+            </div>
         </div>
     </div>
-    {%endif%}
+</section>
 
-    <div class="container my-5 p-3 lead" id="signin">
-        <form action="#" class="px-4 py-3" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="name">Instrument Name</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="name" autocomplete="off"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="instrument_brand">Brand name</label>
-                <input type="text" class="form-control" id="instrument_brand" name="instrument_brand"  placeholder="brand" autocomplete="off"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="name">Instrument model</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="model" autocomplete="off"
-                    required>
-            </div>
-            <div class="form-group">
-                <label for="instrument_description"> Description</label>
-                <textarea class="form-control" name="description" id="description"
-                    placeholder="Description" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="instrument_price">Price (per day in rupees)</label>
-                <input type="text" class="form-control" name="price" id="price" placeholder="2000"
-                    autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label for="inputZip">instrument Image 1</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="instrument_image1" id="instrument_image1"
-                        style="cursor: pointer;" required>
-                    <label class="custom-file-label" for="instrument_image1">Choose First Image...</label>
+
+<section class="site-section">
+    <div class="container">
+
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <h2>New Instrument</h2>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputZip">instrument Image 2</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="instrument_image2" id="instrument_image2"
-                        style="cursor: pointer;" required>
-                    <label class="custom-file-label" for="instrument_image2">Choose Second Image...</label>
+            <div class="col-lg-4">
+                <div class="row">
+
+                    <div class="col-6">
+                        <a href="#" class="btn btn-block btn-primary btn-md">Save instrument</a>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputZip">instrument Image 3</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="instrument_image3" id="instrument_image3"
-                        style="cursor: pointer;" required>
-                    <label class="custom-file-label" for="instrument_image3">Choose Third Image...</label>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row mb-5 p-4 p-md-5 border rounded">
+                <div class="col-lg-12">
+                    <h3 class="text-black mb-5 border-bottom pb-2">Item details</h3>
+                    {% if form.errors %}
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>{{ field.label }}: {{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+
+                    {% csrf_token %}
+                        {% for field in form %}
+                    
+
+                    {%if field.name == 'category' %}
+                    <div class="form-group">
+                        <label for="instrument-type">Category</label>
+                        <select name="category" class="selectpicker border rounded" id="instrument-type" data-style="btn-black"
+                            data-width="100%" data-live-search="true" title="Select Instrument Type">
+
+                            {% for category in categories %}
+
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    {% elif field.name == 'description' %}
+                    <div class="form-group">
+                        <label for="instrument-type">Description</label>
+                        <div class="">
+                            {{ form.media }}
+                            {{ form.description }}
+                        </div>
+                    </div>
+                    
+                    {% else %}
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
 
-            
-            <input type="submit" value="Upload" class="btn btn-primary" />
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-4 ml-auto">
+                    <div class="row">
+                        <div class="col-6">
+
+                            <input class="btn btn-block btn-primary btn-md" type="submit" value="Submit">
+                        </div>
+                    </div>
+                </div>
         </form>
+
     </div>
-
-    {% endblock pagecontent %}
-
-</body>
-
-</html>
+    </div>
+</section>
+{% endblock %}
