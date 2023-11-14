@@ -1,81 +1,43 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .forms import NewItemForm, EditItemForm
-
-from .models import Category, Item
+from .forms import add_item_form
+from django.urls import reverse, reverse_lazy
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from .models import Item
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from accounts.models import User
+from explore.forms import *
+from explore.models import *
+from accounts.permission import *
 
 # Create your views here.
 def items(request):
-    query = request.GET.get('query', '')
-    category_id = request.GET.get('category', 0)
+    return render(request, 'explore/explore.html')
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def upload_items(request):   
+    form = add_item_form(request.POST or None)
+
+    user = get_object_or_404(User, id=request.user.id)
     categories = Category.objects.all()
-    items = Item.objects.filter(is_sold=False)
+    if form.is_valid():
 
-    if category_id:
-        items = items.filter(category_id=category_id)
+            instance = form.save(commit=False)
+            instance.user = user
+            instance.save()
+            # for save tags
+            form.save_m2m()
+            messages.success(
+                    request, 'Successfully posted Instrument.')
+            return redirect(reverse("exlore:items", kwargs={
+                                    'id': instance.id
+                                    }))
 
-    if query:
-        items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
-
-    return render(request, 'explore/explore.html', {
-        'items': items,
-        'query': query,
-        'categories': categories,
-        'category_id': int(category_id)
-    })
-
-def detail(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
-
-    return render(request, 'explore/detail.html', {
-        'item': item,
-        'related_items': related_items
-    })
-
-
-def new(request):
-    if request.method == 'POST':
-        form = NewItemForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.created_by = request.user
-            item.save()
-
-            return redirect('explore:detail', pk=item.id)
-    else:
-        form = NewItemForm()
-
-    return render(request, 'explore/form.html', {
+    context = {
         'form': form,
-        'title': 'New item',
-    })
-
-
-def edit(request, pk):
-    item = get_object_or_404(Item, pk=pk, created_by=request.user)
-
-    if request.method == 'POST':
-        form = EditItemForm(request.POST, request.FILES, instance=item)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('explore:detail', pk=item.id)
-    else:
-        form = EditItemForm(instance=item)
-
-    return render(request, 'explore/form.html', {
-        'form': form,
-        'title': 'Edit item',
-    })
-
-
-def delete(request, pk):
-    item = get_object_or_404(Item, pk=pk, created_by=request.user)
-    item.delete()
-
-    return redirect('index')
-
-
+        'categories': categories
+    }
+    return render(request, 'explore/add-instrument.html',context)
