@@ -29,11 +29,12 @@
     </div>
 
 </div>
-<div class="container-fluid">
+
+<div class="container">
     <div class="row">
-        <div class="col-sm-2" style="height: auto; background-color: #f1f1f1;" id="demo">
+        <div class="col-md-3" style="height: Auto; background-color: #f1f1f1;" id="demo">
             <div class="row">
-                <div class="col-sm mt-2">
+                <div class="col-md mt-2">
                     <label class="sr-only" for="inlineFormInputGroup">Search</label>
                     <div class="input-group mb-2">
                         <input type="search" class="form-control" id="inlineFormInputGroup" placeholder="Search">
@@ -47,18 +48,20 @@
                 <div class="col-sm mt-2">
                     <p class="font-semibold">Categories</p>
                     <ul>
-                        <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
+                        <li class="py-2 px-2 rounded-xl bg-gray-200">
                             <a href="{% url 'explore:items' %}">All</a>
                         </li>
                         {% for category in categories %}
                         <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
-                            <a href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}">{{
-                                category.name }}</a>
+                            <a href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}">{{category.name}}</a>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
+                
             </div>
+            
+
 
         </div>
     </div>
@@ -87,11 +90,11 @@
 
                         </div>
                         <div class="carousel-item" style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="">
+                            <img class="card-img-top img-fluid" src="{{item.instrument_image2.url}}" alt="">
 
                         </div>
                         <div class="carousel-item" style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="">
+                            <img class="card-img-top img-fluid" src="{{item.instrument_image3.url}}" alt="">
 
                         </div>
 
@@ -114,10 +117,8 @@
                     <hr>
                     <p class="card-text "><mark><em>Model:</em></mark>{{item.instrument_model}}</p>
                     <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
-                    </button>
+                    <a href="{% url 'explore:details' item.id  %}" class="btn btn-primary">Veiw details</a>
+
                 </div>
             </div>
         </div>
@@ -125,26 +126,6 @@
 
 
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 </div>
 

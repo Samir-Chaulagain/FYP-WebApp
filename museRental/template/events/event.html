@@ -8,54 +8,58 @@
     <div class="d-flex justify-content-center align-items-center h-100">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="">About Us</a></li>
+                <li class="breadcrumb-item "><a href="">Events</a></li>
 
             </ol>
         </nav>
     </div>
-
-</div>
-    <h1 class="text-center text-uppercase">Events</h1>
-    <div class="my-5 position-relative">
-        <div class="container">
-            <div class="row p-5 bg-dark ">
-                <div class="col-md-4">
-                    <img src="img/inst4.jpg" alt="" class="img-fluid rounded-2">
-                </div>
-                <div class="col-md-6 ms-5">
-                    <h2 class="fw-bold text-white">Grand BeeAndBars Opening</h2>
-                    <hr class="hr-heading text-white" />
-                    <p class="text-white"> 
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat nesciunt dicta quos deleniti, veniam qui hic quo facilis iusto? Veritatis culpa debitis, accusamus beatae quae nihil magni. Temporibus rem ex, odio enim veniam sit suscipit?
-                    </p>
-
-                    <div class="d-grid gap-3 d-md-flex">
+    <div class="container my-2">
+    <div class="d-md-flex justify-content-md-center">
+        <a href="{% url 'event:event' %}" class="btn btn-primary mb-2 mb-md-0 me-md-2">All</a>
+        {% for category in categories %}
+        <a href="{% url 'event:event' %}?query={{ query }}&category={{ category.id }}"
+            class="btn btn-primary mb-2 mb-md-0 me-md-2">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+    </div>
+    <section class="py-3 py-md-5">
+        <div class="container overflow-hidden">
+            <div class="row gy-4 gy-lg-0">
+                {% for event in event %}
+                <div class="col-12 col-lg-4">
                     
-                        <button type="button" class="btn btn-outline-light">Explore Event</button>
-                        <button type="button" class="btn btn-light ">Buy</button>
+                        <div class="card border-0">
+                            <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
+                                <a href="#!">
+                                    <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
+                                        src="" alt="">
+                                </a>
+                                
+                            </figure>
+                            <div class="card-body border bg-white p-4">
+                                <div class="entry-header mb-3">
+                                    
+                                    <h2 class="card-title entry-title h4 mb-0">
+                                        <a class="link-dark text-decoration-none" href="#!">{{event.name}}</a>
+                                    </h2>
+                                </div>
+                                <p class="card-text entry-summary text-secondary">
+                                   {{event.description}}
+                                </p>
+                            </div>
+                            <div class="card-footer border border-top-0 bg-white p-4">
+                                <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
+                                    <a href="" class="btn btn-primary">Buy now</a>
+                                </ul>
+                            </div>
+                        </div>
+                    
                     </div>
-                    
-                </div>
-            </div>
-            <div class="row p-5 mt-4 bg-dark ">
-                <div class="col-md-4">
-                    <img src="img/inst4.jpg" alt="" class="img-fluid rounded-2">
-                </div>
-                <div class="col-md-6 ms-5">
-                    <h2 class="fw-bold text-white">Grand BeeAndBars Opening</h2>
-                    <hr class="hr-heading text-white" />
-                    <p class="text-white"> 
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat nesciunt dicta quos deleniti, veniam qui hic quo facilis iusto? Veritatis culpa debitis, accusamus beatae quae nihil magni. Temporibus rem ex, odio enim veniam sit suscipit?
-                    </p>
-                    <div class="d-grid gap-3 d-md-flex">
+                    {% endfor %}
 
-                        <button type="button" class="btn btn-outline-light">Explore Event</button>
-                        <button type="button" class="btn btn-light ">Buy</button>
-                    </div>
-                    
-                </div>
+
             </div>
         </div>
-        
-    </div>
+    </section>
+
     {%endblock %}
