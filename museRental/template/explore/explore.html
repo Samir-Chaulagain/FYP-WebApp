@@ -4,53 +4,6 @@
 
 {% block content %}
 
-<!-- <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100">
-        <div class="col-span-1">
-            <form method="get" action="{% url 'explore:items' %}">
-                <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find yout instrument">
-
-                <button class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl">Search</button>
-            </form>
-
-            <hr class="my-6">
-
-            <p class="font-semibold">Categories</p>
-
-            <ul>
-                {% for category in categories %}
-                    <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
-                        <a href="{% url 'items' %}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <hr class="my-6">
-
-            <p class="font-semibold">Clear filters</p>
-
-            <ul>
-                <li><a href="{% url 'explore:items' %}" class="mt-2 py-4 px-8 inline-block bg-yellow-500 text-lg rounded-xl text-white">Clear</a>
-        </div>
-
-        <div class="col-span-3">
-            <div class="grid grid-cols-3 gap-3">
-                {% for item in items %}
-                    <div>
-                        <a href="{% url 'detail' item.id %}">
-                            <div>
-                                <img src="{{ explore.image.url }}" class="rounded-t-xl">
-                            </div>
-    
-                            <div class="p-6 bg-white rounded-b-xl">
-                                <h2 class="text-2xl">{{ item.name }}</h2>
-                                <p class="text-gray-500">Price: {{ item.price }}</p>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div> -->
 
 
 
@@ -59,9 +12,23 @@
 
 
 {% if user.is_authenticated and user.role == 'lessor' %}
-    <a href="{% url 'explore:new' %}" class="btn btn-primary">Add item</a>
+<a href="" class="btn btn-primary">Add item</a>
 
 {% endif %}
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">About Us</a></li>
+
+            </ol>
+        </nav>
+    </div>
+
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-2" style="height: auto; background-color: #f1f1f1;" id="demo">
@@ -78,174 +45,74 @@
             </div>
             <div class="row">
                 <div class="col-sm mt-2">
-                    <form>
-                        <strong>Vehicles</strong>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Car">
-                            <label class="form-check-label" for="Car">Car</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Bike">
-                            <label class="form-check-label" for="Bike">Bike</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Bus">
-                            <label class="form-check-label" for="Bus">Bus</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Scooter">
-                            <label class="form-check-label" for="Scooter">Scooter</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Bicycle">
-                            <label class="form-check-label" for="Bicycle">Bicycle</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="TouristVan">
-                            <label class="form-check-label" for="TouristVan">Tourist Van</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Truck">
-                            <label class="form-check-label" for="Truck">Truck</label>
-                        </div>
-
-
-                        <strong>Company</strong>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Maruti">
-                            <label class="form-check-label" for="Maruti">Maruti</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Audi">
-                            <label class="form-check-label" for="Audi">Audi</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Mercedes">
-                            <label class="form-check-label" for="Mercedes">Mercedes</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Toyato">
-                            <label class="form-check-label" for="Toyato">Toyato</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Tata">
-                            <label class="form-check-label" for="Tata">Tata</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Kia">
-                            <label class="form-check-label" for="Kia">Kia</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Tesla">
-                            <label class="form-check-label" for="Tesla">Tesla</label>
-                        </div>
-
-                        <strong>Fuel Type</strong>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Petrol">
-                            <label class="form-check-label" for="Petrol">Petrol</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Diesel">
-                            <label class="form-check-label" for="Diesel">Diesel</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="CNG">
-                            <label class="form-check-label" for="CNG">CNG</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="Electric">
-                            <label class="form-check-label" for="Electric">Electric</label>
-                        </div>
-
-                        <strong>Price Range</strong>
-                        <div class="form-check">
-                            <a href="#" style="color: black;">
-                                <label class="form-check-label justify-content-end" for="price" style="cursor: pointer;"
-                                    onMouseOver="this.style.color='tomato'" onMouseOut="this.style.color='black'">Under
-                                    ₹1000</label>
-                                <label class="form-check-label justify-content-end" for="price" style="cursor: pointer;"
-                                    onMouseOver="this.style.color='tomato'" onMouseOut="this.style.color='black'">Under
-                                    ₹1000 - ₹2000</label>
-                                <label class="form-check-label justify-content-end" for="price" style="cursor: pointer;"
-                                    onMouseOver="this.style.color='tomato'" onMouseOut="this.style.color='black'">Above
-                                    ₹2000</label>
-                            </a>
-                        </div>
-
-                    </form>
+                    <p class="font-semibold">Categories</p>
+                    <ul>
+                        <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
+                            <a href="{% url 'explore:items' %}">All</a>
+                        </li>
+                        {% for category in categories %}
+                        <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
+                            <a href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}">{{
+                                category.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-10">
-            {% block pagecontent %} {% endblock pagecontent %}
+
         </div>
     </div>
-
-    <!-- pagination -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-            <li class="page-item">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
-
 </div>
+
+
 
 <div class="container mt-4 mx-auto">
     <div class="row justify-content-between">
-        {% for item in items %}
+        {% for item in items%}
         <div class="col-lg-3 col-md-3 col-sm-3 ">
             <div class="card Boxshadow h-100" style="width: 18rem;">
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div id="instrument_{{item.name}}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                        aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                        aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                        aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active" style="height: 196px">
-                            
-                            <img class="card-img-top img-fluid"src="{%static 'img/instrument1.jpg'%}" alt="First slide" >
-                            
+
+                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="First slide">
+
                         </div>
-                        <div class="carousel-item"  style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{%static 'img/instrument2.jpg'%}" alt="">
-                            
+                        <div class="carousel-item" style="height: 196px">
+                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="">
+
                         </div>
-                        <div class="carousel-item"  style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{%static 'img/instrument3.jpg'%}" alt="">
-                            
+                        <div class="carousel-item" style="height: 196px">
+                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="">
+
                         </div>
-                
-                
+
+
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-prev" type="button" data-bs-target="#instrument_{{item.name}}"
                         data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                    <button class="carousel-control-next" type="button" data-bs-target="#instrument_{{item.name}}"
                         data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
                 </div>
-                
+
                 <div class="card-body ">
                     <h5 class="card-title ">{{ item.name }}</h5>
                     <hr>
-                    <p class="card-text "><mark><em>Model:</em></mark> SAA</p>
+                    <p class="card-text "><mark><em>Model:</em></mark>{{item.instrument_model}}</p>
                     <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -255,13 +122,13 @@
             </div>
         </div>
         {% endfor %}
-        
-        
+
+
     </div>
-   
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
@@ -277,8 +144,8 @@
             </div>
         </div>
     </div>
-    
-    
+
+
 </div>
 
 {% endblock %}

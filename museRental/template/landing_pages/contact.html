@@ -2,8 +2,21 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
 
-<div class="container m-5 p-5">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">About Us</a></li>
+
+            </ol>
+        </nav>
+    </div>
+
+</div>
+<div class="container m-5 p-5" data-aos="zoom-in-up">
     <div class="row justify-content-center">
         <div class="col-md-4 justify-content-center">
             <h2 class="fw-bold">Get Connected With Us</h2>

@@ -1,20 +1,39 @@
 /* Hero carousel */
 
+.nav-item a{
+  color: aliceblue;
+
+}
+.nav-item a:hover{
+  color: aliceblue;
+
+}
+
+.mynav::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  
+  background: rgb(254, 254, 254);
+  transition: width .3s;
+}
+
+
+.mynav:hover::after {
+  width: 100%;
+  transition: width .3s;
+  color: aliceblue;
+}
 
 .carousel-item {
-  height: 42rem;
+  height: 100vh;
   background-color: #2a2929;
   color: white;
   position: relative;
 }
 
-.container {
-  position: relative;
-  margin-top: 22rem;
-  margin-left: 155px;
 
-  padding-right: 35%;
-}
 
 .overlay-image {
   position: absolute;
@@ -25,8 +44,19 @@
   background-position: center;
   background-size: cover;
   opacity: 0.5;
+   animation: zoomin 10s linear infinite;
 }
-
+@keyframes zoomin {
+    0%{
+        transform: scale(1.05);
+    }
+    50%{
+        transform: scale(1.1);
+    }
+    100%{
+        transform: scale(1.2);
+    }
+}
 .logo {
   padding-right: 10px;
   padding-left: 25px;
@@ -35,6 +65,7 @@
 .logo img {
   height: 32px;
   width: 32px;
+  opacity: 5;
 }
 
 

@@ -2,6 +2,20 @@
 {% load static %}
 {% block content %}
 
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">About Us</a></li>
+
+            </ol>
+        </nav>
+    </div>
+
+</div>
 <div class="container mt-0 mx-auto">
     <h2 class="text-center pb-4">
         Our blog
@@ -31,28 +45,29 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <img src="{{ post.image.url }}" alt="">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">{{post.title}}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{post.body}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <img src="{{ post.image.url }}" alt="">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{post.title}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{post.body}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+
 </div>
-</div>
+
+{% endfor %}
 {%endblock %}

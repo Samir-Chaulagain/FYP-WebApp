@@ -33,9 +33,6 @@ def customer_registration(request):
 
     return render(request,'accounts/customer-registration.html',context)
 
-
-
-
 def lessor_registration(request):
    
     form = LessorRegistrationForm(request.POST or None)
@@ -48,7 +45,6 @@ def lessor_registration(request):
         }
 
     return render(request,'accounts/lessor-registration.html',context)
-
 
 def user_logIn(request):
 
@@ -68,7 +64,6 @@ def user_logIn(request):
             messages.error(request, "Bad Credentials!!")
             return redirect('main:blog')    
     
-
     return render(request,'accounts/login.html')
 
 def user_logOut(request):
