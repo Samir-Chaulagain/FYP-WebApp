@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book Event</title>
+</head>
+
+<body>
+    
+    {% if user.is_authenticated %}
+    <h2>Book Event: {{ event.title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Book Tickets</button>
+    </form>
+    {% endif%}
+
+</body>
+
+</html>

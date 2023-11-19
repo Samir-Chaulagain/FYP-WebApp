@@ -13,7 +13,8 @@
             </ol>
         </nav>
     </div>
-    <div class="container my-2">
+</div>
+<div class="container my-2">
     <div class="d-md-flex justify-content-md-center">
         <a href="{% url 'event:event' %}" class="btn btn-primary mb-2 mb-md-0 me-md-2">All</a>
         {% for category in categories %}
@@ -21,45 +22,47 @@
             class="btn btn-primary mb-2 mb-md-0 me-md-2">{{ category.name }}</a>
         {% endfor %}
     </div>
-    </div>
-    <section class="py-3 py-md-5">
-        <div class="container overflow-hidden">
-            <div class="row gy-4 gy-lg-0">
-                {% for event in event %}
-                <div class="col-12 col-lg-4">
-                    
-                        <div class="card border-0">
-                            <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
-                                <a href="#!">
-                                    <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
-                                        src="" alt="">
-                                </a>
-                                
-                            </figure>
-                            <div class="card-body border bg-white p-4">
-                                <div class="entry-header mb-3">
-                                    
-                                    <h2 class="card-title entry-title h4 mb-0">
-                                        <a class="link-dark text-decoration-none" href="#!">{{event.name}}</a>
-                                    </h2>
-                                </div>
-                                <p class="card-text entry-summary text-secondary">
-                                   {{event.description}}
-                                </p>
-                            </div>
-                            <div class="card-footer border border-top-0 bg-white p-4">
-                                <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
-                                    <a href="" class="btn btn-primary">Buy now</a>
-                                </ul>
-                            </div>
-                        </div>
-                    
-                    </div>
-                    {% endfor %}
+</div>
+<section class="py-3 py-md-5">
+    <div class="container overflow-hidden">
+        <div class="row gy-4 gy-lg-0">
+            {% for event in event %}
+            <div class="col-12 col-lg-4">
 
+                <div class="card border-0">
+                    <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
+                        <a href="{% url 'event:event-details' event.id %}">
+                            <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
+                                src="{{ event.image.url }}" alt="">
+                        </a>
+
+                    </figure>
+                    <div class="card-body border bg-white p-4">
+                        <div class="entry-header mb-3">
+
+                            <h2 class="card-title entry-title h4 mb-0">
+                                <a class="link-dark text-decoration-none" href="#!">{{event.name}}</a>
+                            </h2>
+                        </div>
+                        <p class="card-text entry-summary text-secondary">
+                            <p><span class="text-strong">Location:</span> {{event.location}}</p>
+                            <p><span class="text-strong">Date:</span> {{event.date}}</p>
+                            <p><span class="text-strong">No. of People:</span> {{event.maximum_attende}}</p>
+                        </p>
+                    </div>
+                    <div class="card-footer border text-center bg-white">
+                        <ul class="entry-meta list-unstyled d-flex align-items-center  m-0">
+                            <a href="{% url 'event:book-event' event.id %}" class="btn btn-primary ">Buy now</a>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
-        </div>
-    </section>
+            {% endfor %}
 
-    {%endblock %}
+
+        </div>
+    </div>
+</section>
+
+{%endblock %}

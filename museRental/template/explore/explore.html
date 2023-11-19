@@ -30,9 +30,11 @@
 
 </div>
 
-<div class="container">
+
+
+<div class="container-fluid ">
     <div class="row">
-        <div class="col-md-3" style="height: Auto; background-color: #f1f1f1;" id="demo">
+        <div class="col-md-3" style=" background-color: #f1f1f1;" id="demo">
             <div class="row">
                 <div class="col-md mt-2">
                     <label class="sr-only" for="inlineFormInputGroup">Search</label>
@@ -53,80 +55,89 @@
                         </li>
                         {% for category in categories %}
                         <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
-                            <a href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}">{{category.name}}</a>
+                            <a
+                                href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}">{{category.name}}</a>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
-                
             </div>
-            
+        </div>
+
+        <div class="col">
+            <div class="container">
+                <div class="row">
+                    
+                    {% for item in items%}
+                    <div class="col-lg-4 col-md-4 col-sm-6 my-3 ">
+
+                        <div class="card Boxshadow h-100" style="width: 18rem;">
+                            <div id="instrument_{{item.name}}" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
+                                        data-bs-slide-to="0" class="active" aria-current="true"
+                                        aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
+                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
+                                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" style="height: 196px">
+
+                                        <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}"
+                                            alt="First slide">
+
+                                    </div>
+                                    <div class="carousel-item" style="height: 196px">
+                                        <img class="card-img-top img-fluid" src="{{item.instrument_image2.url}}" alt="">
+
+                                    </div>
+                                    <div class="carousel-item" style="height: 196px">
+                                        <img class="card-img-top img-fluid" src="{{item.instrument_image3.url}}" alt="">
+
+                                    </div>
+
+
+                                </div>
+                                <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#instrument_{{item.name}}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                    data-bs-target="#instrument_{{item.name}}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+
+                            <div class="card-body ">
+                                <h5 class="card-title ">{{ item.name }}</h5>
+                                <hr>
+                                <p class="card-text "><mark><em>Model:</em></mark>{{item.instrument_model}}</p>
+                                <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
+                                <a href="{% url 'explore:details' item.id  %}" class="btn btn-primary">Veiw details</a>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container mt-4 mx-auto">
+        <div class="row justify-content-between">
+
 
 
         </div>
-    </div>
-</div>
-
-
-
-<div class="container mt-4 mx-auto">
-    <div class="row justify-content-between">
-        {% for item in items%}
-        <div class="col-lg-3 col-md-3 col-sm-3 ">
-            <div class="card Boxshadow h-100" style="width: 18rem;">
-                <div id="instrument_{{item.name}}" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" style="height: 196px">
-
-                            <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}" alt="First slide">
-
-                        </div>
-                        <div class="carousel-item" style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{{item.instrument_image2.url}}" alt="">
-
-                        </div>
-                        <div class="carousel-item" style="height: 196px">
-                            <img class="card-img-top img-fluid" src="{{item.instrument_image3.url}}" alt="">
-
-                        </div>
-
-
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#instrument_{{item.name}}"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#instrument_{{item.name}}"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-
-                <div class="card-body ">
-                    <h5 class="card-title ">{{ item.name }}</h5>
-                    <hr>
-                    <p class="card-text "><mark><em>Model:</em></mark>{{item.instrument_model}}</p>
-                    <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
-                    <a href="{% url 'explore:details' item.id  %}" class="btn btn-primary">Veiw details</a>
-
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
 
     </div>
 
-</div>
-
-{% endblock %}
+    {% endblock %}

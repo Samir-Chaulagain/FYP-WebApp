@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-%y^j#fc7fd3d0!b(0j$g@bs7nf5y#+eps$!mv91-jz#zg5^!ss
 DEBUG = True
 
 ALLOWED_HOSTS = []
-LOGIN_URL = '/customer_login/'
+
 LOGIN_URL = '/lessor_login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -124,8 +124,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # settings.py
 

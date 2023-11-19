@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">Events</a></li>
+
+            </ol>
+        </nav>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="row">
+        <!-- carousel Image -->
+        <div class=" col-sm-12 col-md-6 ">
+            <img src="{{ event.image.url }}" class="rounded-xl image-fluid" style="height: Auto; width: 100%;">
+        </div>
+
+        <!-- Information -->
+        
+        <div class="col-md-6 col-sm-12" >
+            <div class="card p-1" style="width: auto;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{event.name}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Location</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{event.Location}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Venue</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{event.venue}}
+                        </div>
+                    </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Description</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{event.description}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Price</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            ₹{{event.ticket_price}} (per hour)
+                        </div>
+                    </div>
+
+                    <div class="border border-top-0 bg-white p-4">
+                        <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
+                            <a href="{% url 'event:book-event' event.id  %}" class="btn btn-primary">Buy now</a>
+                        </ul>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <h2>Book Event: {{ event.title }}</h2>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Book Tickets</button>
+                    </form>
+                    {% endif%}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

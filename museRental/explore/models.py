@@ -31,13 +31,15 @@ class Item(models.Model):
     def __str__(self):
         return self.name
 
-class Rentinstrument(models.Model):
-    Rentinstrument_id = models.AutoField
-    Rentinstrument_Date_of_Booking = models.DateField(blank=True,null=True)
-    Rentinstrument_Date_of_Return = models.DateField(blank=True,null=True)
+class Rentitem(models.Model):
+    Rentitem_id = models.AutoField
+    name = models.ForeignKey(Item, on_delete=models.CASCADE)
+
+    Rentitem_Date_of_Booking = models.DateField(blank=True,null=True)
+    Rentitem_Date_of_Return = models.DateField(blank=True,null=True)
     Total_days = models.IntegerField()
     Advance_amount = models.IntegerField(blank=True,null=True)
-    Rentinstrument_Total_amount = models.IntegerField(blank=True,null=True)
+    Rentitem_Total_amount = models.IntegerField(blank=True,null=True)
     isAvailable = models.BooleanField(default=True)
     customer_email = models.CharField(max_length=100)
     request_responded_by = models.CharField(max_length=100,blank=True,null=True)

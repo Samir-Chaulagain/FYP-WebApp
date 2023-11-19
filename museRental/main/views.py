@@ -35,12 +35,14 @@ def events(request):
 
     return render(request, 'landing_pages/events.html')
 
+def contact(request):
+    return render(request, 'landing_pages/contact.html')
+
+
 def blog(request):
     posts = Post.objects.all()
     return render(request, 'landing_pages/blog.html', {'posts': posts})
 
-def contact(request):
-    return render(request, 'landing_pages/contact.html')
 
 def post(request, pk):
     posts = Post.objects.get(id=pk)

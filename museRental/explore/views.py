@@ -42,9 +42,7 @@ def showdetails(request,pk):
    
 
     return render(request, 'explore/details.html', {
-        'item': item,
-        
-    })
+        'item': item})
 
 def CheckAvailability(request,name):
     if('email' not in request.session):
@@ -57,7 +55,7 @@ def CheckAvailability(request,name):
     print(Rentinstrument_Date_of_Booking)
     Rentinstrument_Date_of_Return = datetime.strptime(Rentinstrument_Date_of_Return, '%Y-%m-%d').date()
 
-    rentinstrument = Rentinstrument.objects.filter(name=name)
+    rentinstrument = Rentitem.objects.filter(name=name)
     Item = Item.objects.get(name=name)
 
     email = request.session.get('email')
