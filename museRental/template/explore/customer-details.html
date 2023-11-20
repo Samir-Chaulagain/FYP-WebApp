@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+<!-- HOME -->
+
+<div class="text-center bg-image"
+  style="
+      background-image: url('{% static 'img/bgrr.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <div class="text-white">
+      <h1 class="text-white font-weight-bold">{{ customer.get_full_name }}<</h1>
+      <div class="custom-breadcrumbs">
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<section class="site-section block__18514" id="next-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="border p-4 rounded">
+          <ul class="list-unstyled block__47528 mb-0">
+            <li><span class="active">Customer</span></li>
+            <li><a href="#">Topic 1</a></li>
+            <li><a href="#">Topic 2</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-lg-5">
+        <span class="text-primary d-block mb-6"><span class="icon-magnet display-1"></span></span>
+        <h3 class="mb-4">{{ customer.get_full_name }}</h3>
+        <p><h3>Email :</h3>{{ customer.email }}</p>
+        <p><h3>Phone Number :</h3><a href="tel:+977{{ customer.phone_number }}">+977 {{ customer.phone_number }}</a></p>
+        
+        <p><h3>Gender :</h3>
+            {% if customer.gender == 'M' %}
+                Male
+            {% else %}
+                Female
+            {% endif %}
+        </p>
+        
+      
+    
+    
+        
+    </div>
+  </section>
+ 
+{% endblock %}

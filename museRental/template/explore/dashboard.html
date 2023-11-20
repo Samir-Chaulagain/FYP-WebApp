@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load get_total_customer %}
+{% block content %}
+
+<div class="text-center bg-image"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">Events</a></li>
+
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<section class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-5">
+                {% include 'messages.html' %}
+
+                <div class="card">
+                    {% if user.role == "lessor" %}
+                    <h5 class="card-header text-center">My All item</h5>
+                    {% if items %}
+                    <table class="table text-center mt-5">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>item Title</th>
+                                <th>Posted Date</th>
+                                <th>Date expiring</th>
+                                <th>Status</th>
+                                <th>Customers</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr id="row_{{ item.id }}">
+                                <td class="text-left"><a href="{% url 'explore:details' item.id %}">{{ item.title }}</a></td>
+                                <td>{{ item.created_at | date:'M d, Y'  }}</td>
+                                <td>{{ item.last_date | date:'M d, Y' }}</td>
+                                <td>
+                                    {% if item.is_published == True %}
+                                
+                                        <span class="badge badge-info">Published</span>
+                                
+                                    {% else %}
+
+                                        <span class="badge badge-danger px-2">Pending</span>
+
+                                    {% endif %}
+                                
+                                </td>
+
+                                <td>
+
+                                    {% get_total_customer total_Customers item as is_applicant %}
+
+                                    {% if is_applicant %}
+                                    <a href="{% url 'explore:Customers' item.id %}">
+                                        <i class="fa fa-users"></i>
+                                        <span class="badge badge-success text-white">
+
+                                       
+                                            {% if is_applicant > 1 %}
+
+
+                                            {% get_total_customer total_Customers item %} Customers
+
+                                            {% else %}
+
+                                            {% get_total_customer total_Customers item %} Applicant
+
+                                            {% endif %}
+
+                                        </span>
+                                        
+                                    </a>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" href="{% url 'explore:edit-item' item.id %}"
+                                        role="button">Edit</a>
+                                    {% if item.is_published == True %}
+                                        {% if item.is_closed == False %}
+                                        <span id="change_item_status_{{ item.id }}">
+                                            <button onclick="call_sw_alert_func('{% url 'explore:complete' item.id %}','{{ item.id }}', 'Once Clicked, Your Post Will Marked Completed')" class="text-white btn btn-success btn-sm" >Make Close</button>
+                                        </span>
+                                        {% else %}
+                                        <a class="text-white btn btn-success btn-sm" 
+                                        role="button">Closed</a>                                    
+                                        {% endif %}
+                                        {% endif %}
+                                    <button onclick="call_sw_alert_func('{% url 'explore:delete' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')" class="btn btn-danger btn-sm">Delete</button>
+                                    </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="m-5">You have not any item yet !! <a href="{% url 'explore:create-item' %}">Create a new one.</a></p>
+                    {% endif %}
+                    {% elif user.role == "customer" %}
+
+
+                    <ul class="mb-3 nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Saved item</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Rented item</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <h5 class="card-header text-center">saveditems Posts</h5>
+                            {% if saveditems %}
+                            <table class="table text-center mt-5">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>item Title</th>
+                                        <th>Posted Date</th>
+                                        <th>Date expiring</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in saveditems %}
+                                    <tr id="row_{{ item.id }}">
+                                        <td><a href="{% url 'explore:single-item' item.item.id %}">{{ item.item.title }}</a></td>
+                                        <td>{{ item.timestamp | date:'M d, Y'  }}</td>
+                                        <td>{{ item.item.last_date | date:'M d, Y' }}</td>
+                                        <td>
+                                            <button onclick="call_sw_alert_func('{% url 'explore:delete-bookmark' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')" class="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p class="m-5">You have not any save item yet !! </p>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <h5 class="card-header text-center">Applied Posts</h5>
+                            {% if applieditems %}
+                            <table class="table text-center mt-5">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>item Title</th>
+                                        <th>Posted Date</th>
+                                        <th>Date expiring</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in applieditems %}
+                                    <tr id="row_{{ item.id }}">
+                                        <td><a href="{% url 'explore:details' item.item.id %}">{{ item.item.title }}</a></td>
+                                        <td>{{ item.timestamp | date:'M d, Y'  }}</td>
+                                        <td>{{ item.item.last_date | date:'M d, Y' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <p class="m-5">You have not any applied item yet !! </p>
+                            {% endif %}
+                        </div>
+                        
+                      </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
