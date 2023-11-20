@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/', views.user_logIn, name='login'),
     path('logout/', views.user_logOut, name='logout'),
     path('customer/edit/<int:id>/', views.customer_edit_profile, name='customer-edit-profile'),
+    path('change_password/', views.change_password, name='change_password'),
 
     path('lessor/edit/<int:id>/', views.lessor_edit_profile, name='lessor-edit-profile'),
     # path('reset/',views.resetPassword,name='reset_pass'),

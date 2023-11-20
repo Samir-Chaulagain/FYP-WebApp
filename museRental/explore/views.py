@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .forms import add_item_form
+from .forms import *
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -7,12 +7,13 @@ from django.core.paginator import Paginator
 from .models import Item
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from accounts.models import User
 from explore.forms import *
 from explore.models import *
 from accounts.permission import *
 from datetime import datetime
-
+User = get_user_model()
 
 
 # Create your views here.
@@ -21,7 +22,7 @@ def items(request):
     query = request.GET.get('query', '')
     category_id = request.GET.get('category', 0)
     categories = Category.objects.all()
-    items = Item.objects.filter(is_sold=False)
+    items = Item.objects.filter(is_published=True).order_by('-created_at')
 
     if category_id:
         items = items.filter(category_id=category_id)
@@ -35,61 +36,263 @@ def items(request):
         'category_id': int(category_id)
     })
 
-
-# View instruments
-def showdetails(request,pk):
-    item = get_object_or_404(Item, pk=pk)
+# View instrument details
+def showdetails(request,id):
+    item = get_object_or_404(Item, id=id)
    
 
     return render(request, 'explore/details.html', {
         'item': item})
 
-def CheckAvailability(request,name):
-    if('email' not in request.session):
-        return redirect('/signin/')
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def add_item(request):
+    """
+    Provide the ability to create item post
+    """
+    form = additemForm(request.POST or None)
 
-    Rentinstrument_Date_of_Booking=request.POST.get('Rentinstrument_Date_of_Booking','')
-    Rentinstrument_Date_of_Return=request.POST.get('Rentinstrument_Date_of_Return','')
-    print(Rentinstrument_Date_of_Booking)
-    Rentinstrument_Date_of_Booking = datetime.strptime(Rentinstrument_Date_of_Booking, '%Y-%m-%d').date()
-    print(Rentinstrument_Date_of_Booking)
-    Rentinstrument_Date_of_Return = datetime.strptime(Rentinstrument_Date_of_Return, '%Y-%m-%d').date()
+    user = get_object_or_404(User, id=request.user.id)
+    categories = Category.objects.all()
 
-    rentinstrument = Rentitem.objects.filter(name=name)
-    Item = Item.objects.get(name=name)
+    if request.method == 'POST':
 
-    email = request.session.get('email')
-    user = User.objects.get(email )
+        if form.is_valid():
 
-   
+            instance = form.save(commit=False)
+            instance.user = user
+            instance.save()
+            # for save tags
+            form.save_m2m()
+            messages.success(
+                    request, 'You have successfully posted your item! Please wait for review.')
+            return redirect(reverse("explore:details", kwargs={
+                                    'id': instance.id
+                                    }))
 
-    if Rentinstrument_Date_of_Booking < date.today():
-        Incorrect_dates = "Please give proper dates"
-        return render(request,'Owner_showdetails.html',{'Incorrect_dates':Incorrect_dates,'Item':Item,'user':user})
+    context = {
+        'form': form,
+        'categories': categories
+    }
+    return render(request, 'explore/add-instrument.html', context)
 
-    if Rentinstrument_Date_of_Return < Rentinstrument_Date_of_Booking:
-        Incorrect_dates = "Please give proper dates"
-        return render(request,'Owner_showdetails.html',{'Incorrect_dates':Incorrect_dates,'item':Item,'user':user})
+
+
+
+# def search_result_view(request):
+#     """
+#         User can search item with multiple fields
+
+#     """
+
+#     item = item.objects.order_by('-timestamp')
+
+#     # Keywords
+#     if 'item_name_or_created_by' in request.GET:
+#         item_name_or_created_by = request.GET['item_name_or_created_by']
+
+#         if item_name_or_created_by:
+#             item = item.filter(title__icontains=item_name_or_created_by) | item.filter(
+#                 company_name__icontains=item_name_or_created_by)
+
+    # location
+    # item Type
+    # if 'item_type' in request.GET:
+    #     item_type = request.GET['item_type']
+    #     if item_type:
+    #         item = item.filter(item_type__iexact=item_type)
+
+    # return render(request, 'explore/result.html', item)
+
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def rent_item_view(request, id):
+
+    form = additemForm(request.POST or None)
+
+    user = get_object_or_404(User, id=request.user.id)
+    Customer = Customer.objects.filter(user=user, item=id)
+
+    if not Customer:
+        if request.method == 'POST':
+
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.user = user
+                instance.save()
+
+                messages.success(
+                    request, 'You have successfully applied for this item!')
+                return redirect(reverse("explore:details", kwargs={
+                    'id': id
+                }))
+
+        else:
+            return redirect(reverse("explore:details", kwargs={
+                'id': id
+            }))
+
+    else:
+
+        messages.error(request, 'You already applied for the item!')
+
+        return redirect(reverse("explore:details", kwargs={
+            'id': id
+        }))
     
-    days=(Rentinstrument_Date_of_Return-Rentinstrument_Date_of_Booking).days+1
-    total=days*Item.price
-    
-    rent_data = {"Rentinstrument_Date_of_Booking":Rentinstrument_Date_of_Booking, "Rentinstrument_Date_of_Return":Rentinstrument_Date_of_Return,"days":days, "total":total}
-    
-    for rv in rentinstrument:
+@login_required(login_url=reverse_lazy('accounts:login'))
+def dashboard(request):
+        
+    items = []
+    saveditems = []
+    applieditems = []
+    total_Customers = {}
+    if request.user.role == 'lessor':
+        items = Item.objects.filter(user=request.user.id)
+    for item in items:
+        count = Customer.objects.filter(item=item.id).count()
+        total_Customers[item.id] = count
+    if request.user.role == 'customer':
+        saveditems = saved_item.objects.filter(user=request.user.id)
+        applieditems = Customer.objects.filter(user=request.user.id)
+    context = {
+     'items': items,
+        'saveditems': saveditems,
+        'applieditems':applieditems,
+        'total_Customers': total_Customers
+    }
+    return render(request, 'explore/dashboard.html', context)
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def all_Customers_view(request, id):
 
-        # if (Rentinstrument_Date_of_Booking < rv.Rentinstrument_Date_of_Booking and Rentinstrument_Date_of_Return < rv.Rentinstrument_Date_of_Booking) or (Rentinstrument_Date_of_Booking > rv.Rentinstrument_Date_of_Return and Rentinstrument_Date_of_Return > rv.Rentinstrument_Date_of_Return):
-        #     Available = True
-        #     return render(request,'Owner_showdetails.html',{'Available':Available,'instrument':instrument,'owner':owner,'rent_data':rent_data,'no_of_pending_request':no_of_pending_request})
+    all_Customers = Customer.objects.filter(item=id)
 
-        if (rv.Rentinstrument_Date_of_Booking >= Rentinstrument_Date_of_Booking and Rentinstrument_Date_of_Return >= rv.Rentinstrument_Date_of_Booking) or (Rentinstrument_Date_of_Booking >= rv.Rentinstrument_Date_of_Booking and Rentinstrument_Date_of_Return <= rv.Rentinstrument_Date_of_Return) or (Rentinstrument_Date_of_Booking <= rv.Rentinstrument_Date_of_Return and Rentinstrument_Date_of_Return >= rv.Rentinstrument_Date_of_Return):
-            if rv.isAvailable:
-                Available = True
-                Message = "Note that somebody has also requested for this instrument from " + str(rv.Rentinstrument_Date_of_Booking) + " to " + str(rv.Rentinstrument_Date_of_Return)
-                return render(request,'Owner_showdetails.html',{'Message':Message,'Available':Available,'instrument':instrument,'owner':owner,'rent_data':rent_data,'no_of_pending_request':no_of_pending_request})
+    context = {
 
-            NotAvailable = True
-            return render(request,'Owner_showdetails.html',{'NotAvailable':NotAvailable,'dates':rv,'instrument':instrument,'owner':owner,'no_of_pending_request':no_of_pending_request})
-    
-    Available = True
-    return render(request,'Owner_showdetails.html',{'Available':Available,'instrument':instrument,'owner':owner,'rent_data':rent_data,'no_of_pending_request':no_of_pending_request})
+        'all_Customers': all_Customers
+    }
+
+    return render(request, 'explore/all-customers.html', context)
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def Customer_details_view(request, id):
+
+    Customer = get_object_or_404(User, id=id)
+
+    context = {
+
+        'Customer': Customer
+    }
+
+    return render(request, 'explore/customer-details.html', context)
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def delete_item_view(request, id):
+
+    item = get_object_or_404(item, id=id, user=request.user.id)
+
+    if item:
+
+        item.delete()
+        messages.success(request, 'Your item Post was successfully deleted!')
+
+    return redirect('explore:dashboard')
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def item_edit_view(request, id=id):
+    """
+    Handle item Update
+
+    """
+
+    item = get_object_or_404(item, id=id, user=request.user.id)
+    categories = Category.objects.all()
+    form = edititemForm(request.POST or None, instance=item)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        # for save tags
+        # form.save_m2m()
+        messages.success(request, 'Your item Post Was Successfully Updated!')
+        return redirect(reverse("explore:details", kwargs={
+            'id': instance.id
+        }))
+    context = {
+
+        'form': form,
+        'categories': categories
+    }
+
+    return render(request, 'explore/item-edit.html', context)
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def make_complete_item_view(request, id):
+    item = get_object_or_404(item, id=id, user=request.user.id)
+
+    if item:
+        try:
+            item.is_closed = True
+            item.save()
+            messages.success(request, 'Your item was marked closed!')
+        except:
+            messages.success(request, 'Something went wrong !')
+            
+    return redirect('explore:dashboard')
+
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def delete_save_view(request, id):
+
+    item = get_object_or_404(saved_item, id=id, user=request.user.id)
+
+    if item:
+
+        item.delete()
+        messages.success(request, 'Saved item was successfully deleted!')
+
+    return redirect('explore:dashboard')
+
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def item_saved_view(request, id):
+
+    form = saved_item(request.POST or None)
+
+    user = get_object_or_404(User, id=request.user.id)
+    Customer = saved_item.objects.filter(user=request.user.id, item=id)
+
+    if not Customer:
+        if request.method == 'POST':
+
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.user = user
+                instance.save()
+
+                messages.success(
+                    request, 'You have successfully save this item!')
+                return redirect(reverse("explore:details", kwargs={
+                    'id': id
+                }))
+
+        else:
+            return redirect(reverse("explore:details", kwargs={
+                'id': id
+            }))
+
+    else:
+        messages.error(request, 'You already saved this item!')
+
+        return redirect(reverse("explore:details", kwargs={
+            'id': id
+        }))
+
+

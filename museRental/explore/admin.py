@@ -7,4 +7,6 @@ from .models import *
 
 admin.site.register(Category)
 admin.site.register(Item)
+admin.site.register(Customer)
+admin.site.register(saved_item)
 admin.site.register(Rentitem)

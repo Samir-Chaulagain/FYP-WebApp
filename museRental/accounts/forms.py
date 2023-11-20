@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm
 # from phonenumber_field.formfields import PhoneNumberField
 # from django_countries.fields import CountryField
 
@@ -184,3 +185,31 @@ class LessorProfileEditForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", 'phone_number',"gender"]
+
+
+class ChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Old Password: ",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
+    )
+    new_password1 = forms.CharField(
+        label="New Password: ",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+    )
+    new_password2 = forms.CharField(
+        label="Confirm Password: ",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        old_password = cleaned_data.get('old_password')
+
+        if old_password:
+            user = self.user
+
+            # Check if the old password is correct
+            if not user.check_password(old_password):
+                self.add_error('old_password', 'The old password is incorrect.')
+
+        return cleaned_data

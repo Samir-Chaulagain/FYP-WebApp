@@ -38,30 +38,23 @@
                 </li>
                 
                 {% if user.is_authenticated and user.role == 'lessor' %}
+                <a href="{% url 'explore:add_item' %}"
+                    class="js-clone-nav pr-3 btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
+                        class="mr-2 icon-add"></span>Add item</a>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Lessor
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color: black;">
+                    <li><a href="{% url 'explore:dashboard' %}">View Jobs</a></li>
                     <li><a class="dropdown-item" href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
-                        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
                 
                     </ul>
                 </li>
-                <div class="dropdown show ">
-                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                    lessor
-                </a>
                 
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        
-                        <a class="dropdown-item" href="{% url 'accounts:login'%}">Lessor</a>
-                        <a href="{% url 'accounts:logout' %}">Logout</a>
-                
-                    </div>
-                </div>
                 {% elif user.is_authenticated and user.role == 'customer' %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
@@ -70,6 +63,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+                        <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
                         <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
                 
                     </ul>
@@ -88,7 +82,7 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Login
                     </a>

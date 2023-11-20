@@ -11,7 +11,7 @@ from main.views import *
 from .models import User
 
 # getting permission
-from .permission import user_is_customer, user_is_lessor 
+from accounts.permission import user_is_customer, user_is_lessor 
 
 # for loginrequired
 from django.contrib.auth.decorators import login_required
@@ -125,7 +125,19 @@ def lessor_edit_profile(request, id=id):
 
     return render(request,'accounts/customer-edit-profile.html',context)
 
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your password was successfully updated...! Please log in with new password.')
+            return redirect('accounts:login')
+        
+    else:
+        form = ChangePasswordForm(user=request.user)
+
+    return render(request, 'accounts/change_password.html', {'form': form})
 
 
 
-# Create Packages
