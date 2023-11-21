@@ -219,7 +219,7 @@ def item_edit_view(request, id=id):
         # for save tags
         # form.save_m2m()
         messages.success(request, 'Your item Post Was Successfully Updated!')
-        return redirect(reverse("explore:details", kwargs={
+        return redirect(reverse("explore:items", kwargs={
             'id': instance.id
         }))
     context = {
@@ -245,26 +245,11 @@ def make_complete_item_view(request, id):
             
     return redirect('explore:dashboard')
 
-
-@login_required(login_url=reverse_lazy('accounts:login'))
-@user_is_customer
-def delete_save_view(request, id):
-
-    item = get_object_or_404(saved_item, id=id, user=request.user.id)
-
-    if item:
-
-        item.delete()
-        messages.success(request, 'Saved item was successfully deleted!')
-
-    return redirect('explore:dashboard')
-
-
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def item_saved_view(request, id):
 
-    form = saved_item(request.POST or None)
+    form = ItemSavedForm(request.POST or None)
 
     user = get_object_or_404(User, id=request.user.id)
     Customer = saved_item.objects.filter(user=request.user.id, item=id)
@@ -294,5 +279,20 @@ def item_saved_view(request, id):
         return redirect(reverse("explore:details", kwargs={
             'id': id
         }))
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def delete_save_view(request, id):
+
+    item = get_object_or_404(saved_item, id=id, user=request.user.id)
+
+    if item:
+
+        item.delete()
+        messages.success(request, 'Saved item was successfully deleted!')
+
+    return redirect('explore:dashboard')
+
+
 
 

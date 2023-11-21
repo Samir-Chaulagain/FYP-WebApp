@@ -96,6 +96,15 @@ class saveitem(forms.ModelForm):
         model = saved_item
         fields = ['item']
 
+# class RentItemForm(forms.ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = ['job']
+
+class ItemSavedForm(forms.ModelForm):
+    class Meta:
+        model = saved_item
+        fields = ['item']
 
 
 

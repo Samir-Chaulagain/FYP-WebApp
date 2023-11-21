@@ -122,7 +122,7 @@
                             Saved</span>
                         {% else %}
 
-                        <form action="#" method="POST">
+                        <form action="{% url 'explore:saved-item' item.id %} method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="item" value="{{ item.id }}">
                             <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
@@ -133,7 +133,7 @@
 
                         {% elif request.user.id == item.user.id and user.role == 'lessor' %}
                         <button
-                            onclick="call_sw_alert_func('{% url 'explore:delete' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
+                            onclick="call_sw_alert_func('{% url 'explore:delete' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Item!')"
                             class="btn btn-block btn-danger btn-md">Delete</button>
 
                         {% elif user.role == none %}
@@ -157,7 +157,7 @@
                     {% else %}
                     <div class="col-6">
                         
-                        <form action="" method="POST">
+                        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="item" value="{{ item.id }}">
 

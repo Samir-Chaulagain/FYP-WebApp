@@ -47,7 +47,7 @@ class Customer(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item= models.ForeignKey(Item, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
     def __str__(self):
@@ -57,7 +57,7 @@ class saved_item(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
     def __str__(self):

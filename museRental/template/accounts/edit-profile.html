@@ -2,22 +2,22 @@
 {% load static %}
 {% block content %}
 
-<!-- HOME -->
-<section class="section-hero overlay inner-page bg-image"
-  style="background-image: url('{% static 'img/bgrr.jpg' %}');" id="home-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1 class="text-white font-weight-bold">Lessor </h1>
-        <div class="custom-breadcrumbs">
-          
-          <span class="text-white"><strong>Update Profile</strong></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
+
+<div class="text-center bg-image"
+  style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item "><a href="">About Us</a></li>
+
+      </ol>
+    </nav>
+  </div>
+
+</div>
 <section class="site-section">
   <div class="container">
     <div class="row">
@@ -42,7 +42,7 @@
         </div>
         {% endfor %}
         {% endif %}
-        <form method="POST" class="p-4 border rounded" action="">
+        <form method="POST" class="p-4 border rounded">
           {% csrf_token %}
           {% for field in form %}
           {% if field.name == 'gender' %}
@@ -50,12 +50,12 @@
             <div class="col-md-12 mb-3 mb-md-0">
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="gender" id="male gender" value="M"
-                  {% if field.value = 'M' %} checked {% endif %}>
+                  {% if field.value == 'M' %} checked {% endif %}>
                 <label class="form-check-label" for="male">Male</label>
               </div>
               <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="gender" id="female" value="F"
-                  {% if field.value = 'F' %} checked {% endif %}>
+                  {% if field.value == 'F' %} checked {% endif %}>
                 <label class="form-check-label" for="female">Female</label>
               </div>
             </div>

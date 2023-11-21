@@ -47,7 +47,7 @@
                     Lessor
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color: black;">
-                    <li><a href="{% url 'explore:dashboard' %}">View Jobs</a></li>
+                    <li><a href="{% url 'explore:dashboard' %}">View Items</a></li>
                     <li><a class="dropdown-item" href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
                     <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
                     <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
@@ -61,10 +61,11 @@
                         aria-expanded="false">
                         Customer 
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-                        <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
-                        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+                        <li><a class="text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                        <li><a class="text-black"href="{% url 'accounts:change_password' %}">Change Password</a></li>
+                        <li><a class="text-black"href="{% url 'accounts:logout' %}">Logout</a></li>
                 
                     </ul>
                 </li>
