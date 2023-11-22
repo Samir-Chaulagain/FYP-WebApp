@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%y^j#fc7fd3d0!b(0j$g@bs7nf5y#+eps$!mv91-jz#zg5^!ss
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -142,4 +142,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465  # SMTP server port (587 for TLS)
+EMAIL_USE_SSL = True
+# EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'muserentalhub@gmail.com'
+EMAIL_HOST_PASSWORD = 'r b s f j v r w t l n f h d a j'
+ALLOWED_HOSTS = []
 
+# Optionally, you can set the default 'from' address for outgoing emails
+DEFAULT_FROM_EMAIL = 'muserentalhub@gmail.com'
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}

@@ -133,11 +133,13 @@
                                 <tbody>
                                     {% for item in saveditems %}
                                     <tr id="row_{{ item.id }}">
-                                        <td><a href="{% url 'explore:single-item' item.item.id %}">{{ item.item.title }}</a></td>
-                                        <td>{{ item.timestamp | date:'M d, Y'  }}</td>
+                                        <td><a href="{% url 'explore:details' item.item.id %}">{{ item.item.name }}</a></td>
+                                        <td>{{ item.created_at | date:'M d, Y'  }}</td>
                                         <td>{{ item.item.last_date | date:'M d, Y' }}</td>
                                         <td>
-                                            <button onclick="call_sw_alert_func('{% url 'explore:delete-bookmark' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')" class="btn btn-danger btn-sm">Delete</button>
+                                            <button
+                                                onclick="call_sw_alert_func('{% url 'explore:delete-saved' item.item.id %}','{{ item.item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
+                                                class="btn btn-danger btn-sm">Delete</button>
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -161,8 +163,8 @@
                                 <tbody>
                                     {% for item in applieditems %}
                                     <tr id="row_{{ item.id }}">
-                                        <td><a href="{% url 'explore:details' item.item.id %}">{{ item.item.title }}</a></td>
-                                        <td>{{ item.timestamp | date:'M d, Y'  }}</td>
+                                        <td><a href="{% url 'explore:details' item.item.id %}">{{ item.item.name }}</a></td>
+                                        <td>{{ item.created_at | date:'M d, Y'  }}</td>
                                         <td>{{ item.item.last_date | date:'M d, Y' }}</td>
                                     </tr>
                                     {% endfor %}

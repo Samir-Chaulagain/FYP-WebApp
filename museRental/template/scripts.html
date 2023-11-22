@@ -14,10 +14,25 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <script>
-        AOS.init();
-    </script>
+<script>
+    AOS.init();
+</script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#showFormBtn").click(function () {
+            $("#formContainer").show();
+        });
+    });
+</script>
+<script>
+    function call_sw_alert_func(url, itemId, message) {
+        // Your implementation of call_sw_alert_func
+        // ...
+        console.log(url, itemId, message);
+    }
+
+</script>

@@ -17,7 +17,7 @@
             </ol>
         </nav>
     </div>
-{% include 'messages.html' %}
+
 </div>
 <div class="container my-5">
     <div class="row">
@@ -111,80 +111,80 @@
                 </div>
 
             </div>
-           
-                    <div class="col-6">
 
-                        {% if user.is_authenticated and user.role == 'customer' %}
-                        {% is_item_already_saved item request.user as is_saved %}
-                        {% if is_saved %}
-                        <span class="btn btn-block btn-light btn-md"><span
-                                class="icon-heart-o mr-2 text-danger"></span>Already
-                            Saved</span>
-                        {% else %}
+            <div class="row mb-5">
+                <div class="col-6">
 
-                        <form action="{% url 'explore:saved-item' item.id %} method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
-                            <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-
-                        </form>
-
-                        {% endif %}
-
-                        {% elif request.user.id == item.user.id and user.role == 'lessor' %}
-                        <button
-                            onclick="call_sw_alert_func('{% url 'explore:delete' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Item!')"
-                            class="btn btn-block btn-danger btn-md">Delete</button>
-
-                        {% elif user.role == none %}
-                        
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
-
-                            <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-                        </form>
-
-                        {% endif %}
-                    </div>
                     {% if user.is_authenticated and user.role == 'customer' %}
-                    {% is_item_already_rented item request.user as is_rented %}
-                    {% if is_rented %}
-
-                    <div class="col-6">
-                        <span class="btn btn-block btn-danger btn-md">Already rented</span>
-                    </div>
+                    {% is_item_already_saved item request.user as is_saved %}
+                    {% if is_saved %}
+                    <span class="btn btn-block btn-light btn-md"><span
+                            class="icon-heart-o mr-2 text-danger"></span>Already
+                        Saved
+                        Job</span>
                     {% else %}
-                    <div class="col-6">
-                        
-                        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
 
-                            <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now" />
-                        </form>
-                    </div>
+                    <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item" value="{{ item.id }}">
+                        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+
+                    </form>
+
                     {% endif %}
 
                     {% elif request.user.id == item.user.id and user.role == 'lessor' %}
-                    <div class="col-6">
-                      
-                        <a href="" class="btn btn-block btn-light btn-md">Edit</a>
-                    </div>
-                    {% elif user.role == none %}
-                    <div class="col-6">
-                        
-                        <form action="" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="item" value="{{ item.id }}">
+                    <button
+                        onclick="call_sw_alert_func('{% url 'explore:delete' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
+                        class="btn btn-block btn-danger btn-md">Delete</button>
 
-                            <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now" />
-                        </form>
-                    </div>
+                    {% elif user.role == none %}
+
+                    <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item" value="{{ item.id }}">
+
+                        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+                    </form>
+
                     {% endif %}
                 </div>
+                {% if user.is_authenticated and user.role == 'customer' %}
+                {% is_item_already_rented item request.user as is_rented %}
+                {% if is_rented %}
 
-            
+                <div class="col-6">
+                    <span class="btn btn-block btn-danger btn-md">Already Applied</span>
+                </div>
+                {% else %}
+                <div class="col-6">
+                    <form action="{% url 'explore:rent-item' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item" value="{{ item.id }}">
+
+                        <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now" />
+                    </form>
+                </div>
+                {% endif %}
+
+                {% elif request.user.id == item.user.id and user.role == 'lessor' %}
+                <div class="col-6">
+
+                    <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
+                </div>
+                {% elif user.role == none %}
+                <div class="col-6">
+                    <form action="{% url 'explore:rent-item' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item" value="{{ item.id }}">
+
+                        <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now" />
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
     </div>
 </div>
 

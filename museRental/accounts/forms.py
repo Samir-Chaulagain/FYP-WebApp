@@ -213,3 +213,4 @@ class ChangePasswordForm(PasswordChangeForm):
                 self.add_error('old_password', 'The old password is incorrect.')
 
         return cleaned_data
+

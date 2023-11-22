@@ -29,22 +29,32 @@
             </p>
 
         </div>
+        <!-- {% include 'messages.html' %} -->
+        {% include 'messages.html' %}
         <div class="col-md-4 mt-2 ms-4">
-            <form>
-                <div class="mb-4">
-                    <input type="text" class="form-control bg-light" placeholder="Enter name">
+            <form action="#" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.name.id_for_label }}">Name</label>
+                    <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}"
+                        placeholder="{{ form.name.field.widget.attrs.placeholder }}">
                 </div>
-                <div class="mb-4">
-                    <input type="email" class="form-control bg-light" placeholder="Enter email">
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}"
+                        placeholder="{{ form.email.field.widget.attrs.placeholder }}">
                 </div>
-                <div class="input-group mb-4">
-
-                    <textarea class="form-control bg-light " rows="5" placeholder="Enter your message"></textarea>
+                <div class="form-group">
+                    <label for="{{ form.subject.id_for_label }}">Subject</label>
+                    <input type="text" class="form-control" id="{{ form.subject.id_for_label }}" name="{{ form.subject.name }}"
+                        placeholder="{{ form.subject.field.widget.attrs.placeholder }}">
                 </div>
-
-                <div class="d-grid gap-2">
-                    <input type="submit" value="Submit" class="btn btn-primary text-white" />
+                <div class="form-group">
+                    <label for="{{ form.message.id_for_label }}">Message</label>
+                    <textarea class="form-control" id="{{ form.message.id_for_label }}" name="{{ form.message.name }}"
+                        placeholder="{{ form.message.field.widget.attrs.placeholder }}"></textarea>
                 </div>
+                <button type="submit" class="btn btn-primary" >Send Message</button>
             </form>
         </div>
     </div>
