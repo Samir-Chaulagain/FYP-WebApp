@@ -37,7 +37,7 @@
 
                                 <tr>
                                     <td class="text-center"><a href="">{{ customer.user.get_full_name }}</a></td     >
-                                    <td>{{ customer.job.title }}</td>
+                                    <td>{{ customer.item.title }}</td>
                                     <td>{{ customer.created_at }}</td>
                                     <td>
                                         <a class="btn btn-info btn-sm" href="{% url 'explore:customer-details' customer.user.id %}"

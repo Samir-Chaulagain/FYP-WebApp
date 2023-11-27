@@ -18,10 +18,11 @@
             </div>
 
             <div class="carousel-caption d-none d-md-block">
-                <h3 class="display-3 w100"><span class="w900">Second</span> slide <span
-                        class="w400 text-secondary">label</span>
+                <h3 class="display-3 w100"><span class="w900">Rent</span> Your <span
+                        class="w600 text-secondary">Dream</span>
+                        <span class="w900">Instrument</span>
                 </h3>
-                <p>Some representative placeholder content for the second slide.</p>
+                <p>Embrace the Music: Instruments for Every Occasion</p>
             </div>
         </div>
         <div class="carousel-item">
@@ -29,10 +30,9 @@
                 <img src="{%static 'img/instrument2.jpg'%}" alt="">
             </div>
             <div class="carousel-caption d-none d-md-block">
-                <h3 class="display-3 w100"><span class="w900">Second</span> slide <span
-                        class="w400 text-secondary">label</span>
+                <h3 class="display-3 w100"><span class="w900">Events</span><span class="w600 text-secondary"> Unplugged</span>
                 </h3>
-                <p>Some representative placeholder content for the second slide.</p>
+                <p>Elevate Your Occasion: Seamless Booking for Memorable Events</p>
             </div>
         </div>
         <div class="carousel-item">
@@ -40,10 +40,9 @@
                 <img src="{%static 'img/instrument3.jpg'%}" alt="">
             </div>
             <div class="carousel-caption d-none d-md-block">
-                <h3 class="display-3 w100"><span class="w900">Second</span> slide <span
-                        class="w400 text-secondary">label</span>
+                <h3 class="display-3 w100"><span class="w900">Play</span> <span class="w600 text-secondary">Celebrate</span>Repeat 
                 </h3>
-                <p>Some representative placeholder content for the second slide.</p>
+                <p>Rent Instruments, Book Events: Your Rhythm, Your Way</p>
             </div>
         </div>
 
@@ -65,13 +64,12 @@
 </header>
 
 
-<section class=" about-us py-3 py-md-5 py-xl-8" data-aos="zoom-in-up">
+<section class=" about-us py-3 py-md-5 py-xl-8" data-aos="fade-down-left">
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
                 <h2 class="mb-4 display-5 text-center">About Us</h2>
-                <p class="text-secondary mb-5 text-center">Orci varius natoque penatibus et magnis dis parturient
-                    montes, nascetur ridiculus mus. Pellentesque et neque id ligula mattis commodo.</p>
+                <p class="text-secondary mb-5 text-center"> Welcome to MuseRental, where passion for music meets the art of celebration</p>
                 <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2 ">
             </div>
         </div>
@@ -85,14 +83,16 @@
                 <div class="row justify-content-xl-center">
                     <div class="col-12 col-xl-11">
                         <h2 class="mb-3">Who Are We?</h2>
-                        <p class="lead fs-4 text-secondary mb-3">We help people to build incredible brands and superior
-                            products. Our perspective is to furnish outstanding captivating services.</p>
-                        <p class="mb-5">Nullam gravida orci ac luctus molestie. Fusce finibus congue erat, non aliquam
-                            magna tincidunt at. Aenean lacinia arcu ex, sed pharetra nibh porta a. Curabitur vel
-                            consequat nibh, ac interdum nisl. Nunc pulvinar nec massa vitae sollicitudin.</p>
+                        <p class="lead fs-4 text-secondary mb-3">Welcome to MuseRental Hub, your premier destination for musical instrument rentals and event booking. We are a
+                        passionate team of music enthusiasts dedicated to bringing the joy of music to every celebration.We help people to Post incredible brands and superior
+                            items to rent. Our perspective is to furnish outstanding captivating rental services.</p>
+                        <p class="mb-5">               
+                        Driven by our love for music and the desire to enhance your celebrations, MuseRental Hub is more than just a
+                        rental service—it's a gateway to a world where melodies and memories intertwine. Join us in creating soundtracks for
+                        your life's most cherished moments.</p>
                         <div class="float-end">
 
-                            <a href="" class="btn btn-outline-dark">
+                            <a href="{% url 'main:about' %}" class="btn btn-outline-dark">
                                 View More
                             </a>
                         </div>
@@ -106,71 +106,47 @@
 </section>
 
 
-<section class="py-3 py-md-5 py-xl-8 mt-4">
+<section class="py-3 py-md-5 py-xl-8 mt-4" data-aos="fade-down-left">
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                <h2 class="mb-4 display-5 text-center">Discover us</h2>
-                <p class="text-secondary mb-5 text-center">Orci varius natoque penatibus et magnis dis parturient
-                    montes, nascetur ridiculus mus. Pellentesque et neque id ligula mattis commodo.</p>
+                <h2 class="mb-4 display-5 text-center">Explore us</h2>
+                <p class="text-secondary mb-5 text-center">Discover the heartbeat behind MuseRental Hub</p>
                 <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2">
             </div>
         </div>
     </div>
     <div class="container overflow-hidden">
         <div class="row gy-4 gy-lg-0">
-            {% for item in items|slice:":2"%}
+            {% for item in items|slice:":1"%}
             <div class="col-md-5 mx-auto col-sm-12 my-4">
                 <article>
-                    <div class="card Boxshadow h-100">
-                        <div id="instrument_{{item.name}}" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#instrument_{{item.name}}" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
-                            </div>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active" style="height: 196px">
-
-                                    <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}"
-                                        alt="First slide">
-
-                                </div>
-                                <div class="carousel-item" style="height: 196px">
-                                    <img class="card-img-top img-fluid" src="{{item.instrument_image2.url}}" alt="">
-
-                                </div>
-                                <div class="carousel-item" style="height: 196px">
-                                    <img class="card-img-top img-fluid" src="{{item.instrument_image3.url}}" alt="">
-
-                                </div>
-
-
-                            </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#instrument_{{item.name}}" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#instrument_{{item.name}}" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
+                    <div class="card Boxshadow">
+                        <img class="card-img-top img-fluid" src="{%static 'img/client2.png'%}" alt="">
                         <div class="card-body border bg-white p-4">
                             <div class="entry-header mb-3">
                                 <h2 class="card-title entry-title h4 mb-0">
                                     <a class="link-dark text-decoration-none" href="#!">{{ item.name }}</a>
                                 </h2>
                             </div>
-                            <p class="card-text entry-summary text-secondary mb-3">From sleek modernism to timeless
-                                elegance, we infuse every creation with a touch of our artistic ingenuity. As a design
-                                agency, great design can shape perceptions, inspire action, and leave an indelible mark
-                                on the world.</p>
+                            <p class="card-text entry-summary text-secondary mb-3"></p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+            {% for event in events|slice:":1"%}
+            <div class="col-md-5 mx-auto col-sm-12 my-4">
+                <article>
+                    <div class="card Boxshadow">
+                        <img class="card-img-top img-fluid" src="{%static 'img/client2.png'%}" alt="">
+                        <div class="card-body border bg-white p-4">
+                            <div class="entry-header mb-3">
+                                <h2 class="card-title entry-title h4 mb-0">
+                                    <a class="link-dark text-decoration-none" href="#!">{{event.name}}</a>
+                                </h2>
+                            </div>
+                            <p class="card-text entry-summary text-secondary mb-3"></p>
                         </div>
                     </div>
                 </article>
@@ -182,13 +158,13 @@
 </section>
 
 
-<section class="clients py-3 py-md-5 py-xl-8">
+<section class="clients py-3 py-md-5 py-xl-8" data-aos="fade-down-left">
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
                 <h2 class="mb-4 display-5 text-center">Clients</h2>
-                <p class="text-secondary mb-5 text-center">Orci varius natoque penatibus et magnis dis parturient
-                    montes, nascetur ridiculus mus. Pellentesque et neque id ligula mattis commodo.</p>
+                <p class="text-secondary mb-5 text-center">Join the ranks of our satisfied clients who have experienced the magic of music and celebration with us.Here, we take pride in building lasting relationships and creating memorable experiences for all our clients.
+                </p></p>
                 <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2">
             </div>
         </div>
@@ -197,26 +173,28 @@
     <div class="container overflow-hidden">
         <div class="row justify-content-between">
             <div class="col-4 col-md-3 ">
-                <img src="{%static 'img/client2.png'%}" alt="" height="200px">
+                <img src="{%static 'img/clients/client2.png'%}" alt="" width="200px" height="200px">
             </div>
             <div class="col-4 col-md-3 ">
-                <img src="{%static 'img/client3.png'%}" alt="" height="200px">
+                <img src="{%static 'img/clients/client3.png'%}" alt="" width="200px" height="200px">
             </div>
             <div class="col-4 col-md-3 ">
-                <img src="{%static 'img/client4.png'%}" alt="" height="200px">
+                <img src="{%static 'img/clients/client4.png'%}" alt="" width="200" height="200px">
+            </div>
+            <div class="col-4 col-md-3 ">
+                <img src="{%static 'img/clients/client1.png'%}" alt="" width="200px" height="200px">
             </div>
         </div>
     </div>
 </section>
 
 
-<section class="blog py-3 py-md-5 py-xl-8">
+<section class="blog py-3 py-md-5 py-xl-8" data-aos="fade-down-left">
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
                 <h2 class="mb-4 display-5 text-center">Blog Post</h2>
-                <p class="text-secondary mb-5 text-center">Orci varius natoque penatibus et magnis dis parturient
-                    montes, nascetur ridiculus mus. Pellentesque et neque id ligula mattis commodo.</p>
+                <p class="text-secondary mb-5 text-center">Explore insights, stories, and musical inspirations in our blog.</p>
                 <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2">
 
             </div>
@@ -229,7 +207,7 @@
             <div class="col-md-12 col-lg-6">
                 <div class="card border-0">
                     <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
-                        <a href="#!">
+                        <a href="{% url 'main:blog' %}" >
                             <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy"
                                 src="{{ post.image.url }}" alt="">
                         </a>
@@ -253,7 +231,7 @@
                         <p class="card-text entry-summary text-secondary mb-3">
                             {{post.body|truncatewords:25}}
                         </p>
-                        <a href="#!" class="btn btn-primary m-0 text-nowrap entry-more">Read More</a>
+                        <a href="{% url 'main:blog' %}"  class="btn btn-primary m-0 text-nowrap entry-more">Read More</a>
                     </div>
                     <div class="card-footer border border-top-0 bg-light p-4">
                         <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
@@ -278,7 +256,7 @@
         </div>
         <div class="text-center my-4">
 
-            <a href="" class="btn btn-primary ">All Blog Post</a>
+            <a href="{% url 'main:blog' %}"  class="btn btn-primary ">All Blog Post</a>
         </div>
     </div>
 </section>

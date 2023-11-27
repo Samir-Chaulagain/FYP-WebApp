@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-  {% block content %}
 
+{% block content %}
 <div class="text-center bg-image"
   style="
       background-image: url('{% static 'img/bgrr.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
@@ -10,97 +10,93 @@
     <div class="text-white">
       <h1 class="text-white font-weight-bold">Edit Items</h1>
       <div class="custom-breadcrumbs">
-
       </div>
     </div>
   </div>
-
 </div>
-    
-    <section class="site-section">
-      <div class="container">
 
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-12 mb-4 mb-lg-0">
-              <div class="text-center">
-                <h2>Edit Item</h2>
-                
-              </div>
-              {% include 'messages.html' %}
+<section class="site-section">
+  <div class="container">
+
+    <div class="row align-items-center mb-5">
+      <div class="col-lg-12 mb-4 mb-lg-0">
+        <div class="text-center">
+          <h2>Edit Item</h2>
+        </div>
+        {% include 'messages.html' %}
+      </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" action="">
+      <div class="row mb-5 p-4 p-md-5 border rounded">
+        <div class="col-lg-12">
+          <h3 class="text-black mb-5 border-bottom pb-2">Item Details</h3>
+
+          {% if form.errors %}
+          {% for field in form %}
+          {% for error in field.errors %}
+          <div class="alert alert-danger alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>{{ field.label }}: {{ error|escape }}</strong>
           </div>
-        </div>
-        <form  method="POST" enctype="multipart/form-data" action="">
-        <div class="row mb-5 p-4 p-md-5 border rounded">
-          <div class="col-lg-12">
-              <h3 class="text-black mb-5 border-bottom pb-2">Item Details</h3>
-                  {% if form.errors %}
-                        {% for field in form %}
-                            {% for error in field.errors %}
-                                <div class="alert alert-danger alert-dismissable">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-            {% csrf_token %}
-                {% for field in form %}
-                    {% if field.name == 'item_type'  %}
-                        <div class="form-group">
-                        <label for="item-type">Item Type</label>
-                        <select name="item_type" class="selectpicker border rounded" id="item-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Item Type">
-                            
-                            
-                              <option value="1" {% if field.value == '1' %} selected {% endif %}>Solo</option>
-                              <option value="2" {% if field.value == '2' %} selected {% endif %}>Packages</option>
-                              <option value="3" {% if field.value == "3" %} selected {% endif %}>Others</option>
-                        </select>
-                        </div>
-                    
-                    {% elif field.name == 'category' %}
-                        <div class="form-group">
-                        <label for="item-type">Category</label>
-                        <select name="category" class="selectpicker border rounded" id="item-type" data-style="btn-black" data-width="100%" data-live-search="true" title="Select Item Type">
-                              
-                              {% for category in categories %}
-                              
-                                    <option value="{{ category.id }}" {% if category.id  ==  field.value %} selected {% endif %}>{{ category.name }}</option>
+          {% endfor %}
+          {% endfor %}
+          {% endif %}
 
-                              {% endfor %}
-
-
-                             
-                        </select>
-                        </div>
-                        
-                        
-
-                        {% elif field.name == 'description' %}
-                              <div class="form-group">
-                                <label for="item-type">Description</label>
-                                 <div class="">
-                                  {{ form.media }}
-                                  {{ form.description }}
-                              </div>
-                              </div>
-                        
-                {% endfor %}
-          </div>    
-        </div>
-
-        
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-4 ml-auto">
-            <div class="row">
-              <div class="col-6">
-
-                <input class="btn btn-block btn-primary btn-md" type="submit" value="Update" >
+          {% csrf_token %}
+          <div class="col-sm-7">
+            <div class="card p-2 " style="height: 50%;">
+              <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
+                <ol class="carousel-indicators">
+                  <li data-target="#instrument_{{item.name}}" data-slide-to="0" class="active"></li>
+                  <li data-target="#instrument_{{item.name}}" data-slide-to="1"></li>
+                  <li data-target="#instrument_{{item.name}}" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img class="d-block w-100" src="{{item.instrument_image1.url}}" alt="First slide">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{{item.instrument_image2.url}}" alt="Second slide">
+                  </div>
+                  <div class="carousel-item">
+                    <img class="d-block w-100" src="{{item.instrument_image3.url}}" alt="Third slide">
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#instrument_{{item.name}}" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#instrument_{{item.name}}" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
               </div>
+
             </div>
           </div>
-            </form>
+          {% for field in form.visible_fields %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+          </div>
+          {% endfor %}
+
 
         </div>
       </div>
-    </section>
+  </div>
+
+  <div class="row align-items-center mb-5">
+    <div class="col-lg-4 ml-auto">
+      <div class="row">
+        <div class="col-6">
+          <input class="btn btn-block btn-primary btn-md" type="submit" value="Update">
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  </div>
+</section>
 {% endblock %}

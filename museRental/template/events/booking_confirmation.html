@@ -1,17 +1,52 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- {% include 'hero.html' %} -->
+{% load static %}
+<div class="text-center bg-image" data-aos="fade-down-left"
+    style="
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
 
-<head>
-    <title>Booking Confirmation</title>
-</head>
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="">Booking Confirmation</a></li>
 
-<body>
+            </ol>
+        </nav>
+    </div>
 
-    <h2>Booking Confirmation</h2>
+</div>
 
+
+
+<div class="col-md-6 mx-auto m-3">
+    <div id="emailInputDiv">
+        <input type="email" id="toEmail" placeholder="Enter recipient email">
+        <button onclick="sendEmail()" class="btn btn-primary">Send Mail</button>
+    </div>
     <p>You have successfully booked {{ booking.num_tickets }} tickets for the event "{{ booking.event.title }}".</p>
     <p>Total Price: {{ booking.total_price }}</p>
+</div>
 
-</body>
+<script>
+    function sendEmail() {
+        var toEmail = document.getElementById('toEmail').value;
 
-</html>
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/send-email/', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                alert('Email sent successfully!');
+            } else {
+                alert('Failed to send email.');
+            }
+        };
+        xhr.send('to_email=' + encodeURIComponent(toEmail));
+    }
+</script>
+
+
+
+{%endblock %}

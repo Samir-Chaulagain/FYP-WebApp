@@ -1,25 +1,19 @@
 
 
-import readline
 from django.conf import settings
-from django.http import HttpResponse, JsonResponse
-
-from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.utils.encoding import force_str, force_bytes
-
 from .forms import ContactForm
 import json
-from . tokens import generate_token
 from readline import get_current_history_length
 from explore.models import *
+from event.models import *
 
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render
 
 
 from .models import Post
@@ -27,8 +21,9 @@ from .models import Post
 def index(request):
     posts = Post.objects.all()
     items = Item.objects.filter(is_sold=False)
+    events = Event.objects.all()
 
-    return render(request, 'landing_pages/index.html', {'posts': posts,'items':items})
+    return render(request, 'landing_pages/index.html', {'posts': posts,'items':items , 'events': events})
 
 def about(request):
     return render(request, 'landing_pages/about.html')

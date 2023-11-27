@@ -62,7 +62,7 @@ def user_logIn(request):
             return render(request, "landing_pages/index.html",)
         else:
             messages.error(request, "Bad Credentials!!")
-            return redirect('main:blog')    
+                
     
     return render(request,'accounts/login.html')
 

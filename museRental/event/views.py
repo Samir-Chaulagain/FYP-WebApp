@@ -59,3 +59,5 @@ def book_event(request, pk):
 
     context = {'event': event, 'form': form}
     return render(request, 'events/event-details.html', context)
+
+

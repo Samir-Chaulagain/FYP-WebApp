@@ -16,11 +16,11 @@ urlpatterns = [
     path('dashboard/lessor/item/edit/<int:id>', views.item_edit_view, name='edit-item'),
     path('dashboard/lessor/customer/<int:id>/', views.Customer_details_view, name='customer-details'),
     path('dashboard/lessor/close/<int:id>/', views.make_complete_item_view, name='complete'),
-    path('dashboard/lessor/delete/<int:id>/', views.delete_item_view, name='delete'),
+    path('dashboard/lessor/delete/<int:id>/', views.delete_item, name='delete_item'),
     path('rent-item/<int:id>/', views.rent_item_view, name='rent-item'),
     
     path('save-item/<int:id>/', views.item_saved_view, name='saved-item'),
-    
+    path('check_availability/<int:id>/', views.CheckAvailability, name='CheckAvailability'),
     path('dashboard/customer/delete-saved/<int:id>/', views.delete_save_view, name='delete-saved'),
     # path('items/<int:pk>/', views.showdetails, name='details'),
     # path('items/new/', views.upload_items, name='new'),

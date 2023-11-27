@@ -7,7 +7,7 @@
             
             <div class="logo" >
                 
-                <img src="{% static 'img/logo.png' %}" alt="" height="24px" width="25">
+                <img src="{% static 'img/Main/logo.png' %}" alt="" height="24px" width="25">
             </div>
             <a class="navbar-brand text-light" href="#">MuseRental Hub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -72,23 +72,23 @@
                 {% else %}
 
                 <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle text-light href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Be part
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
-                        <li><a class="dropdown-item" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
                         
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Login
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'accounts:login'%}">login</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:login'%}">login</a></li>
                         
                         
                     </ul>

@@ -2,20 +2,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="text-center bg-image"
-    style="
-      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+{% include 'hero.html' %}
 
-    <div class="d-flex justify-content-center align-items-center h-100">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="">Contact Us</a></li>
-
-            </ol>
-        </nav>
-    </div>
-
-</div>
 <div class="container m-5 p-5" data-aos="zoom-in-up">
     <div class="row justify-content-center">
         <div class="col-md-4 justify-content-center">
@@ -29,10 +17,10 @@
             </p>
 
         </div>
-        <!-- {% include 'messages.html' %} -->
-        {% include 'messages.html' %}
+        
         <div class="col-md-4 mt-2 ms-4">
             <form action="#" method="POST">
+                {% include 'messages.html' %}
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="{{ form.name.id_for_label }}">Name</label>

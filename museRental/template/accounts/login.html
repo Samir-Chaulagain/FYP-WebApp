@@ -23,7 +23,8 @@
 <div class="container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto">
   <h2 class="text-uppercase text-center">Login</h2>
   <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
-  <form method="POST" action="">    
+  <form method="POST" action="">
+    {% include "messages.html" %}
     {% csrf_token %}
     <div class="mb-4">
       <input type="email" class="form-control bg-light" placeholder="Enter email" name="email" required>
@@ -43,7 +44,7 @@
   <p class="mx-auto">Not a member?
     <a href="accounts:lessor_registration">Sign-up</a>
 
-        </p>
-    </div>
+  </p>
+</div>
 
 {%endblock%}

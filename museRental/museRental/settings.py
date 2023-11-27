@@ -148,7 +148,7 @@ EMAIL_PORT = 465  # SMTP server port (587 for TLS)
 EMAIL_USE_SSL = True
 # EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'muserentalhub@gmail.com'
-EMAIL_HOST_PASSWORD = 'r b s f j v r w t l n f h d a j'
+EMAIL_HOST_PASSWORD = 'q w q w p e x z f q e r j d x v'
 ALLOWED_HOSTS = []
 
 # Optionally, you can set the default 'from' address for outgoing emails

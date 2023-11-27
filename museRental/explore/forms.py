@@ -4,7 +4,7 @@ from explore.models import *
 
 
 class additemForm(forms.ModelForm):
-    
+    instrument_image1=forms.ImageField(label='upload_image',required=True)
     def __init__(self, *args, **kwargs):
         forms.ModelForm.__init__(self, *args, **kwargs)
         self.fields['name'].label = "Item Name :"
@@ -99,7 +99,7 @@ class saveitem(forms.ModelForm):
 # class RentItemForm(forms.ModelForm):
 #     class Meta:
 #         model = Customer
-#         fields = ['job']
+#         fields = ['item']
 
 class ItemSavedForm(forms.ModelForm):
     class Meta:
@@ -149,12 +149,7 @@ class edititemForm(forms.ModelForm):
                 'placeholder': 'Enter item price',
             }
         )
-        self.fields['created_by'].widget.attrs.update(
-            {
-                'placeholder': 'Enter creator name',
-            }
-        )   
-
+        
 
     class Meta:
         model = Item

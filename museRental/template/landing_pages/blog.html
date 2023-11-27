@@ -20,11 +20,11 @@
     <h2 class="text-center pb-4">
         Our blog
     </h2>
-    {% for post in posts reversed %}
     <div class="row">
+        {% for post in posts reversed %}
         <div class="col-lg-4 col-md-6 col-sm-12">
             <div class="card mb-5 shadow-sm">
-                <img src="{{ post.image.url }}" alt="{{ post.title }}" height="250px" width="250px">
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
 
                 <div class="card-body ">
                     <div class="card-title">
