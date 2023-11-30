@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'accounts',
     'explore',
     'event',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
