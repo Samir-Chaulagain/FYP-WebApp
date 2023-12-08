@@ -22,7 +22,7 @@
 <div class="container my-5">
     <div class="row">
         <!-- carousel Image -->
-        <div class="col-sm-7">
+        <div class="col">
             <div class="card p-2 " style="height: 50%;">
                 <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
                     <ol class="carousel-indicators">
@@ -59,7 +59,7 @@
         <!-- Information -->
         <div class="row align-items-center mb-5">
 
-            <div class="col-sm-5">
+            <div class="col">
                 <div class="card p-2" style="width: auto;">
                     <div class="card-body">
                         <div class="row">
@@ -111,9 +111,10 @@
                 </div>
 
             </div>
+            </div>
 
             <div class="row mb-5">
-                <div class="col-6">
+                <div class="col">
                     <!-- <div class="card-body">
                         <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check
                             Availability</h5>
@@ -322,17 +323,18 @@
             <div class="col-6">
                 <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
             </div>
+            
             {% elif user.role == none %}
             <div class="col-6">
                 <form action="{% url 'explore:rent-item' item.id %}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="item" value="{{ item.id }}">
-                    <input type="submit" class="btn btn-block btn-primary btn-md" value="Book Now" />
+                    <a href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login to Rent</a>
                 </form>
             </div>
             {% endif %}
         </div>
     </div>
-</div>
+
 </div>
 {% endblock %}

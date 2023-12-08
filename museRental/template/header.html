@@ -46,11 +46,11 @@
                     aria-expanded="false">
                     Lessor
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="background-color: black;">
-                    <li><a href="{% url 'explore:dashboard' %}">View Items</a></li>
-                    <li><a class="dropdown-item" href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
-                    <li><a href="{% url 'accounts:change_password' %}">Change Password</a></li>
-                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                    <li><a class="dropdown-item text-black"href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:change_password' %}">Change Password</a></li>
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
                 
                     </ul>
                 </li>
@@ -63,9 +63,9 @@
                     </a>
                     <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item text-black" href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-                        <li><a class="text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
-                        <li><a class="text-black"href="{% url 'accounts:change_password' %}">Change Password</a></li>
-                        <li><a class="text-black"href="{% url 'accounts:logout' %}">Logout</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:change_password' %}">Change Password</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
                 
                     </ul>
                 </li>
@@ -82,13 +82,28 @@
                         
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Login
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
-                        <li><a class="dropdown-item text-black" href="{% url 'accounts:login'%}">login</a></li>
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:login'%}">login</a></li> -->
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Login
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            
+                            
+                            <li>
+                                <a class="dropdown-item text-black" href="{% url 'accounts:login'%}">Login</a>
+                            </li>
+                        </ul>
+                    </li>
+
                         
                         
                     </ul>

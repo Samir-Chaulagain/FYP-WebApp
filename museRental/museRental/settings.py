@@ -164,3 +164,105 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Muserental Hub Admin",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_header": "Muserental Hub",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Muserental Hub",
+
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "/img/Main/logo.png",
+      # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
+    "site_icon": None,
+
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to the Muserental Hub",
+
+    "login_logo_dark": None,
+
+    # Copyright on the footer
+    "copyright": "Muserental Hub",
+
+    # List of model admins to search from the search bar, search bar omitted if excluded
+    # If you want to use a single search field you dont need to use a list, you can use a simple string 
+    "search_model": ["explore.Item"],
+
+   
+
+        ############
+    # User Menu #
+    ############
+
+    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
+    "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/Samir-Chaulagain/MuseRentalHub", "new_window": True, "icon":"fas fa-phone",},
+        
+    ],
+     # Whether to display the side menu
+    "show_sidebar": True,
+     
+    # Whether to aut expand the menu
+    "navigation_expanded": True,
+# Hide these apps when generating side menu e.g (auth)
+    "hide_apps": ["auth.Groups"],
+
+    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
+    "order_with_respect_to": ["event.Category", "event.Event", "event.Booking"],
+
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "accounts.User": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "event.Category":"fas fa-th-large",
+        "event.Event":"fas fa-dungeon",
+        "event.Booking": "far fa-calendar",
+        "explore.Category":"fas fa-th-large",
+        "explore.Item":"fas fa-warehouse",
+        "explore.Customer":"fas fa-male",
+        "explore.saved_item":"fas fa-save",
+        "main.Post":"fab fa-usps",
+    },
+    "use_google_fonts_cdn": True,
+    # Whether to show the UI customizer on the sidebar
+    "show_ui_builder": True,
+    "changeform_format": "horizontal_tabs",
+
+    
+    }
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-lightblue",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "slate",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}

@@ -59,7 +59,9 @@ def user_logIn(request):
             login(request, user)
             
             # messages.success(request, "Logged In Sucessfully!!")
-            return render(request, "landing_pages/index.html",)
+            next_url = request.GET.get('next', 'main:index')
+            return redirect(next_url)
+            # return render(request, "landing_pages/index.html",)
         else:
             messages.error(request, "Bad Credentials!!")
                 
