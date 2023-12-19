@@ -1,0 +1,104 @@
+
+{% include "navbar.html" %}
+{% load static %}
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>    
+<title>Gomadevi Sweater Uudhyog</title> 
+
+
+
+
+<div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+ 
+  <h2 class="w3-wide w3-center" style="margin-top: -15px;">Pay with Khalti</h2>
+ 
+  <div class="w3-row w3-padding-32">
+    <div class="w3-col m6 w3-large w3-margin-bottom">
+      <br>
+     
+      
+      <img src="{% static 'image/khalti.jpg' %}" style="height: 300px;" ><br>
+       
+      
+    </div>
+    <div class="w3-col m6">
+      
+        <input type="hidden" name="id" id="id" value="{{ orders.id }}">
+    
+      <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+         
+       
+      <br><br>
+           
+         <div class="w3-half">Size
+          <input class="w3-input w3-border" type="text" name="size" value="{{ orders.size }}" disabled><br>
+           </div>
+               
+         <div class="w3-half">Colour
+          <input class="w3-input w3-border" type="text" name="colour" value="{{ orders.colour }}" disabled><br>
+           </div>
+           <div class="w3-half">Quantity
+            <input class="w3-input w3-border" type="text" name="quantity" value="{{ orders.quantity }}" disabled><br>
+             </div> 
+             <div class="w3-half">Total
+              <input class="w3-input w3-border" type="text" name="Total" value="Rs.{{ orders.Total }}" disabled><br>
+               </div> 
+              
+          
+           
+
+        <button id="payment-button" class="btn btn-info btn-md" style="width:130px; background-color: purple;">Pay with Khalti</button>
+        <!-- Place this where you need payment button -->
+        <!-- Paste this code anywhere in you body tag -->
+        <script>
+            var config = {
+                // replace the publicKey with yours
+                "publicKey": "test_public_key_746358e838144ca094b43e94f5c2c860",
+               
+                "productIdentity": "By  {{orders.username}} ",
+                "productName": " {{orders.size}} size",
+                "productUrl": "http://localhost:8000",
+                "User": " {{orders.username}}",
+                "paymentPreference": [
+                    "KHALTI",
+                    "EBANKING",
+                    "MOBILE_BANKING",
+                    "CONNECT_IPS",
+                    "SCT",
+                    ],
+                "eventHandler": {
+                    onSuccess (payload) {
+                        // hit merchant api for initiating verfication
+                        console.log(payload);
+                        alert('Transaction completed by ' + "{{ orders.username }}");
+                    },
+                    onError (error) {
+                        console.log(error);
+                    },
+                    onClose () {
+                        console.log('widget is closing');
+                    }
+                }
+            };
+    
+            var checkout = new KhaltiCheckout(config);
+            var btn = document.getElementById("payment-button");
+            btn.onclick = function () {
+                // minimum transaction amount must be 10, i.e 1000 in paisa.
+                checkout.show({amount: 100000});
+            }
+        </script>
+        <!-- Paste this code anywhere in you body tag -->
+         <br><br> Note: <i>Pay Rs. 1000 advance to confirm orders</i>
+       
+    
+        
+       
+   
+      
+
+      
+    </div>
+  </div>
+
+</div>
+

@@ -13,14 +13,14 @@
 
                 <p class="text-start col-6">
                     <i class="fa-solid fa-arrow-left"></i>
-                    <a href="{%url 'login'%}">Back to login</a>
+                    <a href="{%url 'accounts:login'%}">Back to login</a>
                 </p>
                 <p class="text-end col-6">Not a member?
-                    <a href="{% url 'signup' %}">Sign-up</a>
+                    <a href="{% url 'accounts:signup' %}">Sign-up</a>
                 </p>
             </div>
             <div class="col-md-2 mx-auto">
-                <a href="{% url 'change_pass' %}" id="explore-btn" class="btn btn-primary  text-white">Send mail</a>
+                <a href="{% url 'accounts:change_pass' %}" id="explore-btn" class="btn btn-primary  text-white">Send mail</a>
             </div>
         </form>
 

@@ -61,3 +61,8 @@ def book_event(request, pk):
     return render(request, 'events/event-details.html', context)
 
 
+def paypal(request, pk):
+    orders = Booking.objects.get(pk=pk)
+    order = Booking.objects.all()
+
+    return render(request, 'paypal.html', {'orders': orders, 'order': order})

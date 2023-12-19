@@ -1,52 +1,58 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<!-- {% include 'hero.html' %} -->
-{% load static %}
-<div class="text-center bg-image" data-aos="fade-down-left"
+<div class="text-center bg-image"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
 
     <div class="d-flex justify-content-center align-items-center h-100">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="">Booking Confirmation</a></li>
+                <li class="breadcrumb-item "><a href="">Khalti-Payment</a></li>
 
             </ol>
         </nav>
     </div>
-
 </div>
-
-
-
-<div class="col-md-6 mx-auto m-3">
-    <div id="emailInputDiv">
-        <input type="email" id="toEmail" placeholder="Enter recipient email">
-        <button onclick="sendEmail()" class="btn btn-primary">Send Mail</button>
-    </div>
-    <p>You have successfully booked {{ booking.num_tickets }} tickets for the event "{{ booking.event.title }}".</p>
+<div class="text-center mt-5">
+    <p>You want to booked {{ booking.num_tickets }} tickets for the event {{ booking.event }}</p>
     <p>Total Price: {{ booking.total_price }}</p>
+    <p>Click the button below to proceed with Khalti payment:</p>
+    <button id="payment-button" class="btn btn-secondary" style="background-color: purple; color: white;">Pay with
+        Khalti</button>
+
 </div>
+
+<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
 
 <script>
-    function sendEmail() {
-        var toEmail = document.getElementById('toEmail').value;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/send-email/', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                alert('Email sent successfully!');
-            } else {
-                alert('Failed to send email.');
+    var config = {
+        // Replace the publicKey with yours
+        "publicKey": "test_public_key_746358e838144ca094b43e94f5c2c860",
+        "productIdentity": "Ticket-{{ booking.num_tickets }}",
+        "productName": "{{ booking.event }}",
+        "productUrl": "http://localhost:8000",
+        "amount": "{{ booking.total_price }}", // Amount should be in paisa
+        "eventHandler": {
+            onSuccess(payload) {
+                // Hit merchant API for initiating verification
+                console.log(payload);
+                Swal.fire('Transaction completed for ' + "{{ booking.num_tickets }}" + ' tickets  for the event' + "{{ booking.event }}");
+            },
+            onError(error) {
+                console.log(error);
+            },
+            onClose() {
+                console.log('Widget is closing');
             }
-        };
-        xhr.send('to_email=' + encodeURIComponent(toEmail));
+        }
+    };
+
+    var checkout = new KhaltiCheckout(config);
+    var btn = document.getElementById("payment-button");
+    btn.onclick = function () {
+        checkout.show();
     }
 </script>
 
-
-
-{%endblock %}
+{% endblock %}

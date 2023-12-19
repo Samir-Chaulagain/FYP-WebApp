@@ -111,11 +111,11 @@
                 </div>
 
             </div>
-            </div>
+        </div>
 
-            <div class="row mb-5">
-                <div class="col">
-                    <!-- <div class="card-body">
+        <div class="row mb-5">
+            <div class="col">
+                <!-- <div class="card-body">
                         <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check
                             Availability</h5>
                         <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
@@ -138,203 +138,186 @@
                     </div>
                     <div class="card-body"> -->
 
-                    {%if Incorrect_dates%}
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                            <strong>{{Incorrect_dates}}</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                {%if Incorrect_dates%}
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                        <strong>{{Incorrect_dates}}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    {%endif%} {%if Available%}
-                    <div class="container">
-                        <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
-                            <strong>Item is Available (Send Request to book it)</strong> {%if Message%}
-                            <p>
-                                {{Message}}. So there are some chances that you might not get it. As items are rented on
-                                First come
-                                first serve policy. You may get this item if the other person decline his/her request.
-                            </p>
-                            {%endif%}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    {%endif%} {%if NotAvailable%}
-                    <div class="container">
-                        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                            <strong>Item is not Available for this dates!!</strong>
-                            <p>
-                                It is rented from {{dates.Rentitem_Date_of_Booking}} to
-                                {{dates.Rentitem_Date_of_Return}}
-                            </p>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
-                    {%endif%}
-
-                    <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check Availability
-                    </h5>
-                    <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
-                        enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-row">
-                            <div class="col-4">
-                                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                    name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date"
-                                    required>
-                            </div>
-                            <div class="col-4">
-                                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                    name="Rentitem_Date_of_Return" class="form-control" placeholder="Return date"
-                                    required>
-                            </div>
-                            <div class="col-4">
-                                <input type="submit" class="btn btn-success" value="Check Availability" />
-                            </div>
-                        </div>
-                    </form>
-
-                    {%if Available%}
-                    <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Book items
-                    </h5>
-                    <form action="{% url 'explore:rent-item' item.id %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="pickupdate"><b>Pickup Date</b></label>
-                                <input type="text" class="form-control" id="pickupdate"
-                                    name="RentVehicle_Date_of_Booking" value="{{rent_data.Rentitem_Date_of_Booking}}"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="returndate"><b>Return Date</b></label>
-                                <input type="text" class="form-control" id="returndate"
-                                    name="RentVehicle_Date_of_Return" value="{{rent_data.Rentitem_Date_of_Return}}"
-                                    readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="totaldays"><b>Total days</b></label>
-                                <input type="text" class="form-control" id="totaldays" name="Total_days"
-                                    value="{{rent_data.days}}" readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="totalamount"><b>Total Amount</b></label>
-                                <input type="text" class="form-control" id="totalamount" name="RentVehicle_Total_amount"
-                                    value="{{rent_data.total}}" readonly>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <input type="text" class="form-control" id="Vehicle_license_plate"
-                                    name="Vehicle_license_plate" value="{{vehicle.Vehicle_license_plate}}" hidden>
-                            </div>
-                            <!-- <div class="form-group col-md-12">
-                                <input type="submit" class="btn btn-success btn-block" value="Send Request" />
-                            </div> -->
-                            {% is_item_already_rented item request.user as is_rented %}
-                            {% if is_rented %}
-                            <div class="col-6">
-                                <span class="btn btn-block btn-danger btn-md">Already Applied</span>
-                            </div>
-                            {% else %}
-                            <div class="col-6">
-
-                                <form action="{% url 'explore:rent-item' item.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="item" value="{{ item.id }}">
-                                    <input type="submit" class="btn btn-block btn-primary btn-md" value="Book Now" />
-                                </form>
-                            </div>
-                            {% endif %}
-                        </div>
-
-
-
-                    </form>{%endif%}
-
                 </div>
+                {%endif%} {%if Available%}
+                <div class="container">
+                    <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
+                        <strong>Item is Available (Send Request to book it)</strong> {%if Message%}
+                        <p>
+                            {{Message}}. So there are some chances that you might not get it. As items are rented on
+                            First come
+                            first serve policy. You may get this item if the other person decline his/her request.
+                        </p>
+                        {%endif%}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                {%endif%} {%if NotAvailable%}
+                <div class="container">
+                    <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                        <strong>Item is not Available for this dates!!</strong>
+                        <p>
+                            It is rented from {{dates.Rentitem_Date_of_Booking}} to
+                            {{dates.Rentitem_Date_of_Return}}
+                        </p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                {%endif%}
 
+                <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check Availability
+                </h5>
+                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-4">
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Return" class="form-control" placeholder="Return date" required>
+                        </div>
+                        <div class="col-4">
+                            <input type="submit" class="btn btn-success" value="Check Availability" />
+                        </div>
+                    </div>
+                </form>
 
+                {%if Available%}
+                <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Book items
+                </h5>
+                <form action="{% url 'explore:rent-item' item.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="pickupdate"><b>Pickup Date</b></label>
+                            <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
+                                value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="returndate"><b>Return Date</b></label>
+                            <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
+                                value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="totaldays"><b>Total days</b></label>
+                            <input type="text" class="form-control" id="totaldays" name="Total_days"
+                                value="{{rent_data.days}}" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="totalamount"><b>Total Amount</b></label>
+                            <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
+                                value="{{rent_data.total}}" readonly>
+                        </div>
 
+                        {% if is_rented %}
+                        <div class="col-6">
+                            <span class="btn btn-block btn-danger btn-md">Already Applied</span>
+                        </div>
+                        {% else %}
+                        <div class="col-6">
+                            <input type="submit" class="btn btn-block btn-primary btn-md" value="Book Now" />
+                        </div>
+                        {% endif %}
+                    </div>
+                </form>
+
+                {%endif%}
 
             </div>
-            <div class="col-6">
-                {% if user.is_authenticated and user.role == 'customer' %}
-                {% is_item_already_saved item request.user as is_saved %}
-                {% if is_saved %}
-                <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
-                    Saved
-                    Item</span>
-                {% else %}
-                <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="item" value="{{ item.id }}">
-                    <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-                </form>
-                {% endif %}
 
-                {% elif request.user.id == item.user.id and user.role == 'lessor' %}
-                <!-- Button to trigger the delete confirmation modal -->
-                <button class="btn btn-block btn-danger btn-md" data-toggle="modal"
-                    data-target="#deleteConfirmationModal">Delete</button>
 
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
-                    aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteConfirmationModalLabel">Delete Item Confirmation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure you want to delete this item?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <!-- Form for actual deletion -->
-                                <form action="{% url 'explore:delete_item' item.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="item" value="{{ item.id }}">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </div>
+
+
+        </div>
+        <div class="col-6">
+            {% if user.is_authenticated and user.role == 'customer' %}
+            {% is_item_already_saved item request.user as is_saved %}
+            {% if is_saved %}
+            <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
+                Saved
+                Item</span>
+            {% else %}
+            <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="item" value="{{ item.id }}">
+                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+            </form>
+            {% endif %}
+
+            {% elif request.user.id == item.user.id and user.role == 'lessor' %}
+            <!-- Button to trigger the delete confirmation modal -->
+            <button class="btn btn-block btn-danger btn-md" data-toggle="modal"
+                data-target="#deleteConfirmationModal">Delete</button>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+                aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteConfirmationModalLabel">Delete Item Confirmation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete this item?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <!-- Form for actual deletion -->
+                            <form action="{% url 'explore:delete_item' item.id %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="item" value="{{ item.id }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                {% elif user.role == none %}
-                <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="item" value="{{ item.id }}">
-                    <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-                </form>
-                {% endif %}
             </div>
 
-
-
-            {% if request.user.id == item.user.id and user.role == 'lessor' %}
-            <div class="col-6">
-                <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
-            </div>
-            
             {% elif user.role == none %}
-            <div class="col-6">
-                <form action="{% url 'explore:rent-item' item.id %}" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="item" value="{{ item.id }}">
-                    <a href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login to Rent</a>
-                </form>
-            </div>
+            <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="item" value="{{ item.id }}">
+                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+            </form>
             {% endif %}
         </div>
+
+
+
+        {% if request.user.id == item.user.id and user.role == 'lessor' %}
+        <div class="col-6">
+            <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
+        </div>
+
+        {% elif user.role == none %}
+        <div class="col-6">
+            <form action="{% url 'explore:rent-item' item.id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="item" value="{{ item.id }}">
+                <a href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login to Rent</a>
+            </form>
+        </div>
+        {% endif %}
     </div>
+</div>
 
 </div>
 {% endblock %}

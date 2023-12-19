@@ -15,6 +15,7 @@
     crossorigin="anonymous"></script>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
     AOS.init();
@@ -29,10 +30,36 @@
     });
 </script>
 <script>
-    function call_sw_alert_func(url, itemId, message) {
-        // Your implementation of call_sw_alert_func
-        // ...
-        console.log(url, itemId, message);
+    function showPreloader() {
+        document.getElementById("preloader").style.display = "block";
     }
 
+    function hidePreloader() {
+        document.getElementById("preloader").style.display = "none";
+    }
+
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const extraMenu = document.querySelector('.extra-menu');
+    //     const extraSubmenu = document.querySelector('.extra-submenu');
+
+    //     extraMenu.addEventListener('click', function () {
+    //         // Toggle the visibility of the submenu
+    //         extraSubmenu.style.display = extraSubmenu.style.display === 'block' ? 'none' : 'block';
+    //     });
+    // });
+</script>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#id_password');
+
+    togglePassword.addEventListener('click', function (e) {
+        // Toggle the type attribute
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        // Toggle the eye icon classes
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
 </script>

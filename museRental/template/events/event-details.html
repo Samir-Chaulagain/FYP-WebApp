@@ -86,7 +86,10 @@
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">Book Tickets</button>
                     </form>
+                    {% else %}
+                    <p>User is not authenticated</p>
                     {% endif%}
+
                 </div>
             </div>
 

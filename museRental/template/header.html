@@ -38,11 +38,10 @@
                 </li>
                 
                 {% if user.is_authenticated and user.role == 'lessor' %}
-                <a href="{% url 'explore:add_item' %}"
-                    class="js-clone-nav pr-3 btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                        class="mr-2 icon-add"></span>Add item</a>
+                <a href="{% url 'explore:add_item' %}">
+                    Add item</a>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle mynav" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Lessor
                 </a>
@@ -71,7 +70,7 @@
                 </li>
                 {% else %}
 
-                <li class="nav-item dropdown ">
+                <li class="nav-item dropdown mynav">
                     <a class="nav-link dropdown-toggle text-light href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Be part
@@ -90,24 +89,13 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
                         <li><a class="dropdown-item text-black" href="{% url 'accounts:login'%}">login</a></li> -->
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Login
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            
-                            
-                            <li>
-                                <a class="dropdown-item text-black" href="{% url 'accounts:login'%}">Login</a>
-                            </li>
-                        </ul>
-                    </li>
+                    
 
                         
                         
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link mynav" href="{% url 'accounts:login'%}">Login</a>
+                    </li>
 
 
                 {% endif %}

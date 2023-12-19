@@ -22,6 +22,7 @@ urlpatterns = [
     path('save-item/<int:id>/', views.item_saved_view, name='saved-item'),
     path('check_availability/<int:id>/', views.CheckAvailability, name='CheckAvailability'),
     path('dashboard/customer/delete-saved/<int:id>/', views.delete_save_view, name='delete-saved'),
+    path('paypal/<int:id>', views.paypal, name="paypal"),
     # path('items/<int:pk>/', views.showdetails, name='details'),
     # path('items/new/', views.upload_items, name='new'),
     # path('items/<int:pk>/delete/', views.delete, name='delete'),
