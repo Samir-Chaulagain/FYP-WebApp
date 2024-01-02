@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center align-items-center h-100">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="">Events</a></li>
+                <li class="breadcrumb-item "><a href=""></a></li>
 
             </ol>
         </nav>
@@ -32,8 +32,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for customer in all_customers %}
-                        {{ customer.get_total_customer }}
+                                {% for customer in all_Customers %}
+                            {{ customer.get_total_customer }}
 
                                 <tr>
                                     <td class="text-center"><a href="">{{ customer.user.get_full_name }}</a></td     >

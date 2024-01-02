@@ -2,33 +2,18 @@
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth import authenticate, login, logout
-
 from django.shortcuts import render, redirect , get_object_or_404
-
 from django.urls import reverse, reverse_lazy
 # importing forms and views
 from .forms import *
 from main.views import *
 from .models import User
-
 # getting permission
 from accounts.permission import user_is_customer, user_is_lessor 
-
 # for loginrequired
 from django.contrib.auth.decorators import login_required
 
 
-def get_success_url(request):
-    """
-    Determine the success URL after login.
-
-    If 'next' parameter is present in the URL, redirect to that URL.
-    Otherwise, redirect to the home page of the job application app.
-    """
-    if 'next' in request.GET and request.GET['next'] != '':
-        return request.GET['next']
-    else:
-        return reverse('main:index')
 
 def customer_registration(request):   
     if request.method == 'POST':
@@ -38,7 +23,6 @@ def customer_registration(request):
             return redirect('accounts:login')
     else:
         form = CustomerRegistrationForm()
-
     context={
             
                 'form':form
@@ -46,11 +30,15 @@ def customer_registration(request):
     return render(request,'accounts/customer-registration.html',context)
 
 def lessor_registration(request):
-   
-    form = LessorRegistrationForm(request.POST, request.FILES)
-    if form.is_valid():
-        form = form.save()
-        return redirect('accounts:login')
+    if request.method == 'POST':
+        form = LessorRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form = form.save()
+            return redirect('accounts:login')
+    
+    
+    else:
+        form = LessorRegistrationForm()
     context={       
             'form':form
         }
@@ -58,6 +46,7 @@ def lessor_registration(request):
     return render(request,'accounts/lessor-registration.html',context)
 
 def user_logIn(request):
+    message=None
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -66,6 +55,7 @@ def user_logIn(request):
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
+            
             login(request, user)
 
             # Set session expiration time based on "Remember Me" checkbox
@@ -74,15 +64,19 @@ def user_logIn(request):
                 request.session.set_expiry(2592000)  # 1 month in seconds
             else:
                 # Use the default session expiration time (settings.SESSION_COOKIE_AGE)
-                request.session.set_expiry(1) 
+                request.session.set_expiry(0) 
                 pass
-
+            
             next_url = request.GET.get('next', 'main:index')
             return redirect(next_url)
-        else:
-            messages.error(request, "Bad Credentials!!")
+        
+    else:
+        # Optionally, you can add a success message here
+        # messages.success(request, 'Form submitted successfully!')
+          # Exa 
+        message= 'Invalid error password or mail'
 
-    return render(request, 'accounts/login.html')
+    return render(request, 'accounts/login.html',{'message':message})
 
 
 def user_logOut(request):

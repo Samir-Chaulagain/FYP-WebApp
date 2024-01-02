@@ -1,4 +1,8 @@
 /* Hero carousel */
+* {
+  margin: 0%;
+  box-sizing: border-box;
+}
 
 .nav-item a {
   color: aliceblue;
@@ -63,8 +67,17 @@
 }
 
 .dropdown-menu li a:hover {
-  background-color: rgb(136, 124, 183);
+  background-color: rgb(175, 166, 211);
+  
 }
+.dropdown-menu li a{
+  color: rgb(17, 14, 25);
+}
+
+.dropdown-menu:hover {
+  margin-right: 0;
+}
+
 /* ----------footer---------- */
 
 .link-follow {
@@ -129,4 +142,3 @@
     transform: rotate(360deg);
   }
 }
-

@@ -4,21 +4,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordResetForm as BasePasswordResetForm
-
-
-
-# from phonenumber_field.formfields import PhoneNumberField
-# from django_countries.fields import CountryField
-
-
 from accounts.models import User
 
 class CustomerRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=10, required=True, label='Phone Number',
                                    widget=forms.TextInput(attrs={'placeholder': 'Enter Phone Number'}))
-    photo = forms.ImageField(label='Upload a Profile', required=False)
-    
-   
+    photo = forms.ImageField(label='Upload a Profile', required=False)   
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender', 'photo' ]

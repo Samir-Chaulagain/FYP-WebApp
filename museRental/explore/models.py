@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User
 # Create your models here.
 from django.contrib.auth import get_user_model
-User = get_user_model()
+# User = get_user_model()
 
 item_type = (
     ('1', "Solo"),
@@ -63,6 +63,15 @@ class Customer(models.Model):
         return self.item.name
     
 class saved_item(models.Model):
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+
+
+    def __str__(self):
+        return self.item.name
+class applieditems(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)

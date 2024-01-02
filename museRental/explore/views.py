@@ -289,6 +289,8 @@ def delete_save_view(request, id):
     return redirect('explore:dashboard')
 
 # for checking availability
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
 def CheckAvailability(request, id):
     # user = get_object_or_404(User, id=request.user.id)
     customer = Customer.objects.filter(user=request.user.id, item_id=id)

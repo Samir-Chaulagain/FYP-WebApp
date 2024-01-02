@@ -113,30 +113,9 @@
             </div>
         </div>
 
+        
         <div class="row mb-5">
             <div class="col">
-                <!-- <div class="card-body">
-                        <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check
-                            Availability</h5>
-                        <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
-                            enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-row">
-                                <div class="col-4">
-                                    <input type="date" name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date"
-                                        required>
-                                </div>
-                                <div class="col-4">
-                                    <input type="date" name="Rentitem_Date_of_Return" class="form-control" placeholder="Return date"
-                                        required>
-                                </div>
-                                <div class="col-4">
-                                    <input type="submit" class="btn btn-success" value="Check Availability" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="card-body"> -->
 
                 {%if Incorrect_dates%}
                 <div class="container">
@@ -177,6 +156,7 @@
                 </div>
                 {%endif%}
 
+                {% if user.is_authenticated and user.role == 'customer' %}
                 <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Check Availability
                 </h5>
                 <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
@@ -196,9 +176,14 @@
                         </div>
                     </div>
                 </form>
+                
+                
+                
+                {%endif%}
+
 
                 {%if Available%}
-                <h5 class="card-title p-1" style="background-color: yellow; text-align: center;">Book items
+                <h5 class="card-title p-1 text-light" style=" background-color: black; text-align: center;">Book items
                 </h5>
                 <form action="{% url 'explore:rent-item' item.id %}" method="post">
                     {% csrf_token %}
@@ -239,10 +224,6 @@
                 {%endif%}
 
             </div>
-
-
-
-
         </div>
         <div class="col-6">
             {% if user.is_authenticated and user.role == 'customer' %}

@@ -11,10 +11,7 @@
 {% load static %}
 
 
-{% if user.is_authenticated and user.role == 'lessor' %}
-<a href="" class="btn btn-primary">Add item</a>
 
-{% endif %}
 <div class="text-center bg-image"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">

@@ -7,5 +7,8 @@ from .models import *
 
 admin.site.register(Category)
 admin.site.register(Item)
-admin.site.register(Customer)
 admin.site.register(saved_item)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('item','user')
+    
+admin.site.register(Customer,CustomerAdmin)
