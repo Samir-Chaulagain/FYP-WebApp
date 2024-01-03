@@ -15,6 +15,7 @@ from django.contrib.auth import get_user_model
 from accounts.models import User
 from explore.forms import *
 from explore.models import *
+from event.models import saved_event,Booking
 from accounts.permission import *
 
 from datetime import date, datetime
@@ -162,11 +163,15 @@ def dashboard(request):
     if request.user.role == 'customer':
         saveditems = saved_item.objects.filter(user=request.user.id)
         applieditems = Customer.objects.filter(user=request.user.id)
+        savedevents=saved_event.objects.filter(user=request.user.id)
+        appliedevents=Booking.objects.filter(user=request.user.id)
     context = {
      'items': items,
         'saveditems': saveditems,
         'applieditems':applieditems,
-        'total_Customers': total_Customers
+        'total_Customers': total_Customers,
+        'savedevents': savedevents,
+        'applieddevents': appliedevents,
     }
     return render(request, 'explore/dashboard.html', context)
 @login_required(login_url=reverse_lazy('accounts:login'))

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% load is_event_already_saved %}
 
 <div class="text-center bg-image"
     style="
@@ -88,6 +89,8 @@
                     </form>
                     {% else %}
                     <p>User is not authenticated</p>
+                    
+
                     {% endif%}
 
                 </div>
@@ -95,6 +98,51 @@
 
         </div>
     </div>
+
+
+    
+
+<div class="col-6">
+    {% if user.is_authenticated and user.role == 'customer' %}
+    {% is_event_already_saved event request.user as is_saved %}
+    {% if is_saved %}
+    <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
+        Saved
+        Item</span>
+    {% else %}
+    <form action="{% url 'event:saved-event' event.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="event" value="{{ event.id }}">
+        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+    </form>
+    {% endif %}
+
+    {% elif request.user.id == event.user.id and user.role == 'lessor' %}
+    {% is_event_already_saved event request.user as is_saved %}
+    {% if is_saved %}
+    <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
+        Saved
+        Item</span>
+    {% else %}
+    <form action="{% url 'event:saved-event' event.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="event" value="{{ event.id }}">
+        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+    </form>
+    {% endif %}
+
+    {% elif user.role == none %}
+    <form action="{% url 'event:saved-event' event.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="event" value="{{ event.id }}">
+        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+    </form>
+    {% endif %}
+</div>
+
+
+
+
 </div>
 
 {% endblock %}

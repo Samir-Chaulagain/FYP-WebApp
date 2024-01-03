@@ -1,5 +1,5 @@
 from django import forms
-from .models import Booking
+from .models import Booking,saved_event
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class BookingForm(forms.ModelForm):
         if num_tickets <= 0:
             raise forms.ValidationError("Number of tickets must be greater than zero.")
         return num_tickets
+
+class EventSavedForm(forms.ModelForm):
+    class Meta:
+        model = saved_event
+        fields = ['event']

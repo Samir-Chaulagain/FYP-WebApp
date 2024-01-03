@@ -3,4 +3,8 @@ from event.models import *
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Event)
-admin.site.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = ('event','user')
+admin.site.register(Booking,BookingAdmin)
+admin.site.register(saved_event)
+
