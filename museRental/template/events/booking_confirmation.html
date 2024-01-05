@@ -55,4 +55,61 @@
     }
 </script>
 
+
+
+
+<script>
+    const khaltiPayment = async (id, event, totalPrice) => {
+            const config = {
+                publicKey: "test_public_key_fb53c47dfcf44808988bda227c018702",
+                productIdentity: id,
+                productName: event,
+                productUrl: "http://localhost:3000/",
+                eventHandler: {
+                    onSuccess: async (payload) => {
+
+                        await sendPaymentToken(payload.token, payload.amount, payload.product_identity);
+
+                        console.log(payload);
+                    },
+                    onError: (error) => {
+                        // Handle errors
+                        console.log(error);
+                    },
+                    onClose: () => {
+                        navigate('/client-dashboard');
+                    },
+                },
+                paymentPreference: [
+                    "KHALTI",
+                ],
+            };
+            try {
+                const checkout = new KhaltiCheckout(config);
+                checkout.show({ amount: totalPrice / 100 });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        const sendPaymentToken = async (paymentToken, amount, serviceuseid) => {
+            try {
+
+                const res = await fetch("http://127.0.0.1:8000/servicetransaction/", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ payment_token: paymentToken, payment_amount: amount, serviceuseid: serviceuseid })
+                });
+                if (res.ok) {
+                    navigate('/client-dashboard')
+                    alert("Payment Completed!")
+                }
+            } catch (error) {
+                toast.error(error)
+            }
+        }
+</script>
+
 {% endblock %}

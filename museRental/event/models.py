@@ -44,9 +44,12 @@ class Booking(models.Model):
     num_tickets = models.PositiveIntegerField(default=1)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     # Add other booking-related fields if needed, e.g., payment_status, booking_date, etc.
-    created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    booked_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 def __str__(self):
         return f"{self.user.username} booked {self.num_tickets} tickets for {self.event.name}"
+
+
+
 
 
 

@@ -158,7 +158,7 @@
                 {%endif%}
 
                 {% if user.is_authenticated and user.role == 'customer' %}
-                <h5 class="card-title p-1" style="background-color: rgb(0, 0, 0); text-align: center;">Check Availability
+                <h5 class="card-title p-1" style="background-color: rgb(0, 0, 0); text-align: center; color: aliceblue;">Check Availability
                 </h5>
                 <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
                     enctype="multipart/form-data">
@@ -173,7 +173,7 @@
                                 name="Rentitem_Date_of_Return" class="form-control" placeholder="Return date" required>
                         </div>
                         <div class="col-4">
-                            <input type="submit" class="btn btn-success" value="Check Availability" />
+                            <input type="submit" class="btn btn-primary" value="Check Availability" />
                         </div>
                     </div>
                 </form>
@@ -212,7 +212,7 @@
                         {% is_item_already_rented item request.user as is_rented %}
                         {% if is_rented %}
                         <div class="col-6">
-                            <span class="btn btn-block btn-danger btn-md">Already Applied</span>
+                            <span class="btn btn-block btn-secondary btn-md">Already Applied</span>
                         </div>
                         {% else %}
                         <div class="col-6">
@@ -230,9 +230,9 @@
             {% if user.is_authenticated and user.role == 'customer' %}
             {% is_item_already_saved item request.user as is_saved %}
             {% if is_saved %}
-            <span class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
+            <span class="btn btn-block btn-dark btn-md"><span class="mr-2 text-black">Already
                 Saved
-                Item</span>
+                Item</span></span>
             {% else %}
             <form action="{% url 'explore:saved-item' item.id %}" method="POST">
                 {% csrf_token %}
