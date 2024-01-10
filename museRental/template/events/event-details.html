@@ -2,30 +2,42 @@
 {% load static %}
 {% block content %}
 {% load is_event_already_saved %}
+{% load is_event_already_booked %}
 
-<div class="text-center bg-image"
+<div class="text-center bg-image" data-aos="zoom-in-up"
     style="
-      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
+      background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px; opacity:96% ;">
 
     <div class="d-flex justify-content-center align-items-center h-100">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="">Events</a></li>
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
 
-            </ol>
-        </nav>
+                <div class="col-md-12">
+                    <h1 class="text-white font-weight-bold">Event</h1>
+                    <div class="custom-breadcrumbs">
+                        <a href="{% url 'event:event' %}"
+                            style="color: white; text-decoration: none;"><strong>Event</strong></a>
+                        <span class="mx-2 slash text-light">/</span>
+                        <span class="text-white">Details</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
+
 </div>
 <div class="container my-5">
     <div class="row">
         <!-- carousel Image -->
         <div class=" col-sm-12 col-md-6 ">
-            <img src="{{ event.image.url }}" class="rounded-xl image-fluid" style="height: Auto; width: 100%;">
+            <img src="{{ event.image.url }}" class="rounded-xl img-fluid" style="height: Auto; width: 100%;">
         </div>
 
         <!-- Information -->
-        
-        <div class="col-md-6 col-sm-12" >
+
+        <div class="col-md-6 col-sm-12">
             <div class="card p-1" style="width: auto;">
                 <div class="card-body">
                     <div class="row">
@@ -42,16 +54,16 @@
                             <h6 class="mb-0">Location</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            {{event.Location}}
+                            {{event.location}}
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0">Venue</h6>
+                            <h6 class="mb-0">Status</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            {{event.venue}}
+                            {{event.status}}
                         </div>
                     </div>
                     <hr>
@@ -74,74 +86,87 @@
                         </div>
                     </div>
 
-                    <div class="border border-top-0 bg-white p-4">
-                        <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
-                            <a href="{% url 'event:book-event' event.id  %}" class="btn btn-primary">Buy now</a>
-                        </ul>
-                    </div>
-                    {% if user.is_authenticated %}
-                    <h2>Book Event: {{ event.title }}</h2>
 
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary">Book Tickets</button>
-                    </form>
-                    {% else %}
-                    <p>User is not authenticated</p>
-                    
 
-                    {% endif%}
+
+
 
                 </div>
             </div>
+            {% if user.is_authenticated %}
+            {% is_event_already_booked event request.user as is_booked %}
+            {% if is_booked %}
+            <span class="btn btn-block btn-dark btn-md mt-4"><span class="icon-heart-o mr-2 text-danger"></span>Already
+                Purchased </span>
+            {% else %}
+            <form action="{% url 'event:book-event' event.id %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="hidden" name="event" value="{{ event.id }}">
+                <input type="submit" class="btn btn-block btn-light btn-md" value="Buy now" />
+            </form>
+            {% endif %}
 
+            {% else %}
+            <form action="{% url 'event:book-event' event.id %}" method="POST">
+
+                {% csrf_token %}
+                <input type="hidden" name="event" value="{{ event.id }}">
+
+                <div class="border border-top-0 bg-white p-4">
+                    <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
+                        <input type="submit" class="btn btn-block btn-primary btn-md mt-4" value="Buy now" />
+                    </ul>
+                </div>
+
+            </form>
+
+            {% endif %}
         </div>
+
+
     </div>
 
 
-    
-
-<div class="col-6">
-    {% if user.is_authenticated and user.role == 'customer' %}
-    {% is_event_already_saved event request.user as is_saved %}
-    {% if is_saved %}
-    <span class="btn btn-block btn-dark btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
-        Saved
-        Item</span>
-    {% else %}
-    <form action="{% url 'event:saved-event' event.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="event" value="{{ event.id }}">
-        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-    </form>
-    {% endif %}
-
-    {% elif request.user.id == event.user.id and user.role == 'lessor' %}
-    {% is_event_already_saved event request.user as is_saved %}
-    {% if is_saved %}
-    <span class="btn btn-block btn-dark btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Already
-        Saved
-        Item</span>
-    {% else %}
-    <form action="{% url 'event:saved-event' event.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="event" value="{{ event.id }}">
-        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-    </form>
-    {% endif %}
-
-    {% elif user.role == none %}
-    <form action="{% url 'event:saved-event' event.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="event" value="{{ event.id }}">
-        <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-    </form>
-    {% endif %}
-</div>
 
 
+    <div class="col-6">
+        {% if user.is_authenticated and user.role == 'customer' %}
+        {% is_event_already_saved event request.user as is_saved %}
+        {% if is_saved %}
+        <span class="btn btn-block btn-dark btn-md mt-4"><span class="icon-heart-o mr-2 text-danger"></span>Already
+            Saved
+            Item</span>
+        {% else %}
+        <form action="{% url 'event:saved-event' event.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="event" value="{{ event.id }}">
+            <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+        </form>
+        {% endif %}
 
+        {% elif request.user.id == event.user.id and user.role == 'lessor' %}
+        {% is_event_already_saved event request.user as is_saved %}
+        {% if is_saved %}
+        <span class="btn btn-block btn-dark btn-md mt-4"><span class="icon-heart-o mr-2 text-danger"></span>Already
+            Saved
+            Item</span>
+        {% else %}
+        <form action="{% url 'event:saved-event' event.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="event" value="{{ event.id }}">
+            <input type="submit" class="btn btn-block btn-light btn-md mt-4" value="Save" />
+        </form>
+        {% endif %}
+
+        {% elif user.role == none %}
+        <form action="{% url 'event:saved-event' event.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="event" value="{{ event.id }}">
+            <input type="submit" class="btn btn-block btn-light btn-md mt-4" value="Save" />
+        </form>
+        {% endif %}
+    </div>
 
 </div>
 

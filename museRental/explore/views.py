@@ -85,6 +85,34 @@ def add_item(request):
 
 
 
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_lessor
+def item_edit_view(request, id=id):
+    """
+    Handle item Update
+
+    """
+
+    item = get_object_or_404(Item, id=id, user=request.user.id)
+    categories = Category.objects.all()
+    form = edititemForm(request.POST or None, instance=item)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        # for save tags
+        # form.save_m2m()
+        messages.success(request, 'Your item Post Was Successfully Updated!')
+        return redirect(reverse("explore:items", kwargs={
+            'id': instance.id
+        }))
+    context = {
+
+        'form': form,
+        'categories': categories
+    }
+
+    return render(request, 'explore/item-edit.html', context)
+
 
 # def search_result_view(request):
 #     """
@@ -112,48 +140,15 @@ def add_item(request):
     # return render(request, 'explore/result.html', item)
 
 
-@login_required(login_url=reverse_lazy('accounts:login'))
-@user_is_customer
-def rent_item_view(request, id):
-    user = get_object_or_404(User, id=request.user.id)
-    Customers = Customer.objects.filter(user=user, item=id)
 
-    if not Customers:
-        if request.method == 'POST':
-            Rentitem_Date_of_Booking = request.POST.get('Rentitem_Date_of_Booking', '')
-            Rentitem_Date_of_Return = request.POST.get('Rentitem_Date_of_Return', '')
-
-            Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%b. %d, %Y').date()
-            Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%b. %d, %Y').date()
-
-            item = get_object_or_404(Item, id=id)
-            total_days = (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1
-            total_amount = total_days * item.price
-
-            instance = Customer(
-                user=user,
-                item=item,
-                Rentitem_Date_of_Booking=Rentitem_Date_of_Booking,
-                Rentitem_Date_of_Return=Rentitem_Date_of_Return,
-                Total_days=total_days,
-                Rentitem_Total_amount=total_amount
-            )
-            instance.save()
-
-            messages.success(request, 'You have successfully applied for this item!')
-            return redirect(reverse("explore:details", kwargs={'id': id}))
-
-    else:
-        messages.error(request, 'You already applied for the item!')
-
-    return redirect(reverse("explore:details", kwargs={'id': id}))
-    
 @login_required(login_url=reverse_lazy('accounts:login'))
 def dashboard(request):
         
     items = []
     saveditems = []
+    savedevent = []
     applieditems = []
+    appliedevent = []
     total_Customers = {}
     if request.user.role == 'lessor':
         items = Item.objects.filter(user=request.user.id)
@@ -163,17 +158,25 @@ def dashboard(request):
     if request.user.role == 'customer':
         saveditems = saved_item.objects.filter(user=request.user.id)
         applieditems = Customer.objects.filter(user=request.user.id)
-        savedevents=saved_event.objects.filter(user=request.user.id)
-        appliedevents=Booking.objects.filter(user=request.user.id)
+        savedevent=saved_event.objects.filter(user=request.user.id)
+        appliedevent=Booking.objects.filter(user=request.user.id)
+
+    if request.user.role == 'lessor':
+        savedevent=saved_event.objects.filter(user=request.user.id)
+        appliedevent=Booking.objects.filter(user=request.user.id)
+    
     context = {
      'items': items,
         'saveditems': saveditems,
         'applieditems':applieditems,
         'total_Customers': total_Customers,
-        'savedevents': savedevents,
-        'applieddevents': appliedevents,
+        'savedevent': savedevent,
+        'appliedevent': appliedevent,
+        
     }
     return render(request, 'explore/dashboard.html', context)
+
+
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def all_Customers_view(request, id):
@@ -213,34 +216,8 @@ def delete_item(request, id):
 
     return redirect('explore:dashboard')
 
-@login_required(login_url=reverse_lazy('accounts:login'))
-@user_is_lessor
-def item_edit_view(request, id=id):
-    """
-    Handle item Update
 
-    """
-
-    item = get_object_or_404(Item, id=id, user=request.user.id)
-    categories = Category.objects.all()
-    form = edititemForm(request.POST or None, instance=item)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.save()
-        # for save tags
-        # form.save_m2m()
-        messages.success(request, 'Your item Post Was Successfully Updated!')
-        return redirect(reverse("explore:items", kwargs={
-            'id': instance.id
-        }))
-    context = {
-
-        'form': form,
-        'categories': categories
-    }
-
-    return render(request, 'explore/item-edit.html', context)
-
+# for mmarking sold 
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def make_complete_item_view(request, id):
@@ -334,6 +311,42 @@ def CheckAvailability(request, id):
     return render(request, 'explore/details.html', {'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
 
 
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def rent_item_view(request, id):
+    user = get_object_or_404(User, id=request.user.id)
+    Customers = Customer.objects.filter(user=user, item=id)
+
+    if not Customers:
+        if request.method == 'POST':
+            Rentitem_Date_of_Booking = request.POST.get('Rentitem_Date_of_Booking', '')
+            Rentitem_Date_of_Return = request.POST.get('Rentitem_Date_of_Return', '')
+
+            Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%b. %d, %Y').date()
+            Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%b. %d, %Y').date()
+
+            item = get_object_or_404(Item, id=id)
+            total_days = (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1
+            total_amount = total_days * item.price
+
+            instance = Customer(
+                user=user,
+                item=item,
+                Rentitem_Date_of_Booking=Rentitem_Date_of_Booking,
+                Rentitem_Date_of_Return=Rentitem_Date_of_Return,
+                Total_days=total_days,
+                Rentitem_Total_amount=total_amount
+            )
+            instance.save()
+
+            messages.success(request, 'You have successfully applied for this item!')
+            return redirect(reverse("explore:details", kwargs={'id': id}))
+
+    else:
+        messages.error(request, 'You already applied for the item!')
+
+    return redirect(reverse("explore:details", kwargs={'id': id}))
+    
 
 def paypal(request, id):
     orders = Customer.objects.get(id=id)

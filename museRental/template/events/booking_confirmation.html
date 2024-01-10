@@ -18,14 +18,15 @@
     <p>You want to booked {{ booking.num_tickets }} tickets for the event {{ booking.event }}</p>
     <p>Total Price: {{ booking.total_price }}</p>
     <p>Click the button below to proceed with Khalti payment:</p>
-    <button id="payment-button" class="btn btn-secondary" style="background-color: purple; color: white;">Pay with
+    <button onclick="khaltiPayment()" class="btn btn-secondary" style="background-color: purple; color: white;">Pay with
         Khalti</button>
 
 </div>
 
-<script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
 
-<script>
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+
+<!-- <script>
     var config = {
         // Replace the publicKey with yours
         "publicKey": "test_public_key_746358e838144ca094b43e94f5c2c860",
@@ -53,63 +54,10 @@
     btn.onclick = function () {
         checkout.show();
     }
-</script>
+</script> -->
 
 
 
 
-<script>
-    const khaltiPayment = async (id, event, totalPrice) => {
-            const config = {
-                publicKey: "test_public_key_fb53c47dfcf44808988bda227c018702",
-                productIdentity: id,
-                productName: event,
-                productUrl: "http://localhost:3000/",
-                eventHandler: {
-                    onSuccess: async (payload) => {
-
-                        await sendPaymentToken(payload.token, payload.amount, payload.product_identity);
-
-                        console.log(payload);
-                    },
-                    onError: (error) => {
-                        // Handle errors
-                        console.log(error);
-                    },
-                    onClose: () => {
-                        navigate('/client-dashboard');
-                    },
-                },
-                paymentPreference: [
-                    "KHALTI",
-                ],
-            };
-            try {
-                const checkout = new KhaltiCheckout(config);
-                checkout.show({ amount: totalPrice / 100 });
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        const sendPaymentToken = async (paymentToken, amount, serviceuseid) => {
-            try {
-
-                const res = await fetch("http://127.0.0.1:8000/servicetransaction/", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ payment_token: paymentToken, payment_amount: amount, serviceuseid: serviceuseid })
-                });
-                if (res.ok) {
-                    navigate('/client-dashboard')
-                    alert("Payment Completed!")
-                }
-            } catch (error) {
-                toast.error(error)
-            }
-        }
-</script>
 
 {% endblock %}

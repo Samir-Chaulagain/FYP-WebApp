@@ -1,9 +1,71 @@
 {% if messages %}
-<div id="messages">
-  {% for message in messages %}
-  <div class="alert alert-{{ message.tags }}">
-    {{ message }}
-  </div>
-  {% endfor %}
+{% for message in messages %}
+<div class="mb-5 alert {{ message.tags }} alert-dismissible" role="alert" id="message-{{ forloop.counter }}">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ message }}
 </div>
+
+<script>
+  // Add a timeout to hide each message after 5 seconds
+  setTimeout(function () {
+    var messageElement = document.getElementById('message-{{ forloop.counter }}');
+    if (messageElement) {
+      messageElement.style.display = 'none';
+    }
+  }, 5000);
+</script>
+
+{# Add a conditional check to apply timeout for all message types #}
+{% if 'success' not in message.tags %}
+<script>
+  setTimeout(function () {
+    var messageElement = document.getElementById('message-{{ forloop.counter }}');
+    if (messageElement) {
+      messageElement.style.display = 'none';
+    }
+  }, 5000);
+</script>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+{% with counter=forloop.parentloop.counter %}
+<div class="alert alert-danger alert-dismissable" role="alert" id="error-message-{{ counter }}">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{ field.label|capfirst }} {{ error|escape }}</strong>
+</div>
+<script>
+  // Add a timeout to hide each error message after 5 seconds
+  setTimeout(function () {
+    var errorMessage = document.getElementById('error-message-{{ counter }}');
+    if (errorMessage) {
+      errorMessage.style.display = 'none';
+    }
+  }, 5000);
+</script>
+{% endwith %}
+{% endfor %}
+{% endfor %}
+
+{% for error in form.non_field_errors %}
+{% with counter=forloop.counter %}
+<div class="alert alert-danger alert-dismissable" role="alert" id="non-field-error-message-{{ counter }}">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{ error|escape }}</strong>
+</div>
+<script>
+  // Add a timeout to hide each non-field error message after 5 seconds
+  setTimeout(function () {
+    var nonFieldErrorMessage = document.getElementById('non-field-error-message-{{ counter }}');
+    if (nonFieldErrorMessage) {
+      nonFieldErrorMessage.style.display = 'none';
+    }
+  }, 5000);
+</script>
+{% endwith %}
+{% endfor %}
 {% endif %}

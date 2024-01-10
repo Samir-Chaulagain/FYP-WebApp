@@ -19,7 +19,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_number','gender', 'role','photo' )
+        fields = ('email', 'first_name', 'last_name', 'phone_number','gender', 'role','photo','document_photo' )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -47,8 +47,8 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (
-            'email', 'password', 'first_name', 'gender', 'phone_number','role','photo', 'last_name', 'is_active',
-            'is_staff'
+            'email', 'password', 'first_name', 'gender', 'phone_number','role','photo', 'last_name', 'is_active','is_verified',
+            'is_staff','document_photo'
         )
 
     def clean_password(self):
@@ -60,12 +60,12 @@ class UserAdmin(BaseUserAdmin):
     form = UpdateUserForm
     add_form = AddUserForm
 
-    list_display = ('email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo','is_active')
-    list_filter = ('is_active', )
+    list_display = ('email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo','is_active','is_verified')
+    list_filter = ('is_active','is_verified' )
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'gender','phone_number', 'photo', 'role', )}),
-        ('Permissions', {'fields': ('is_active', 'is_staff')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'gender','phone_number', 'photo', 'role','document_photo' )}),
+        ('Permissions', {'fields': ('is_active', 'is_staff','is_verified')}),
     )
     add_fieldsets = (
         (
@@ -73,7 +73,7 @@ class UserAdmin(BaseUserAdmin):
             {
                 'classes': ('wide',),
                 'fields': (
-                    'email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo', 'password1',
+                    'email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo','document_photo', 'password1',
                     'password2'
                 )
             }

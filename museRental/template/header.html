@@ -38,57 +38,101 @@
                 <a class="nav-link mynav" href="{% url 'main:contact' %}">Contact</a>
             </li>
 
-            {% if user.is_authenticated and user.role == 'lessor' %}
-
+            {% if user.is_authenticated and user.role == 'lessor' and user.is_verified %}
+            
             <li class="nav-item mt-0">
                 <a class="nav-link mynav" href="{% url 'explore:add_item' %}">
                     Add item</a>
-
-            </li>
-            <li class="dropdown nav-item  ">
-
-                <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
+                    
+                </li>
+                <li class="dropdown nav-item  ">
+                    
+                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                        style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
-                        height="38px" width="38px">
+                    style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
+                    height="38px" width="38px">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
-                    style=" background-color: white;">
-                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
-                    <li><a class="dropdown-item text-black"
-                            href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'accounts:change_password' %}">Change
-                            Password</a></li>
+                style=" background-color: white;">
+                <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                <li><a class="dropdown-item text-black"
+                    href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
+                    <!-- -->
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
-
+                    
                 </ul>
             </li>
+            
+            
+            {% elif user.is_authenticated and user.role == 'lessor' and not user.is_verified %}
+                <li class="nav-item mt-0">
+                    <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true">
+                        Add item</a>
+                
+                </li>
+                <li class="dropdown nav-item  ">
+                
+                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                            style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture" height="38px"
+                            width="38px">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
+                        style=" background-color: white;">
+                        <li><a class="dropdown-item text-black"
+                                href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
+                        <!-- -->
+                        <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+                
+                    </ul>
+                </li>
 
+                
 
-
-
-
-            {% elif user.is_authenticated and user.role == 'customer' %}
+            
+            {% elif user.is_authenticated and user.role == 'customer' and user.is_verified%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role=""
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                        style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
-                        height="38px" width="38px">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
-                    style=" background-color: white;">
-                    <li><a class="dropdown-item text-black"
-                            href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'accounts:change_password' %}">Change
-                            Password</a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
+                height="38px" width="38px">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
+            style=" background-color: white;">
+            <li><a class="dropdown-item text-black"
+                href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+                <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                
+                <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+                
+            </ul>
+        </li>
 
-                </ul>
-            </li>
-            {% else %}
+        
+        {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified%}
+        
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                    style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture" height="38px"
+                    width="38px">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
+                style=" background-color: white;">
+                <li><a class="dropdown-item text-black"
+                        href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+        
+                <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+        
+            </ul>
+        </li>
+        
+        
+        {% else %}
 
 
             <!-- <li class="nav-item dropdown">

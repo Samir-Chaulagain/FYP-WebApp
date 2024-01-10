@@ -10,9 +10,10 @@ class CustomerRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=10, required=True, label='Phone Number',
                                    widget=forms.TextInput(attrs={'placeholder': 'Enter Phone Number'}))
     photo = forms.ImageField(label='Upload a Profile', required=False)   
+    document_photo = forms.ImageField(label='Upload a Profile', required=False)   
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender', 'photo' ]
+        fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender', 'photo','document_photo' ]
     def __init__(self, *args, **kwargs):
         super(CustomerRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['gender'].required = True
@@ -23,7 +24,7 @@ class CustomerRegistrationForm(UserCreationForm):
         self.fields['email'].label = "Email :"
         self.fields['phone_number'].label = "Phone Number :"
         self.fields['gender'].label = "Gender :"
-        # self.fields['pdf_document'].label = "Upload your CV :"
+        self.fields['document_photo'].label = "Document_photo:"
 
         self.fields['first_name'].widget.attrs.update(
             {
@@ -67,14 +68,18 @@ class CustomerRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = UserCreationForm.save(self,commit=False)
         user.role = "customer"
+        if user.document_photo:
+            user.is_verified = True
         if commit:
             user.save()
         return user
+        
     
 class LessorRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=10, required=True, label='Phone Number',
                                    widget=forms.TextInput(attrs={'placeholder': 'Enter Phone Number'}))
     photo = forms.ImageField(label='Upload a Profile', required=False)
+    document_photo = forms.ImageField(label='Upload a Profile', required=False)
    
     def __init__(self, *args, **kwargs):
         super(LessorRegistrationForm, self).__init__(*args, **kwargs)
@@ -87,6 +92,7 @@ class LessorRegistrationForm(UserCreationForm):
         self.fields['phone_number'].label = "Phone Number :"
         self.fields['gender'].label = "Gender :"
         self.fields['photo'].label = "Photo :"
+        self.fields['document_photo'].label = "Document_Photo :"
         
 
         self.fields['first_name'].widget.attrs.update(
@@ -123,7 +129,7 @@ class LessorRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender','photo']
+        fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender','photo','document_photo']
 
     def clean_gender(self):
         gender = self.cleaned_data.get('gender')
@@ -134,13 +140,17 @@ class LessorRegistrationForm(UserCreationForm):
     def save(self, commit=True):
         user = UserCreationForm.save(self,commit=False)
         user.role = "lessor"
+        if user.document_photo:
+            user.is_verified = True
         if commit:
             user.save()
         return user
 
 class CustomerProfileEditForm(forms.ModelForm):
+    
 
     photo = forms.ImageField(label='Upload a Profile', required=False)
+    document_photo = forms.ImageField(label='Upload a document', required=False)
     def __init__(self, *args, **kwargs):
         super(CustomerProfileEditForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs.update(
@@ -160,12 +170,14 @@ class CustomerProfileEditForm(forms.ModelForm):
         )
         self.fields['photo'].widget.attrs.update({'placeholder': 'Change Profile Picture'}) 
 
+        self.fields['document_photo'].widget.attrs.update({'placeholder': 'Change Document Photo'})
     class Meta:
         model = User
-        fields = ["first_name", "last_name", 'phone_number',"gender","photo"]
+        fields = ["first_name", "last_name", 'phone_number',"gender","photo",'document_photo']
 
 class LessorProfileEditForm(forms.ModelForm):
     photo = forms.ImageField(label='Change Profile Picture')
+    document_photo = forms.ImageField(label='Change Profile Picture')
     def __init__(self, *args, **kwargs):
 
         super(LessorProfileEditForm, self).__init__(*args, **kwargs)
@@ -185,10 +197,11 @@ class LessorProfileEditForm(forms.ModelForm):
             }
         )
         self.fields['photo'].widget.attrs.update({'placeholder': 'Change Profile Picture'})
+        self.fields['document_photo'].widget.attrs.update({'placeholder': 'Change Document'})
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", 'phone_number',"gender",'photo']
+        fields = ["first_name", "last_name", 'phone_number',"gender",'photo','document_photo']
 
 
 

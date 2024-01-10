@@ -17,7 +17,7 @@
   <h2 class="text-uppercase text-center">Login</h2>
   <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
   <form method="POST" action="">
-    
+    {% include 'messages.html' %}
     {% csrf_token %}
     <div class="mb-4">
       <input type="email" class="form-control bg-light" placeholder="Enter email" name="email" required>
@@ -43,18 +43,18 @@
 </form>
 
 
-<div class="dropdown mx-auto">
-  <span class="">Not a member?</span>
+<div class=" dropdown mx-auto">
+          <span class="">Not a member?</span>
 
-  <a class="dropdown-toggle" href=" #" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-    aria-expanded="false">
-    Be part
-  </a>
-  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-    <li><a class="dropdown-item text-black" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
-    <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
+          <a class="dropdown-toggle" href=" #" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Be part
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item text-black" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
+            <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
 
-  </ul>
+          </ul>
 </div>
 
 </div>

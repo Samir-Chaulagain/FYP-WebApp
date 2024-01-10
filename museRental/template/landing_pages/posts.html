@@ -4,16 +4,19 @@
 
 
 <div class="header">
-  <h2>blog</h2>
+  <h2>{{posts.title}}</h2>
 </div>
 
-<div class="row">
+<div class="">
+
   <div class="leftcolumn">
-    <div class="card">
-        <h1>{{posts.title}}</h1>
-        <h5>{{posts.created_at}}</h5>
-        <p>{{posts.body}}</p>
-    </div>
+     
+        <img src="{{posts.image.url}}" alt="" height="50%" width="100%">
+        <h5 class="lead ">{{posts.created_at}}</h5>
+        <h5 class="lead">{{posts.created_at}}</h5>
+        
+        <p class="">{{posts.body}}</p>
+    
   </div>
 </div>
 {%endblock %}

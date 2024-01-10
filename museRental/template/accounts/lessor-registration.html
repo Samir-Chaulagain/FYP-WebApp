@@ -4,86 +4,102 @@
 
 <!-- HOME -->
 
-<div class="text-center bg-image"
-  style="
-      background-image: url('{% static 'img/bgrr.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
 
-  <div class="d-flex justify-content-center align-items-center h-100">
-    <div class="text-white">
-      <h1 class="text-white font-weight-bold">Sign Up as Lessor</h1>
-      <div class="custom-breadcrumbs">
+<nav aria-label="breadcrumb" style="margin-left: 8%; font-size: 20px;">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'accounts:lessor_registration' %}">Sign up</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Lessor</li>
+  </ol>
+</nav>
 
+<div class="container shadow-lg" data-aos="zoom-in-up">
+  <h2 class="text-center font-weight-bold ">Sign up
+  </h2>
+  <hr class="w-50 mx-auto border-dark-subtle border-2">
+
+
+
+  <div class="row g-0" style="margin-top: 35px;">
+    <div class="col-lg-7 col-md-6 ">
+      <figure class="text-center bg-image overflow-hidden bsb-overlay-hover">
+        <a>
+          <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{% static 'img/bgrr.jpg' %}" alt="" width="auto"
+            style="
+            height: 610px; background-repeat: no-repeat; background-size:cover; opacity: 0.95; object-fit: cover;">
+        </a>
+
+
+
+      </figure>
+
+
+
+
+
+
+    </div>
+    <div class="col-lg-5 col-md-6">
+
+
+
+
+      {% if form.errors %}
+      {% for field in form %}
+      {% for error in field.errors %}
+      <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ field.label|capfirst }} {{ error|escape }}</strong>
       </div>
+      {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+      <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{ error|escape }}</strong>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded" style="height:610px;">
+        {% include 'messages.html' %}
+        {% csrf_token %}
+
+        {% for field in form %}
+        {% if field.name == 'gender' %}
+        <div class="row form-group mb-4">
+          <div class="col-md-12 mb-3 mb-md-0">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
+              <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" id="female" value="F">
+              <label class="form-check-label" for="female">Female</label>
+            </div>
+          </div>
+        </div>
+
+        {% else %}
+
+        <div class="row form-group">
+          <div class="col-md-12 mb-3 mb-md-0">
+            <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+            <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
+              id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+          </div>
+        </div>
+
+        {% endif %}
+        {% endfor %}
+        <div class="row form-group">
+          <div class="col-md-12">
+            <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white mt-4">
+          </div>
+        </div>
+
+      </form>
     </div>
   </div>
-
 </div>
 
 
-  <div class="container mt-0 me-3">
-    <div class="row ">
-      <div class="col-lg-12 ">
-        <h2 class="mb-4 text-center">Sign Up To Rent</h2>
-
-
-
-        {% if form.errors %}
-        {% for field in form %}
-        {% for error in field.errors %}
-        <div class="alert alert-danger alert-dismissable">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ field.label|capfirst }} {{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-        <div class="alert alert-danger alert-dismissable">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ error|escape }}</strong>
-        </div>
-        {% endfor %}
-        {% endif %}
-        <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded">
-          {% csrf_token %}
-          {% for field in form %}
-          {% if field.name == 'gender' %}
-          <div class="row form-group mb-4">
-            <div class="col-md-12 mb-3 mb-md-0">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
-                <label class="form-check-label" for="male">Male</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="female" value="F">
-                <label class="form-check-label" for="female">Female</label>
-              </div>
-            </div>
-          </div>
-
-          {% else %}
-
-          <div class="row form-group">
-            <div class="col-md-12 mb-3 mb-md-0">
-              <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
-              <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
-                id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
-            </div>
-          </div>
-
-          {% endif %}
-          {% endfor %}
-          <div class="row form-group">
-            <div class="col-md-12">
-              <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white">
-            </div>
-          </div>
-
-        </form>
-      </div>
-    </div>
-  </div>
-
-
 {% endblock %}
-
-

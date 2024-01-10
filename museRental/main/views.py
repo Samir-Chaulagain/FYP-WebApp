@@ -116,7 +116,7 @@ def blog(request):
 
 def post(request, pk):
     posts = Post.objects.get(id=pk)
-    return render(request, 'posts.html', {'posts': posts})
+    return render(request, 'landing_pages/posts.html', {'posts': posts})
 
 
 

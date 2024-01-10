@@ -1,3 +1,5 @@
+{% load static %}
+
 <script src="https://kit.fontawesome.com/580e28b45d.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -18,6 +20,10 @@
 
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Include Dropzone library from UNPKG -->
+\
+
+
 
 <script>
     AOS.init();
@@ -79,3 +85,7 @@
         });
     });
 </script>
+
+
+<script src="{% static 'js/sweet-alert.js' %}"></script>
+<script src="{% static 'js/sweet-alert-ajax.js' %}"></script>

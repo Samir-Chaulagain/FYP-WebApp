@@ -1,4 +1,14 @@
 
+from django.contrib.auth.tokens import default_token_generator
+from .models import User  # Import the custom User model
+
+
+from django.contrib.auth import login
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.auth import authenticate, login, logout
@@ -7,11 +17,13 @@ from django.urls import reverse, reverse_lazy
 # importing forms and views
 from .forms import *
 from main.views import *
-from .models import User
+
 # getting permission
 from accounts.permission import user_is_customer, user_is_lessor 
 # for loginrequired
 from django.contrib.auth.decorators import login_required
+
+from django.contrib.sites.shortcuts import get_current_site
 
 
 
@@ -19,7 +31,30 @@ def customer_registration(request):
     if request.method == 'POST':
         form = CustomerRegistrationForm(request.POST,request.FILES)
         if form.is_valid():
-            form = form.save()
+            user = form.save(commit=False)
+            user.is_active = False  # Set the user as inactive until email confirmation
+            user.save()
+
+            # Determine the protocol based on the request
+            protocol = 'https' if request.is_secure() else 'http'
+
+            # Send email verification
+            current_site = get_current_site(request)
+            subject = 'Activate Your Account'
+            message = render_to_string('accounts/activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'protocol': protocol,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(subject, message, to=[to_email])
+            email.content_subtype = "html"
+            email.send()
+
+            messages.success(request, 'Please check your email to activate your account.')
+            
             return redirect('accounts:login')
     else:
         form = CustomerRegistrationForm()
@@ -29,11 +64,29 @@ def customer_registration(request):
             }
     return render(request,'accounts/customer-registration.html',context)
 
+
+def activate_user(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)  # Use the custom User model
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "Your account has been activated. Please login.")
+        return redirect('accounts:login')  # Redirect to the login page
+    else:
+        messages.error(request, "Invalid Link. Please try again or contact support.")
+        return redirect('accounts:login') 
+    
 def lessor_registration(request):
     if request.method == 'POST':
         form = LessorRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             form = form.save()
+            messages.success(request, 'Your profile was successfully created!')
             return redirect('accounts:login')
     
     
@@ -46,37 +99,29 @@ def lessor_registration(request):
     return render(request,'accounts/lessor-registration.html',context)
 
 def user_logIn(request):
-    message=None
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        remember_me = request.POST.get('remember_me') == 'on'  # Check if the "Remember Me" checkbox is selected
+        remember_me = request.POST.get('remember_me') == 'on'
 
         user = authenticate(request, email=email, password=password)
 
         if user is not None:
-            
             login(request, user)
 
-            # Set session expiration time based on "Remember Me" checkbox
             if remember_me:
-                # Set a longer session expiration time, e.g., 1 month (in seconds)
-                request.session.set_expiry(2592000)  # 1 month in seconds
+                request.session.set_expiry(2592000)
             else:
-                # Use the default session expiration time (settings.SESSION_COOKIE_AGE)
-                request.session.set_expiry(0) 
-                pass
-            
+                request.session.set_expiry(0)
+
             next_url = request.GET.get('next', 'main:index')
             return redirect(next_url)
-        
-    else:
-        # Optionally, you can add a success message here
-        # messages.success(request, 'Form submitted successfully!')
-          # Exa 
-        message= 'Invalid error password or mail'
+        else:
+            # Use the messages framework to display an error message
+            messages.error(request, 'Invalid email or password. Please try again.')
+    
+    return render(request, 'accounts/login.html')
 
-    return render(request, 'accounts/login.html',{'message':message})
 
 
 def user_logOut(request):
@@ -99,6 +144,16 @@ def customer_edit_profile(request, id):
     """
 
     user = get_object_or_404(User, id=id)
+
+    if request.method == 'POST':
+        ChangePasswordForm1= ChangePasswordForm(user=request.user, data=request.POST)
+        if ChangePasswordForm1.is_valid():
+            ChangePasswordForm1.save()
+            messages.success(request, 'Your password was successfully updated...! Please log in with new password.')
+            return redirect('accounts:login')
+        
+    else:
+        ChangePasswordForm1 = ChangePasswordForm(user=request.user)
     
     if request.method == 'POST':
         form = CustomerProfileEditForm(request.POST , request.FILES, instance=user)
@@ -111,10 +166,11 @@ def customer_edit_profile(request, id):
 
     
     context = {
-        'form': form
+        'form': form,
+        'form1':ChangePasswordForm1
     }
 
-    return render(request, 'accounts/edit-profile.html', context)
+    return render(request, 'accounts/customer-edit-profile.html', context)
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
@@ -126,36 +182,42 @@ def lessor_edit_profile(request, id):
     """
 
     user = get_object_or_404(User, id=id)
-    form = CustomerProfileEditForm(request.POST, request.FILES, instance=user)
+
+    if request.method == 'POST':
+        ChangePasswordForm1= ChangePasswordForm(user=request.user, data=request.POST)
+        if ChangePasswordForm1.is_valid():
+            ChangePasswordForm1.save()
+            messages.success(request, 'Your password was successfully updated...! Please log in with new password.')
+            return redirect('accounts:login')
+        
+    else:
+        ChangePasswordForm1 = ChangePasswordForm(user=request.user)
     
     if request.method == 'POST':
+        form = LessorProfileEditForm(request.POST , request.FILES, instance=user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Your Profile Was Successfully Updated!')
-            return redirect(reverse("accounts:edit-profile", kwargs={'id': id}))
+            return redirect(reverse("accounts:customer-edit-profile", kwargs={'id': id}))
+    else:
+        form = LessorProfileEditForm(instance=user)
+
     
     context = {
-        'form': form
+        'form': form,
+        'form1':ChangePasswordForm1
     }
 
-    return render(request, 'accounts/edit-profile.html', context)
+    return render(request, 'accounts/lessor-edit-profile.html', context)
 
 
 
 
 @login_required
 def change_password(request):
-    if request.method == 'POST':
-        form = ChangePasswordForm(user=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your password was successfully updated...! Please log in with new password.')
-            return redirect('accounts:login')
-        
-    else:
-        form = ChangePasswordForm(user=request.user)
+    
 
-    return render(request, 'accounts/change_password.html', {'form': form})
+    return render(request, 'accounts/edit-profile.html', {'form1': ChangePasswordForm1})
 
 
 class CustomPasswordResetView(PasswordResetView):

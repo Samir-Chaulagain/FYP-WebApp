@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="text-center bg-image" data-aos="fade-down-left"
+<div class="text-center bg-image"  data-aos="zoom-in-up"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px; opacity:96% ;">
 
@@ -21,48 +21,55 @@
 
 </div>
 
-<div class="container m-5 p-5" data-aos="zoom-in-up">
-    <div class="row justify-content-center">
-        <div class="col-md-4 justify-content-center">
-            <h2 class="fw-bold">Get Connected With Us</h2>
+    <div class="container mb-5">
+        <div class="row align-items-center justify-content-center">
+            <h2 class="mb-4 fw-bold text-center " style="margin-top: 25px;">Get Connected With Us</h2>
+            
             <hr class="hr-heading" />
-            <p class="lead">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum dolorum ab quasi possimus maiores amet
-                officiis quaerat nihil adipisci aut corporis deleniti facilis voluptatibus laboriosam dolor aliquid
-                impedit ducimus doloremque quas odit tempora pariatur, expedita itaque quis. Dicta hic nostrum magnam
-                earum magni temporibus?
-            </p>
+            <!-- Map section -->
+            <div class="col-md-7">
 
-        </div>
-        
-        <div class="col-md-4 mt-2 ms-4">
-            <form action="#" method="POST">
-                {% include 'messages.html' %}
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="{{ form.name.id_for_label }}">Name</label>
-                    <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}"
-                        placeholder="{{ form.name.field.widget.attrs.placeholder }}">
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.email.id_for_label }}">Email</label>
-                    <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}"
-                        placeholder="{{ form.email.field.widget.attrs.placeholder }}">
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.subject.id_for_label }}">Subject</label>
-                    <input type="text" class="form-control" id="{{ form.subject.id_for_label }}" name="{{ form.subject.name }}"
-                        placeholder="{{ form.subject.field.widget.attrs.placeholder }}">
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.message.id_for_label }}">Message</label>
-                    <textarea class="form-control" id="{{ form.message.id_for_label }}" name="{{ form.message.name }}"
-                        placeholder="{{ form.message.field.widget.attrs.placeholder }}"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" >Send Message</button>
-            </form>
+                
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.878769267631!2d85.3307661!3d27.712094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb196de5da5741%3A0x652792640c70ede9!2sHerald%20College%20Kathmandu!5e0!3m2!1sen!2snp!4v1640804481237!5m2!1sen!2snp"
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="col-md-5 justify-content-center">
+                
+                <p class="lead">
+                    If you have any questions or inquiries, feel free to reach out to us using the contact information below:
+                </p>
+            
+                <form action="#" method="POST" >
+                    {% include 'messages.html' %}
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.name.id_for_label }}">Name</label>
+                        <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}"
+                            placeholder="{{ form.name.field.widget.attrs.placeholder }}" >
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}"
+                            placeholder="{{ form.email.field.widget.attrs.placeholder }}">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="{{ form.subject.id_for_label }}">Subject</label>
+                        <input type="text" class="form-control" id="{{ form.subject.id_for_label }}" name="{{ form.subject.name }}"
+                            placeholder="{{ form.subject.field.widget.attrs.placeholder }}">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="{{ form.message.id_for_label }}">Message</label>
+                        <textarea class="form-control" id="{{ form.message.id_for_label }}" name="{{ form.message.name }}"
+                            placeholder="{{ form.message.field.widget.attrs.placeholder }}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3" style="margin-left: 40%;" >Send Message</button>
+                </form>
+            </div>
+            
         </div>
     </div>
-</div>
+
+
 
 {%endblock %}
