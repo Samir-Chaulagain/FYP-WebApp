@@ -302,7 +302,7 @@ def CheckAvailability(request, id):
             if i.isAvailable:
                 Available = True
                 Message = "Note that somebody has also requested for this item from " + str(i.Rentitem_Date_of_Booking) + " to " + str(i.Rentitem_Date_of_Return)
-                return render(request, 'explore/details.html', {'Message': Message, 'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
+                return render(request, 'explore:check-availability', {'Message': Message, 'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
 
             NotAvailable = True
             return render(request, 'explore/details.html', {'NotAvailable': NotAvailable, 'dates': i, 'item': item, 'customer': customer})

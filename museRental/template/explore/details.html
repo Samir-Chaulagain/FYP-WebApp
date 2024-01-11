@@ -16,7 +16,8 @@
                 <div class="col-md-12">
                     <h1 class="text-white font-weight-bold">Explore</h1>
                     <div class="custom-breadcrumbs">
-                        <a href="{% url 'explore:items' %}" style="color: white; text-decoration: none;"><strong>Explore</strong></a>
+                        <a href="{% url 'explore:items' %}"
+                            style="color: white; text-decoration: none;"><strong>Explore</strong></a>
                         <span class="mx-2 slash text-light">/</span>
                         <span class="text-white">Details</span>
                     </div>
@@ -63,209 +64,183 @@
 
             </div>
         </div>
+    </div>
 
 
 
-        <!-- Information -->
-        <div class="row align-items-center mb-5">
+    <!-- Information -->
+    <div class="row align-items-center mb-5">
 
-            <div class="col">
-                <div class="card p-2" style="width: auto;">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Name</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{item.name}}
-                            </div>
+        <div class="col">
+            <div class="card p-2" style="width: auto;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Name</h6>
                         </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Model</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{item.instrument_model}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Instrument Brand</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{item.instrument_brand}}
-                            </div>
-                        </div>
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Description</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                {{item.description}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <h6 class="mb-0">Price</h6>
-                            </div>
-                            <div class="col-sm-9 text-secondary">
-                                ₹{{item.price}} (per hour)
-                            </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{item.name}}
                         </div>
                     </div>
-                </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Model</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{item.instrument_model}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Instrument Brand</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{item.instrument_brand}}
+                        </div>
+                    </div>
+                    <hr>
 
-            </div>
-
-
-            {%if Incorrect_dates%}
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <strong>{{Incorrect_dates}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Description</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            {{item.description}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Price</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            ₹{{item.price}} (per hour)
+                        </div>
+                    </div>
                 </div>
             </div>
-            {%endif%} {%if Available%}
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
-                    <strong>Item is Available (Send Request to book it)</strong> {%if Message%}
-                    <p>
-                        {{Message}}. So there are some chances that you might not get it. As items are
-                        rented on
-                        First come
-                        first serve policy. You may get this item if the other person decline his/her
-                        request.
-                    </p>
-                    {%endif%}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            {%endif%} {%if NotAvailable%}
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <strong>Item is not Available for this dates!!</strong>
-                    <p>
-                        It is rented from {{dates.Rentitem_Date_of_Booking}} to
-                        {{dates.Rentitem_Date_of_Return}}
-                    </p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            {%endif%}
-
-
-
-
-            {%if Available%}
-            <h5 class="text-light" style=" background-color: black; text-align: center;">Book items
-            </h5>
-            <form action="{% url 'explore:rent-item' item.id %}" method="post">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="pickupdate"><b>Pickup Date</b></label>
-                        <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
-                            value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="returndate"><b>Return Date</b></label>
-                        <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
-                            value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="totaldays"><b>Total days</b></label>
-                        <input type="text" class="form-control" id="totaldays" name="Total_days"
-                            value="{{rent_data.days}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="totalamount"><b>Total Amount</b></label>
-                        <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
-                            value="{{rent_data.total}}" readonly>
-                    </div>
-                    {% is_item_already_rented item request.user as is_rented %}
-                    {% if is_rented %}
-                    <div class="col-6">
-                        <span class="btn btn-block btn-secondary btn-md">Already Applied</span>
-                    </div>
-                    {% else %}
-                    <div class="col-6">
-                        <input type="submit" class="btn btn-block btn-primary btn-md" value="Book Now" />
-                    </div>
-                    {% endif %}
-                </div>
-            </form>
-
-            {%endif%}
-
-
 
         </div>
-        
-        <!-- Button trigger modal -->
-
-        <div class="col-6">
 
 
-            <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal" data-target="#exampleModalCenter">
+        {%if Incorrect_dates%}
+        <div class="container">
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                <strong>{{Incorrect_dates}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        {%endif%}
+        {%if Available%}
+        <div class="container">
+            <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
+                <strong>Item is Available (Send Request to book it)</strong>
+                {%if Message%}
+                <p>
+                    {{Message}}. So there are some chances that you might not get it. As items are
+                    rented on
+                    First come
+                    first serve policy. You may get this item if the other person decline his/her
+                    request.
+                </p>
+                {%endif%}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        {%endif%}
+        {%if NotAvailable%}
+        <div class="container">
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                <strong>Item is not Available for this dates!!</strong>
+                <p>
+                    It is rented from {{dates.Rentitem_Date_of_Booking}} to
+                    {{dates.Rentitem_Date_of_Return}}
+                </p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        {%endif%}
+    </div>
+
+    <div class="row">
+        <div class="col-lg-2 ">
+            {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+            <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal"
+                data-target="#exampleModalCenter">
                 Rent now
             </button>
+
+
+
+
+
+            {% elif not user.is_verified and user.role == 'customer' %}
+
+            <a class="btn btn-danger btn-md" aria-disabled="true">Need Verification</a>
+
+
+            {%elif not user.is_authenticated%}
+            <a class="btn btn-primary" href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login
+                to Rent</a>
+
+
+            {%endif%}
+
         </div>
+
+
+
+
+
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title " id="exampleModalLongTitle">Check
+                            Availability</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="col">
 
 
-                            {% if user.is_authenticated and user.role == 'customer' %}
-                            <h5 class="text-light" style="background-color: rgb(0, 0, 0); text-align: center; ">Check
-                                Availability
-                            </h5>
-                            <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
-                                enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="form-row">
-                                    <div class="col-4">
-                                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                            name="Rentitem_Date_of_Booking" class="form-control"
-                                            placeholder="Pickup date" required>
-                                    </div>
-                                    <div class="col-4">
-                                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                            name="Rentitem_Date_of_Return" class="form-control mt-3"
-                                            placeholder="Return date" required>
-                                    </div>
-                                    <div class="col-4 mt-3 pt-2">
-                                        <input type="submit" class="btn btn-primary" value="Check Availability" />
-                                    </div>
+                        </h5>
+                        <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
+                            enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+
+                                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                    name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date"
+                                    required>
+
+
+                                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                    name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date"
+                                    required>
+
+                                <hr>
+                                <div class="modal-body">
+
+
+                                    <input type="submit" class="btn btn-primary" value="Check Availability" />
+                                    <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
                                 </div>
-                            </form>
-
-
-
-                            {%endif%}
-
-                        </div>
+                            </div>
+                        </form>
 
                     </div>
 
@@ -276,89 +251,92 @@
 
 
 
-        <div class="col-6">
-            {% if user.is_authenticated and user.role == 'customer' %}
-            {% is_item_already_saved item request.user as is_saved %}
-            {% if is_saved %}
-            <span class="btn btn-block btn-dark btn-md"><span class="mr-2 text-black">Already
-                    Saved
-                    Item</span></span>
-            {% else %}
-            <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="item" value="{{ item.id }}">
-                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-            </form>
-            {% endif %}
 
-            {% elif request.user.id == item.user.id and user.role == 'lessor' %}
-            <!-- Button to trigger the delete confirmation modal -->
-            <button class="btn btn-block btn-danger btn-md" data-toggle="modal"
-                data-target="#deleteConfirmationModal">Delete</button>
+    </div>
 
-            <!-- Delete Confirmation Modal -->
-            <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
-                aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteConfirmationModalLabel">Delete Item Confirmation</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to delete this item?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <!-- Form for actual deletion -->
-                            <form action="{% url 'explore:delete_item' item.id %}" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="item" value="{{ item.id }}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
+
+
+
+
+
+    <!-- Save Button -->
+    <div class="col-6">
+        {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+        {% is_item_already_saved item request.user as is_saved %}
+        {% if is_saved %}
+        <span class="btn btn-block btn-dark btn-md"><span class="mr-2 text-black">Already
+                Saved
+                Item</span></span>
+        {% else %}
+        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="item" value="{{ item.id }}">
+            <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+        </form>
+        {% endif %}
+
+
+        {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified %}
+        <p>
+            Customer have to Verify Account in Profile by Uploading documents
+
+        </p>
+
+
+        {% elif request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+        <!-- Button to trigger the delete confirmation modal -->
+        <button class="btn btn-block btn-danger btn-md" data-toggle="modal"
+            data-target="#deleteConfirmationModal">Delete</button>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+            aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmationModalLabel">Delete Item Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <!-- Form for actual deletion -->
+                        <form action="{% url 'explore:delete_item' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item" value="{{ item.id }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            {% elif user.role == none %}
-            <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="item" value="{{ item.id }}">
-                <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
-            </form>
-            {% endif %}
         </div>
+        {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
 
+        <p>
+            Lessor have to Verify Account in Profile by Uploading documents
 
+        </p>
 
-        {% if request.user.id == item.user.id and user.role == 'lessor' %}
-        <div class="col-6">
-            <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
-        </div>
-
-        {% elif user.role == none %}
-        <div class="col-6">
-            <form action="{% url 'explore:rent-item' item.id %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="item" value="{{ item.id }}">
-                <a class="btn btn-primary"
-                    href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login to Rent</a>
-
-
-
-            </form>
-        </div>
+        {% elif not user.is_authenticated%}
+        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="item" value="{{ item.id }}">
+            <input type="submit" class="btn btn-block btn-light btn-md" value="Save" />
+        </form>
         {% endif %}
     </div>
-</div>
+
+
+
+
+
 
 </div>
-<!-- Add this script at the end of your HTML body or in your scripts section -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+</div>
 
 
 {% endblock %}
