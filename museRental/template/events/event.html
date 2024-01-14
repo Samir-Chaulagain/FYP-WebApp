@@ -39,7 +39,7 @@
 <section class="py-3 py-md-5">
     <div class="container-fluid overflow-hidden  align-items-center">
         <div class="row gy-4 gy-lg-0 justify-content-center">
-            {% for event in event %}
+            {% for event in page_obj %}
             <div class="col-lg-3 col-md-3 ms-3">
 
                 <div class="card border-0 shadow mb-5 ">
@@ -76,6 +76,7 @@
 
 
         </div>
+        {% include 'paginator.html' %}
     </div>
 </section>
 

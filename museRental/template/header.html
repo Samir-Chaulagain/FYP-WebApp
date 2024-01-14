@@ -1,4 +1,29 @@
+
 {%load static %}
+
+<style>
+.profile-picture-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    margin-top: -10px;
+    height: 38px;
+    width: 38px;
+}
+
+.exclamation-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px; /* Set the width of the icon */
+    height: 20px; /* Set the height of the icon */
+}
+
+
+</style>
 
 
 
@@ -49,9 +74,11 @@
                     
                     <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                    style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
-                    height="38px" width="38px">
+                    <div class="profile-picture-container">
+                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                            alt="Profile Picture" class="profile-picture">
+                        <img src="{% static 'img/Main/approved.png' %}" alt="Exclamation Icon" class="exclamation-icon">
+                    </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
                 style=" background-color: white;">
@@ -67,7 +94,7 @@
             
             {% elif user.is_authenticated and user.role == 'lessor' and not user.is_verified %}
                 <li class="nav-item mt-0">
-                    <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true">
+                    <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true" hidden>
                         Add item</a>
                 
                 </li>
@@ -75,9 +102,12 @@
                 
                     <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                            style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture" height="38px"
-                            width="38px">
+
+                        <div class="profile-picture-container">
+                            <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                                alt="Profile Picture" class="profile-picture">
+                            <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon" class="exclamation-icon">
+                        </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
                         style=" background-color: white;">
@@ -96,9 +126,11 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role=""
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture"
-                height="38px" width="38px">
+                <div class="profile-picture-container">
+                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                        alt="Profile Picture" class="profile-picture">
+                    <img src="{% static 'img/Main/approved.png' %}" alt="Exclamation Icon" class="exclamation-icon">
+                </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
             style=" background-color: white;">
@@ -117,9 +149,11 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="" data-bs-toggle="dropdown"
                 aria-expanded="false">
-                <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                    style="border-radius: 50%; margin-top: -10px;" alt="Profile Picture" class="profile-picture" height="38px"
-                    width="38px">
+                <div class="profile-picture-container">
+                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                        alt="Profile Picture" class="profile-picture">
+                    <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon" class="exclamation-icon" style="margin-left: 5px;">
+                </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
                 style=" background-color: white;">

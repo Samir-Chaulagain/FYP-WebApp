@@ -1,4 +1,5 @@
 from email.message import EmailMessage
+import json
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
@@ -29,7 +30,14 @@ def items(request):
     query = request.GET.get('query', '')
     category_id = request.GET.get('category', 0)
     categories = Category.objects.all()
-    items = Item.objects.filter(is_published=True).order_by('-created_at')
+    
+    item_list = Item.objects.filter(is_published=True, is_sold=False).order_by('-created_at')
+    
+    # Create a paginator for the job list
+    paginator = Paginator(item_list, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
 
     if category_id:
         items = items.filter(category_id=category_id)
@@ -37,10 +45,12 @@ def items(request):
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
     return render(request, 'explore/explore.html', {
-        'items': items,
+       
         'query': query,
         'categories': categories,
-        'category_id': int(category_id)
+        'category_id': int(category_id),
+        'page_obj': page_obj,
+
     })
 
 # View instrument details
@@ -352,3 +362,32 @@ def paypal(request, id):
     orders = Customer.objects.get(id=id)
     order = Customer.objects.all()
     return render(request, 'paypal.html', {'orders': orders, 'order': order})
+
+import json
+import logging
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+@require_POST
+def send_email_after_payment(request):
+    try:
+        data = json.loads(request.body)
+        receiver_email = data.get('receiver_email')
+
+        subject = 'Payment Successful'
+        message = 'User request for Your item.Payment was successful.User loaction is'
+        from_email = 'muserentalhub@gmail.com'
+        recipient_list = [receiver_email]
+        print("Hello", recipient_list)
+
+        send_mail(subject, message, from_email, recipient_list)
+
+        return JsonResponse({'status': 'success'})
+    except Exception as e:
+        logger.error(f"Error sending email: {e}")
+        return JsonResponse({'status': 'error'}, status=500)

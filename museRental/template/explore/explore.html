@@ -21,7 +21,7 @@
 
                 <div class="col-md-12">
                     <h1 class="text-white font-weight-bold">Explore</h1>
-                    
+
                 </div>
 
             </div>
@@ -56,12 +56,13 @@
                     <p class="font-semibold">Categories</p>
                     <ul>
                         <li class="py-2 px-2 rounded-xl bg-gray-200">
-                            <a href="{% url 'explore:items' %}" style="text-decoration:none; color:rgb(30, 30, 30);">All</a>
+                            <a href="{% url 'explore:items' %}"
+                                style="text-decoration:none; color:rgb(30, 30, 30);">All</a>
                         </li>
                         {% for category in categories %}
                         <li class="py-2 px-2 rounded-xl{% if category.id == category_id %} bg-gray-200{% endif %}">
-                            <a
-                                href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}" style="text-decoration:none; color:rgb(0, 0, 0);">{{category.name}}</a >
+                            <a href="{% url 'explore:items' %}?query={{ query }}&category={{ category.id }}"
+                                style="text-decoration:none; color:rgb(0, 0, 0);">{{category.name}}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -72,8 +73,8 @@
         <div class="col" data-aos="fade-down-left">
             <div class="container">
                 <div class="row">
-
-                    {% for item in items%}
+                    {% for item in page_obj %}
+                    <!-- Your existing item card code here -->
                     <div class="col-lg-4 col-md-4 col-sm-6 my-3 ">
 
                         <div class="card shadow mb-5  h-100" style="width: 18rem;">
@@ -128,11 +129,17 @@
                         </div>
                     </div>
                     {% endfor %}
-
                 </div>
+                
+                
             </div>
+            {% include 'paginator.html' %}
         </div>
+
     </div>
+</div>
+</div>
+</div>
 
 
-    {% endblock %}
+{% endblock %}

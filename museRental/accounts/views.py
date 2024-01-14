@@ -99,6 +99,10 @@ def lessor_registration(request):
     return render(request,'accounts/lessor-registration.html',context)
 
 def user_logIn(request):
+
+    if request.user.is_authenticated:
+        # User is already logged in, redirect to the main page
+        return render(request, 'landing_pages/index.html')
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']

@@ -8,6 +8,7 @@ from event.models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from event.forms import EventBooked,EventSavedForm
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -19,13 +20,17 @@ def event(request):
     categories = Category.objects.all()
     event = Event.objects.all()
 
+    paginator = Paginator(event, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     if category_id:
         event = event.filter(category_id=category_id)
 
     if query:
         event = event.filter(Q(name__icontains=query) | Q(description__icontains=query))
     return render(request, 'events/event.html', {
-        'event': event,
+        'page_obj': page_obj,
         'query': query,
         'categories': categories,
         'category_id': int(category_id),

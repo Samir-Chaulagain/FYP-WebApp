@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from ckeditor.fields import RichTextField
 # Create your models here.
 from django.contrib.auth import get_user_model
 # User = get_user_model()
@@ -25,7 +26,7 @@ class Item(models.Model):
     instrument_brand = models.CharField(max_length=60, default='Default Brand Name')
     instrument_model = models.CharField(max_length=60,  default='Default model Name')
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
-    description = models.TextField(blank=True, null=True)
+    description = RichTextField()
       
     item_type = models.CharField(choices=item_type, max_length=1,default=False)
     price = models.FloatField()
@@ -42,6 +43,7 @@ class Item(models.Model):
     
     def __str__(self):
         return self.name
+    
     
     
 
@@ -61,6 +63,7 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.item.name
+     
     
 class saved_item(models.Model):
 
@@ -80,6 +83,7 @@ class applieditems(models.Model):
 
     def __str__(self):
         return self.item.name
+     
     
 
 

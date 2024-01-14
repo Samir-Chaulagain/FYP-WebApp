@@ -116,14 +116,27 @@
                             <h6 class="mb-0">Price</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            ₹{{item.price}} (per hour)
+                            {{item.price}} (per hour)
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-
+        {%if NotAvailable%}
+        <div class="container">
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                <strong>Item is not Available for this dates!!</strong>
+                <p>
+                    It is rented from {{dates.Rentitem_Date_of_Booking}} to
+                    {{dates.Rentitem_Date_of_Return}}
+                </p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        {%endif%}
 
         {%if Incorrect_dates%}
         <div class="container">
@@ -154,29 +167,92 @@
             </div>
         </div>
         {%endif%}
-        {%if NotAvailable%}
-        <div class="container">
-            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                <strong>Item is not Available for this dates!!</strong>
-                <p>
-                    It is rented from {{dates.Rentitem_Date_of_Booking}} to
-                    {{dates.Rentitem_Date_of_Return}}
-                </p>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+
+
+
+        {%if Available%}
+        <h5 class="text-light" style=" background-color: black; text-align: center;">Book items
+        </h5>
+        <form id="rentForm" action="{% url 'explore:rent-item' item.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="pickupdate"><b>Pickup Date</b></label>
+                    <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
+                        value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="returndate"><b>Return Date</b></label>
+                    <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
+                        value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="totaldays"><b>Total days</b></label>
+                    <input type="text" class="form-control" id="totaldays" name="Total_days" value="{{rent_data.days}}"
+                        readonly>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="totalamount"><b>Total Amount</b></label>
+                    <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
+                        value="{{rent_data.total}}" readonly>
+                </div>
+                {% is_item_already_rented item request.user as is_rented %}
+                {% if is_rented %}
+                <button type="button" class="btn btn-success btn-md">
+                    Already Rented
                 </button>
+                {% else %}
+                <div class="col-6">
+
+                    <button onclick="Pay_Khalti(event)" class="btn btn-secondary"
+                        style="background-color: rgb(107, 8, 168); color: white;">
+                        Pay
+                    </button>
+
+                </div>
+                {% endif %}
             </div>
-        </div>
+        </form>
+
         {%endif%}
     </div>
 
     <div class="row">
-        <div class="col-lg-2 ">
+        <div class="col-lg-2 mb-3 ">
             {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+
+
+            {% is_item_already_rented item request.user as is_rented %}
+            {% if is_rented %}
+            <button type="button" class="btn btn-success btn-md">
+                Already Rented
+            </button>
+            {% else %}
+            {% if Available %}
+            <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal"
+                data-target="#exampleModalCenter" hidden>
+                Rent now
+            </button>
+            {% else %}
             <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal"
                 data-target="#exampleModalCenter">
                 Rent now
             </button>
+
+            {% endif %}
+            {% endif %}
+
+
+
+
+
+            {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+            <div class="col-6">
+                <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
+
+            </div>
+            {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
+            <a class="btn btn-danger btn-md" aria-disabled="true">Need Verification</a>
 
 
 
@@ -317,7 +393,7 @@
         {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
 
         <p>
-            Lessor have to Verify Account in Profile by Uploading documents
+            Lessor have to Verify Account in Profile by Uploading documents and wait uniti verification
 
         </p>
 
@@ -337,6 +413,115 @@
 
 </div>
 </div>
+
+<!-- savedevents and applied events -->
+<!-- savedevents and applied events -->
+<!-- Include Khalti Checkout Web library -->
+<script src="https://unpkg.com/khalti-checkout-web"></script>
+
+<script>
+    const csrf_token = "{{ csrf_token }}";
+
+    async function Pay_Khalti(event) {
+        event.preventDefault();
+
+        // Replace 'yourapp' with your actual Django app name
+        // const emailSendingEndpoint = '/explore:send_email_after_payment/';
+
+        // Get the total amount from Django context
+        const amt = '{{ rent_data.total }}';
+        const mail = '{{ item.user.email }}';
+        async function sendEmailAfterPayment() {
+            try {
+                const response = await fetch('{% url "explore:send_email_after_payment" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrf_token,
+                    },
+                    body: JSON.stringify({
+                        receiver_email: mail,
+                    }),
+                });
+
+                console.log(response.status);
+                // Handle the response as needed
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const config = {
+            publicKey: "test_public_key_dc1970829015486687411487e45d789a",
+            productIdentity: 1,
+            productName: "Service Provider",
+            productUrl: "http://127.0.0.1:8000/",
+            eventHandler: {
+                onSuccess: async (payload) => {
+                    try {
+                        // Call pays function to handle payment
+                        await pays(payload.token, payload.amount);
+
+                        // Find the form element
+                        const form = document.getElementById('rentForm');
+                        await sendEmailAfterPayment();
+                        // Submit the form
+                        form.submit();
+
+                        // Send email after successful payment
+                        
+                    } catch (error) {
+                        console.error(error);
+                    }
+                },
+                onError: (error) => {
+                    console.log(error);
+                },
+                onClose: () => {
+                    // Handle modal close
+                },
+            },
+            paymentPreference: [
+                "KHALTI",
+            ],
+        };
+
+        try {
+            // Initialize KhaltiCheckout with the configuration
+            const checkout = new KhaltiCheckout(config);
+
+            // Show the checkout dialog with the specified amount
+            checkout.show({ amount: amt });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    
+
+    async function pays(paymentToken, amount) {
+        try {
+            const response = await fetch('event:khalti-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrf_token,
+                },
+                body: JSON.stringify({
+                    payment_token: paymentToken,
+                    payment_amount: amount,
+                }),
+            });
+
+            console.log(response.status);
+            // Add additional logs or debugging steps as needed
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>
+
+
 
 
 {% endblock %}
