@@ -165,6 +165,7 @@ EMAIL_USE_SSL = True
 # EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'muserentalhub@gmail.com'
 EMAIL_HOST_PASSWORD = 'q w q w p e x z f q e r j d x v'
+DEFAULT_FROM_EMAIL = "muserentalhub@gmail.com"
 ALLOWED_HOSTS = []
 
 # Optionally, you can set the default 'from' address for outgoing emails

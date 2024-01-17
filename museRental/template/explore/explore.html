@@ -32,7 +32,54 @@
 </div>
 
 
+<div class="container">
+    <!-- row -->
+    <div class="row">
+        <!-- shop -->
+        <div class="col-md-4 col-xs-6">
+            <div class="shop">
+                <div class="shop-img">
+                    <img src="{%static 'img/inst3.jpg'%}" alt="" height="210px">
+                </div>
+                <div class="shop-body">
+                    <h3>Exciting<br>Packages</h3>
+                    <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- /shop -->
 
+        <!-- shop -->
+        <div class="col-md-4 col-xs-6" data-aos="zoom-in-down">
+            <div class="shop">
+                <div class="shop-img">
+                    <img src="{%static 'img/inst4.jpg'%}" alt="" height="210px">
+                </div>
+                <div class="shop-body">
+                    <h3>Product<br>Collections</h3>
+                    <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- /shop -->
+
+        <!-- shop -->
+        <div class="col-md-4 col-xs-6">
+            <div class="shop">
+                <div class="shop-img">
+                    <img src="{%static 'img/inst3.jpg'%}" alt="" height="210px">
+                </div>
+                <div class="shop-body">
+                    <h3>Buy<br>Products</h3>
+                    <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <!-- /shop -->
+    </div>
+    <!-- /row -->
+</div>
+<!-- /container -->
 
 
 
@@ -70,68 +117,84 @@
             </div>
         </div>
 
-        <div class="col" data-aos="fade-down-left">
-            <div class="container">
-                <div class="row">
-                    {% for item in page_obj %}
-                    <!-- Your existing item card code here -->
-                    <div class="col-lg-4 col-md-4 col-sm-6 my-3 ">
+        <div class="col" >
 
-                        <div class="card shadow mb-5  h-100" style="width: 18rem;">
-                            <div id="instrument_{{item.name}}" class="carousel slide" data-bs-ride="carousel">
+            <div class="container">
+
+
+                <div class="row">
+
+
+
+
+                    {% for item in page_obj %}
+                    <div class="col-lg-4 col-md-4 col-sm-6 my-3 " data-aos="zoom-in-up">
+                        <div class="card shadow mb-5 h-80 " style="width: Auto">
+                            <div id="instrument_{{item.id}}" class="carousel slide" data-bs-interval="false">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
-                                        data-bs-slide-to="0" class="active" aria-current="true"
-                                        aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
-                                        data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#instrument_{{item.name}}"
-                                        data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="0"
+                                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="1"
+                                        aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="2"
+                                        aria-label="Slide 3"></button>
                                 </div>
                                 <div class="carousel-inner">
-                                    <div class="carousel-item active" style="height: 196px">
-
-                                        <img class="card-img-top img-fluid" src="{{item.instrument_image1.url}}"
+                                    {% if item.instrument_image1.url %}
+                                    <div class="carousel-item active" style="height: 200px">
+                                        <img class="card-img-top " src="{{ item.instrument_image1.url }}"
                                             alt="First slide">
-
                                     </div>
-                                    <div class="carousel-item" style="height: 196px">
-                                        <img class="card-img-top img-fluid" src="{{item.instrument_image2.url}}" alt="">
-
+                                    {% endif %}
+                                    {% if item.instrument_image2.url %}
+                                    <div class="carousel-item" style="height: 200px">
+                                        <img class="card-img-top " src="{{ item.instrument_image2.url }}" alt="">
                                     </div>
-                                    <div class="carousel-item" style="height: 196px">
-                                        <img class="card-img-top img-fluid" src="{{item.instrument_image3.url}}" alt="">
-
+                                    {% endif %}
+                                    {% if item.instrument_image3.url %}
+                                    <div class="carousel-item" style="height: 200px">
+                                        <img class="card-img-top " src="{{ item.instrument_image3.url }}" alt="">
                                     </div>
-
-
+                                    {% endif %}
                                 </div>
                                 <button class="carousel-control-prev" type="button"
-                                    data-bs-target="#instrument_{{item.name}}" data-bs-slide="prev">
+                                    data-bs-target="#instrument_{{ item.id }}" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
                                 <button class="carousel-control-next" type="button"
-                                    data-bs-target="#instrument_{{item.name}}" data-bs-slide="next">
+                                    data-bs-target="#instrument_{{ item.id }}" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
                             </div>
 
-                            <div class="card-body ">
-                                <h5 class="card-title ">{{ item.name }}</h5>
-                                <hr>
-                                <p class="card-text "><mark><em>Brand:</em></mark>{{item.instrument_brand}}</p>
-                                <p class="card-text "><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
-                                <a href="{% url 'explore:details' item.id  %}" class="btn btn-primary">Veiw details</a>
+                            <div class="card-body">
+
+
+                                <div class="product-body justify-content-center" >
+                                    <p class="product-category">{{item.category}}</p>
+                                    <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
+                                        {{ item.name}}</a></h3>
+                                    <h4 class="product-price">रु {{ item.price }} <del class="product-old-price">रु 
+                                        {{item.price }}</del></h4>
+
+                                    <div class="product-btns justify-content-center" style="background-color: rgba(0, 0, 0, 0);  ">
+                                        <a class="add-to-wishlist" href="" style="margin-right: 15px;"><i class="fa fa-heart-o fa-lg" ></i><span
+                                                class="tooltipp">Save Item</span></a>
+
+                                       <a href="{% url 'explore:details' item.id  %}" class="quick-view"><i class="fa fa-eye fa-lg"></i><span class="tooltipp">
+                                                view details</span></a>
+                                    </div>
+                                </div>
+
+
 
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                
-                
             </div>
             {% include 'paginator.html' %}
         </div>
@@ -143,3 +206,8 @@
 
 
 {% endblock %}
+<h5 class="card-title"></h5>
+<hr>
+<p class="card-text"><mark><em>Brand:</em></mark>{{item.instrument_brand}}</p>
+<p class="card-text"><mark><em>Price (per day):</em></mark> ₹ {{ item.price }}</p>
+<a href="{% url 'explore:details' item.id  %}" class="btn btn-primary">View details</a>

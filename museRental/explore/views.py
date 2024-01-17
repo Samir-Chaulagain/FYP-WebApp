@@ -38,19 +38,23 @@ def items(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-
+    # Apply category filter
     if category_id:
-        items = items.filter(category_id=category_id)
+        items = item_list.filter(category_id=category_id)
+    else:
+        items = item_list
 
+    # Apply query filter
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
-    return render(request, 'explore/explore.html', {
-       
+
+    return render(request, 'explore/explore.html', 
+    {
         'query': query,
         'categories': categories,
         'category_id': int(category_id),
         'page_obj': page_obj,
-
+        'items': items,
     })
 
 # View instrument details

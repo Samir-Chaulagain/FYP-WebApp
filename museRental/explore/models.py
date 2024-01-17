@@ -32,11 +32,11 @@ class Item(models.Model):
     price = models.FloatField()
     is_published = models.BooleanField(default=False)
     is_sold = models.BooleanField(default=False)
-    # is_sold = models.BooleanField(default=False)
+    is_sellable = models.BooleanField(default=False)
 
-    instrument_image1 = models.ImageField(upload_to='images/',default='img/inst1/')
-    instrument_image2 = models.ImageField(upload_to='images/',default='img/inst1/')
-    instrument_image3 = models.ImageField(upload_to='images/',default='img/inst1/')    
+    instrument_image1 = models.ImageField(upload_to='images/')
+    instrument_image2 = models.ImageField(upload_to='images/')
+    instrument_image3 = models.ImageField(upload_to='images/')    
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE,default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)

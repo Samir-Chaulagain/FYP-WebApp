@@ -9,7 +9,7 @@ admin.site.register(Category)
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'instrument_brand', 'category', 'user', 'is_published', 'is_sold')
+    list_display = ('name', 'instrument_brand', 'category', 'user', 'is_published', 'is_sold','is_sellable')
     list_filter = ('category', 'user', 'is_published', 'is_sold')
 
     def get_queryset(self, request):

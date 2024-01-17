@@ -100,7 +100,7 @@
                             your life's most cherished moments.</p>
                         <div class="float-end">
 
-                            <a href="{% url 'main:about' %}" class="btn btn-outline-dark">
+                            <a href="{% url 'main:about' %}" class="btn btn-outline-danger mb-3">
                                 View More
                             </a>
                         </div>
@@ -113,6 +113,57 @@
     </div>
 </section>
 
+<section class="mt-3">
+
+    <div id="hot-deal" >
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="image"
+                    style="background: url('{%static 'img/inst3.jpg'%}') center center / cover no-repeat; height: 100%;">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="hot-deal">
+                    <ul class="hot-deal-countdown">
+                        <li>
+                            <div>
+                                <h3>02</h3>
+                                <span>Days</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>10</h3>
+                                <span>Hours</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>34</h3>
+                                <span>Mins</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>60</h3>
+                                <span>Secs</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <h2 class="text-uppercase">Discover Packages</h2>
+                    <p>New Collection Up to 50% OFF</p>
+                    <a class="btn btn-danger" href="#">Rent Now</a>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+</section>
 
 <section class="py-3 py-md-5 py-xl-8 mt-3" data-aos="">
     <div class="container">
@@ -182,7 +233,7 @@
 </section>
 
 
-<!-- Client 1 - Bootstrap 5 Component -->
+
 <section class="bg-light py-5 py-xl-6" data-aos="">
     <div class="container mb-5 mb-md-6">
         <div class="row justify-content-md-center">
@@ -221,6 +272,9 @@
 </section>
 
 
+
+
+
 <section class="blog py-3 py-md-5 py-xl-8" data-aos="">
     <div class="container">
         <div class="row justify-content-md-center">
@@ -235,9 +289,9 @@
     </div>
 
     <div class="container">
-        <div class="row gy-4 gy-lg-0">
+        <div class="row gy-4 gy-lg-0 justify-content-lg-center" style="height: 580px;">
             {% for post in posts|slice:":2" reversed %}
-            <div class="col-md-12 col-lg-6">
+            <div class="col-md-12 col-lg-5">
                 <div class="card border-0">
                     <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
                         <a href="{% url 'main:blog' %}">
@@ -258,13 +312,13 @@
                     <div class="card-body border bg-white">
                         <div class="entry-header mb-3">
                             <h2 class="card-title entry-title h4 mb-0">
-                                <a class="link-dark text-decoration-none" href="#!">{{post.title|truncatewords:7}}</a>
+                                <a class="link-dark text-decoration-none" href="#!">{{post.title|truncatewords:5}}</a>
                             </h2>
                         </div>
                         <p class="card-text entry-summary text-secondary mb-3">
-                            {{post.body|truncatewords:25}}
+                            {{post.body|truncatewords:15}}
                         </p>
-                        <a href="{% url 'main:blog' %}" class="btn btn-primary m-0 text-nowrap entry-more">Read More</a>
+                        <a href="{% url 'main:blog' %}" class="btn btn-outline-danger m-0 text-nowrap entry-more">Read More</a>
                     </div>
                     <div class="card-footer border border-top-0 bg-light p-4">
                         <ul class="entry-meta list-unstyled d-flex align-items-center m-0">
@@ -289,7 +343,7 @@
         </div>
         <div class="text-center my-4">
 
-            <a href="{% url 'main:blog' %}" class="btn btn-primary ">All Blog Post</a>
+            <a href="{% url 'main:blog' %}" class="btn btn-outline-dark mt-4 ">All Blog Post</a>
         </div>
     </div>
 </section>
