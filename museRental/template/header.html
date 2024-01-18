@@ -106,7 +106,7 @@
                         <div class="profile-picture-container">
                             <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
                                 alt="Profile Picture" class="profile-picture">
-                            <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon" class="exclamation-icon">
+                            <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon"  class="exclamation-icon">
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
@@ -167,22 +167,8 @@
         
         
         {% else %}
-
-
-            <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Login
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" >
-                        <li><a class="dropdown-item text-black" href="{% url 'accounts:login'%}">login</a></li> -->
-
-
-
-
-
-            <li class="nav-item">
-                <a class="nav-link mynav" href="{% url 'accounts:login'%}">Login</a>
+        <li class="nav-item">
+                <a class="nav-link mynav" href="{% url 'accounts:login' %}">Login</a>
             </li>
             <li class="nav-item dropdown mynav" style=" background-color: white;">
                 <a class="nav-link dropdown-toggle text-dark " href=" #" id="navbarDropdownMenuLink" role="button"
@@ -194,7 +180,7 @@
                             href="{% url 'accounts:customer_registration' %}">Customer</a></li>
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a>
                     </li>
-                    <z-indexa></z-indexa>
+                    
                 </ul>
             </li>
 

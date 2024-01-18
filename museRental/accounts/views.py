@@ -53,8 +53,13 @@ def customer_registration(request):
             email.content_subtype = "html"
             email.send()
 
-            messages.success(request, 'Please check your email to activate your account.')
-            
+            try:
+                email.send()
+                messages.success(request, 'Please check your email to activate your account.')
+            except Exception as e:
+                # Log the exception or handle it appropriately
+                messages.error(request, 'There was an error sending the activation email. Please try again.')
+
             return redirect('accounts:login')
     else:
         form = CustomerRegistrationForm()
@@ -85,8 +90,35 @@ def lessor_registration(request):
     if request.method == 'POST':
         form = LessorRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            form = form.save()
-            messages.success(request, 'Your profile was successfully created!')
+            user = form.save(commit=False)
+            user.is_active = False  # Set the user as inactive until email confirmation
+            user.save()
+
+            # Determine the protocol based on the request
+            protocol = 'https' if request.is_secure() else 'http'
+
+            # Send email verification
+            current_site = get_current_site(request)
+            subject = 'Activate Your Account'
+            message = render_to_string('accounts/activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'protocol': protocol,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = form.cleaned_data.get('email')
+            email = EmailMessage(subject, message, to=[to_email])
+            email.content_subtype = "html"
+            email.send()
+
+            try:
+                email.send()
+                messages.success(request, 'Please check your email to activate your account.')
+            except Exception as e:
+                # Log the exception or handle it appropriately
+                messages.error(request, 'There was an error sending the activation email. Please try again.')
+
             return redirect('accounts:login')
     
     
@@ -202,7 +234,7 @@ def lessor_edit_profile(request, id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your Profile Was Successfully Updated!')
-            return redirect(reverse("accounts:customer-edit-profile", kwargs={'id': id}))
+            return redirect(reverse("accounts:lessor-edit-profile", kwargs={'id': id}))
     else:
         form = LessorProfileEditForm(instance=user)
 

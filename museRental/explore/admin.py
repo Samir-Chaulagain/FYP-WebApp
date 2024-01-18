@@ -14,7 +14,7 @@ class ItemAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.role == 'lessor':
+        if request.user.role == 'lessor' :
             qs = qs.filter(user=request.user)
         return qs
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

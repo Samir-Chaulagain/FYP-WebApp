@@ -59,11 +59,11 @@
 
                                     {% if item.is_published == True %}
 
-                                    <span class="badge badge-pill badge-success text-black">Published</span>
+                                    <span class="badge rounded-pill bg-succes text-black">Published</span>
 
                                     {% else %}
 
-                                    <span class="badge badge-pill badge-secondary text-black">Pending</span>
+                                    <span class="badge rounded-pill bg-secondary text-black">Pending</span>
 
                                     {% endif %}
 
@@ -77,7 +77,7 @@
                                     {% if is_customer %}
 
                                     <a href="{% url 'explore:customers' item.id %}">
-                                        <span class="badge badge-pill badge-secondary  text-white">
+                                        <span class="badge rounded-pill bg-secondary  text-white">
 
 
                                             {% if is_customer > 1 %}
