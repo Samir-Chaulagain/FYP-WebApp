@@ -124,7 +124,7 @@
             
             {% elif user.is_authenticated and user.role == 'customer' and user.is_verified%}
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role=""
+                <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" role=""
                 data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="profile-picture-container">
                     <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"

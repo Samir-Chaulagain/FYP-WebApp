@@ -133,31 +133,19 @@
                         <div class="card shadow mb-5 h-80 " style="width: Auto">
                             <div id="instrument_{{item.id}}" class="carousel slide" data-bs-interval="false">
                                 <div class="carousel-indicators">
-                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="0"
-                                        class="active" aria-current="true" aria-label="Slide 1"></button>
-                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="1"
-                                        aria-label="Slide 2"></button>
-                                    <button type="button" data-bs-target="#instrument_{{item.id}}" data-bs-slide-to="2"
-                                        aria-label="Slide 3"></button>
+                                    {% for image in item.image_set.all %}
+                                    <button type="button" data-bs-target="#instrument_{{ item.id }}" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}">
+                                    </button>
+                                    {% endfor %}
                                 </div>
                                 <div class="carousel-inner">
-                                    {% if item.instrument_image1.url %}
-                                    <div class="carousel-item active" style="height: 200px">
-                                        <img class="card-img-top " src="{{ item.instrument_image1.url }}"
-                                            alt="First slide">
+                                    {% for image in item.image_set.all %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 200px;">
+                                        <img class="card-img-top" src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
                                     </div>
-                                    {% endif %}
-                                    {% if item.instrument_image2.url %}
-                                    <div class="carousel-item" style="height: 200px">
-                                        <img class="card-img-top " src="{{ item.instrument_image2.url }}" alt="">
-                                    </div>
-                                    {% endif %}
-                                    {% if item.instrument_image3.url %}
-                                    <div class="carousel-item" style="height: 200px">
-                                        <img class="card-img-top " src="{{ item.instrument_image3.url }}" alt="">
-                                    </div>
-                                    {% endif %}
+                                    {% endfor %}
                                 </div>
+
                                 <button class="carousel-control-prev" type="button"
                                     data-bs-target="#instrument_{{ item.id }}" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

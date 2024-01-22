@@ -13,27 +13,24 @@
 <section class="site-section">
   <div class="container">
 
-    <div class="row align-items-center mb-5">
-      
-        {% include 'messages.html' %}
-      </div>
-  
 
+  
+{% if form.errors %}
+{% for field in form %}
+{% for error in field.errors %}
+<div class="alert alert-danger alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{ field.label }}: {{ error|escape }}</strong>
+</div>
+{% endfor %}
+{% endfor %}
+{% endif %}
     <form method="POST" enctype="multipart/form-data" action="">
       <div class="row mb-5 p-4 p-md-5 border rounded">
         <div class="col-lg-12">
           <h3 class="text-black mb-5 border-bottom pb-2">Item Details</h3>
 
-          {% if form.errors %}
-          {% for field in form %}
-          {% for error in field.errors %}
-          <div class="alert alert-danger alert-dismissable">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>{{ field.label }}: {{ error|escape }}</strong>
-          </div>
-          {% endfor %}
-          {% endfor %}
-          {% endif %}
+          
 
           {% csrf_token %}
           <div class="col-sm-7">
@@ -81,11 +78,9 @@
 
   <div class="row align-items-center mb-5">
     <div class="col-lg-4 ml-auto">
-      <div class="row">
-        <div class="col-6">
+      
           <input class="btn btn-block btn-primary btn-md" type="submit" value="Update">
-        </div>
-      </div>
+        
     </div>
   </div>
   </form>

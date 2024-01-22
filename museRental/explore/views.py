@@ -18,6 +18,13 @@ from explore.forms import *
 from explore.models import *
 from event.models import saved_event,Booking
 from accounts.permission import *
+import json
+import logging
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
 
 from datetime import date, datetime
 User = get_user_model()
@@ -68,35 +75,35 @@ def showdetails(request,id):
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def add_item(request):
-    """
-    Provide the ability to create item post
-    """
+    # Provide the ability to create item post
     form = additemForm(request.POST or None, request.FILES or None)
 
     user = get_object_or_404(User, id=request.user.id)
     categories = Category.objects.all()
 
     if request.method == 'POST':
-
         if form.is_valid():
-
             instance = form.save(commit=False)
             instance.user = user
             instance.save()
-            # for save tags
-            form.save_m2m()
-            messages.success(
-                    request, 'You have successfully posted your item! Please wait for review.')
-            return redirect(reverse("explore:details", kwargs={
-                                    'id': instance.id
-                                    }))
 
+
+            # Save tags
+            form.save_m2m()
+            # Loop through each uploaded file and associate it with the created item
+            for file in request.FILES.getlist('file'):
+                # Create an Image instance and associate it with the created item
+                Image.objects.create(item=instance, image=file)
+
+            messages.success(
+                request, 'You have successfully posted your item! Please wait for review.')
+            
+            
     context = {
         'form': form,
         'categories': categories
     }
     return render(request, 'explore/add-instrument.html', context)
-
 
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -367,12 +374,7 @@ def paypal(request, id):
     order = Customer.objects.all()
     return render(request, 'paypal.html', {'orders': orders, 'order': order})
 
-import json
-import logging
-from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+
 
 logger = logging.getLogger(__name__)
 

@@ -110,11 +110,7 @@ def delete_savedevent_view(request, pk):
 
 
 
-# def paypal(request, pk):
-#     orders = Booking.objects.get(pk=pk)
-#     order = Booking.objects.all()
 
-#     return render(request, 'paypal.html', {'orders': orders, 'order': order})
 
 
 

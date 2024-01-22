@@ -32,11 +32,10 @@ class Item(models.Model):
     price = models.FloatField()
     is_published = models.BooleanField(default=False)
     is_sold = models.BooleanField(default=False)
-    is_sellable = models.BooleanField(default=False)
+    
 
-    instrument_image1 = models.ImageField(upload_to='images/')
-    instrument_image2 = models.ImageField(upload_to='images/')
-    instrument_image3 = models.ImageField(upload_to='images/')    
+    
+     
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE,default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -44,7 +43,12 @@ class Item(models.Model):
     def __str__(self):
         return self.name
     
-    
+class Image(models.Model):
+    item=models.ForeignKey(Item, on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='images/')
+
+    def __str__(self):
+        return str(self.pk)    
     
 
 class Customer(models.Model):
