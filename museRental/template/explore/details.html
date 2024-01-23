@@ -126,7 +126,7 @@
 
 
 
-    
+
     .product-details .product-links {
         margin-top: 15px;
     }
@@ -179,35 +179,36 @@
     <div class="row" height="100vh">
         <!-- carousel Image -->
         <div class="col-md-7 col-md-push-2">
-            
-                <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
-                    <div class="carousel-indicators">
-                        {% for image in item.image_set.all %}
-                        <button type="button" data-bs-target="#instrument_{{ item.id }}" data-bs-slide-to="{{ forloop.counter0 }}" 
-                        {% if forloop.first %}class="active" {% endif %} aria-label="Slide {{ forloop.counter }}">
-                        </button>
-                        {% endfor %}
-                    </div>
-                    <div class="carousel-inner" style="height: 450px; object-fit: cover;">
-                        {% for image in item.image_set.all %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}" >
-                            <img class="card-img-top" src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
-                        </div>
-                        {% endfor %}
-                    </div>
 
-                   
-                    <a class="carousel-control-prev" href="#instrument_{{item.name}}" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#instrument_{{item.name}}" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+            <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
+                <div class="carousel-indicators">
+                    {% for image in item.image_set.all %}
+                    <button type="button" data-bs-target="#instrument_{{ item.id }}"
+                        data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %}
+                        aria-label="Slide {{ forloop.counter }}">
+                    </button>
+                    {% endfor %}
+                </div>
+                <div class="carousel-inner" style="height: 450px; object-fit: cover;">
+                    {% for image in item.image_set.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img class="card-img-top" src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
+                    </div>
+                    {% endfor %}
                 </div>
 
-            
+
+                <a class="carousel-control-prev" href="#instrument_{{item.name}}" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#instrument_{{item.name}}" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+
         </div>
 
 
@@ -246,7 +247,14 @@
                     {% if is_saved %}
                     <button class="saved-btn btn-danger" type="submit"><i class="fa fa-heart"></i> Saved</button>
                     {% else %}
-                    <a href="{% url 'explore:saved-item' item.id %}" class="btn save-btn" style="padding-top:5px;"><i class="fa-solid fa-heart-crack"></i> Save</a>
+
+                    <form action="{% url 'explore:saved-item' item.id %} d-inline" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="item" value="{{ item.id }}">
+
+                        <button class="btn save-btn" type="submit"><i class="fa-solid fa-heart-crack"></i> Save</button>
+
+                    </form>
 
                     {% endif %}
 
@@ -308,14 +316,15 @@
 
 
 
-                    {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+                    {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and
+                    user.is_verified %}
 
-                    
 
-                    
-                        
-                        <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
-                    
+
+
+
+                    <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
+
 
 
                     {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
@@ -331,7 +340,7 @@
 
 
                     {%elif not user.is_authenticated%}
-                    
+
                     <a class="btn btn-block btn-light btn-md"
                         href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login</a>
 
@@ -476,7 +485,7 @@
                 </ul>
                 <div class="tab-content pt-5" id="tab-content">
                     <div class="tab-pane active" id="simple-tabpanel-0" role="tabpanel" aria-labelledby="simple-tab-0">
-                {{item.description}}
+                        {{item.description}}
                     </div>
                     <div class="tab-pane" id="simple-tabpanel-1" role="tabpanel" aria-labelledby="simple-tab-1">Tab 2
                         selected</div>

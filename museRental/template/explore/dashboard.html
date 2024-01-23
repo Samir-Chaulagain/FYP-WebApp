@@ -111,9 +111,9 @@
                                     <a class="text-white btn btn-danger btn-sm" role="button">Closed</a>
                                     {% endif %}
                                     {% endif %}
-                                    <button
-                                        onclick="call_sw_alert_func('{% url 'explore:delete_item' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
-                                        class="btn btn-danger btn-sm">Delete</button>
+                                    <!-- SweetAlert integration for Delete -->
+                                    <button id="deleteButton" data-item-id="{{ item.id }}" class="btn btn-danger">Delete Item</button>
+
                                 </td>
                             </tr>
                             {% endfor %}
@@ -482,7 +482,98 @@
 
 </section>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle delete button click
+        function handleDeleteButtonClick(itemId) {
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-danger"
+                },
+                buttonsStyling: false
+            });
 
+            // Show SweetAlert confirmation dialog
+            swalWithBootstrapButtons.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, display Toastr success message
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    toastr.success("Your Item deleted successfully!!!", "Deleted");
+
+                    // If confirmed, redirect to the delete view
+                    window.location.href = `/dashboard/lessor/delete/${itemId}/`;
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // If canceled, show cancellation message
+                    swalWithBootstrapButtons.fire({
+                        title: "Cancelled",
+                        text: "Your item is safe :)",
+                        icon: "error"
+                    });
+                }
+            });
+        }
+
+        // Add event listener to the delete button
+        const deleteButton = document.getElementById('deleteButton');
+        if (deleteButton) {
+            deleteButton.addEventListener('click', function () {
+                // Get the item ID from the button's data attribute
+                const itemId = deleteButton.getAttribute('data-item-id');
+                // Call the function to handle delete button click
+                handleDeleteButtonClick(itemId);
+            });
+        }
+
+        // Listen for the onbeforeunload event
+        window.onbeforeunload = function () {
+            // Display Toastr success message just before unloading the page
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            toastr.success("Your Item deleted successfully!!!", "Deleted");
+        };
+    });
+</script>
+</div>
 
 
 
