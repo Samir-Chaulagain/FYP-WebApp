@@ -4,7 +4,7 @@ from event.models import *
 admin.site.register(Category)
 admin.site.register(Event)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('event','user')
+    list_display = ('event','user','is_paid')
 admin.site.register(Booking,BookingAdmin)
 admin.site.register(saved_event)
 

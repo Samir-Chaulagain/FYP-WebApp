@@ -2,7 +2,39 @@
 {% load static %}
 {% block content %}
 
+<style>
+  .nav-pills-custom .nav-link {
+    color: #343434;
+    background: #fff;
+    position: relative;
+  }
 
+  .nav-pills-custom .nav-link.active {
+    color: #45b649;
+    background: #fff;
+  }
+
+
+  /* Add indicator arrow for the active tab */
+  @media (min-width: 992px) {
+    .nav-pills-custom .nav-link::before {
+      content: '';
+      display: block;
+      border-top: 8px solid transparent;
+      border-left: 10px solid #fff;
+      border-bottom: 8px solid transparent;
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+  }
+
+  .nav-pills-custom .nav-link.active::before {
+    opacity: 1;
+  }
+</style>
 
 <div class="text-center bg-image" data-aos="zoom-in-up"
   style="
@@ -32,25 +64,47 @@
 </div>
 
 <div class="container mt-5 ">
-  <div class="row justify-content-center align-items-center ">
-    <div class="col-8 mb-5 ">
 
 
 
 
-      <ul class="mb-3 nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-            aria-selected="true" style="color: black;">Profile Page</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-black" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-            aria-controls="profile" aria-selected="false" style="color: black;">Change Password</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-          <h5 class="card-header text-center text-black">User Profile</h5>
+
+  <div class="row">
+    <div class="col-md-3">
+      <!-- Tabs nav -->
+      <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
+        aria-orientation="vertical">
+        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+          role="tab" aria-controls="v-pills-home" aria-selected="true">
+          <i class="fa fa-user-circle-o mr-2"></i>
+          <span class="font-weight-bold small text-uppercase">Personal Information</span></a>
+
+        <a class="nav-link mb-3 p-3 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+          role="tab" aria-controls="v-pills-profile" aria-selected="false">
+          <i class="fa fa-calendar-minus-o mr-2"></i>
+          <span class="font-weight-bold small text-uppercase">Password</span></a>
+
+        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages"
+          role="tab" aria-controls="v-pills-messages" aria-selected="false">
+          <i class="fa fa-star mr-2"></i>
+          <span class="font-weight-bold small text-uppercase">Reviews</span></a>
+
+        <a class="nav-link mb-3 p-3 shadow" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings"
+          role="tab" aria-controls="v-pills-settings" aria-selected="false">
+          <i class="fa fa-check mr-2"></i>
+          <span class="font-weight-bold small text-uppercase">Booked event</span></a>
+      </div>
+    </div>
+
+
+    <div class="col-md-9">
+      <!-- Tabs content -->
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade shadow rounded show active p-5" id="v-pills-home" role="tabpanel"
+          aria-labelledby="v-pills-home-tab">
+
+
+
           {% if form.errors %}
           {% for field in form %}
           {% for error in field.errors %}
@@ -69,9 +123,11 @@
           {% endif %}
 
 
-          {% include 'messages.html' %}
-          <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded shadow-lg">
 
+          {% include 'messages.html' %}
+          <form method="POST" action="" enctype="multipart/form-data" class="p-4  " style="background-color: #fff;">
+
+            <h4 class="font-italic mb-4">Personal information</h4>
             {% csrf_token %}
 
             {% csrf_token %}
@@ -83,7 +139,7 @@
 
             {% for field in form %}
             {% if field.name == 'gender' %}
-            <div class="row form-group mb-4 ">
+            <div class="row form-group mb-4 my-2">
               <div class="col-md-12 mb-3 mb-md-0">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
@@ -95,57 +151,69 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            {%elif field.name == 'document_type'%}
+
+            <div class="row form-group my-3">
               <div class="col-md-12 mb-3 mb-md-0">
-                  {% if form.instance.document_photo %}
-                  <img src="{{ form.instance.document_photo.url }}" alt="Document Photo" width="280" height="300">
-                   {%else%}
-                  <p>upload photo</p>
-                  
-                  {% endif %}
-                
+                <label class="text-black" for="id_{{ field.name }}">Document Type</label>
+                {{ field }}
+              </div>
+            </div>
+
+            <div class="row my-3">
+              <div class="col-md-12 mb-3 mb-md-0">
+                {% if form.instance.document_photo %}
+                <img src="{{ form.instance.document_photo.url }}" alt="Document Photo" width="280" height="300">
+
+                {% else %}
+                <p>For Verification Please upload image</p>
+
+                {% endif %}
+
               </div>
             </div>
 
             {% else %}
 
-            <div class="row form-group">
+            <div class="row form-group my-2">
               <div class="row">
 
                 <div class="col-md-12 mb-3 mb-md-0">
                   <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
                   <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
-                  id="id_{{ field.name }}" value="{{ field.value }}"
-                  placeholder="{{ field.field.widget.attrs.placeholder }}">
+                    id="id_{{ field.name }}" value="{{ field.value }}"
+                    placeholder="{{ field.field.widget.attrs.placeholder }}">
                 </div>
               </div>
-              
+
 
 
             </div>
 
             {% endif %}
             {% endfor %}
-            <div class="row form-group">
-              <div class="col-md-12">
-                <input type="submit" value="Update" class="btn px-4 btn-primary text-white">
-              </div>
-            </div>
+            <button type="submit" class="btn px-4 btn-primary text-white mt-5 mx-auto">Update</button>
 
           </form>
 
+
+
+
+
+
+
         </div>
 
+        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-profile" role="tabpanel"
+          aria-labelledby="v-pills-profile-tab">
 
 
-
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-          <h5 class="card-header text-center text-black">Change Password</h5>
+          <h5 class="text-center text-black">Change Password</h5>
 
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-md-6 mt-3">
-                
+
                 <form method="post">
                   {% csrf_token %}
                   {% for field in form1 %}
@@ -154,9 +222,7 @@
                     <div class="input-group">
                       {{ field }}
                     </div>
-                    {% if field.errors %}
-                    <p class="text-danger">{{ field.errors }}</p>
-                    {% endif %}
+
                   </div>
                   {% endfor %}
                   <button type="submit" class="btn btn-primary mt-3">Change Password</button>
@@ -165,19 +231,30 @@
             </div>
           </div>
 
+
+
         </div>
 
+        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel"
+          aria-labelledby="v-pills-messages-tab">
+
+        </div>
+
+        <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel"
+          aria-labelledby="v-pills-settings-tab">
+
+        </div>
       </div>
-
-
-
-
-
-
-
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
 
 
 {% endblock %}

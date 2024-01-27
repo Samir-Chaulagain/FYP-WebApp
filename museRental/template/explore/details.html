@@ -7,6 +7,42 @@
 {% load static %}
 
 <style>
+   .with-arrow .nav-link{
+    background-color: #D10024;
+    border-radius: 40px;
+    color:white
+   }
+   .with-arrow .nav-link:hover{
+    background-color: white;
+    border-radius: 40px;
+    color:black
+   }
+   .nav-tabs {
+    border-bottom: 0px;
+}
+    
+    .with-arrow .nav-link.active {
+        color: #D10024;
+        position: relative;
+        background-color: white;
+        border: 13px solid  ;
+    }
+
+    .with-arrow .nav-link.active::after {
+    content: '';
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #D10024;
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+     
+    
+}
+
+
     .product-details .product-name {
         text-transform: uppercase;
         font-size: 18px;
@@ -72,7 +108,7 @@
         margin-bottom: 30px;
     }
 
-    .product-details .save .save-btn {
+    .save .save-btn {
         position: relative;
         border: 2px solid transparent;
         height: 40px;
@@ -86,7 +122,7 @@
         transition: 0.2s all;
     }
 
-    .product-details .save .saved-btn {
+    .save .saved-btn {
         position: relative;
         border: 2px solid transparent;
         height: 40px;
@@ -99,8 +135,35 @@
         -webkit-transition: 0.2s all;
         transition: 0.2s all;
     }
+    .save .rent-btn {
+        position: relative;
+        border: 2px solid transparent;
+        height: 40px;
+        padding: 0 30px;
+        background-color: #3e23ef;
+        color: #FFF;
+        text-transform: uppercase;
+        font-weight: 600;
+        border-radius: 40px;
+        -webkit-transition: 0.2s all;
+        transition: 0.2s all;
+    }
 
-    .product-details .save .save-btn>i {
+    .save .rented-btn {
+        position: relative;
+        border: 2px solid transparent;
+        height: 40px;
+        padding: 0 30px;
+        background-color: #198754;;
+        color: #FFF;
+        text-transform: uppercase;
+        font-weight: 700;
+        border-radius: 40px;
+        -webkit-transition: 0.2s all;
+        transition: 0.2s all;
+    }
+
+    .save .save-btn>i {
         position: absolute;
         left: 0;
         top: 0;
@@ -112,14 +175,14 @@
         visibility: hidden;
     }
 
-    .product-details .save .save-btn:hover {
+    .save .save-btn:hover {
         background-color: #FFF;
         color: #D10024;
         border-color: #D10024;
         padding: 0px 30px 0px 50px;
     }
 
-    .product-details .save .save-btn:hover>i {
+    .save .save-btn:hover>i {
         opacity: 1;
         visibility: visible;
     }
@@ -127,25 +190,20 @@
 
 
 
-    .product-details .product-links {
+    .product-links {
         margin-top: 15px;
+        padding-left: 0;
     }
 
     .product-details .product-links li {
         display: inline-block;
         text-transform: uppercase;
-        font-size: 12px;
+        font-size: 13px;
     }
 
-    .product-details .product-links li+li {
-        margin-left: 10px;
-    }
+    
 
-    .explore-nav .explore-nav-item {
-        margin-right: 45px;
-        margin-top: 50px;
-        /* Adjust the margin as needed */
-    }
+    
 </style>
 
 
@@ -237,26 +295,45 @@
                 <p>{{ item.description}}
                 </p>
 
-                <!-- Save Button -->
+                
 
 
-                <div class="save">
+
+                <ul class="product-links">
+                    <li>Category:</li>
+                    <li><a href="#">Headphones</a></li>
+                    <li><a href="#">Accessories</a></li>
+                </ul>
+
+                <ul class="product-links">
+                    <li>Share:</li>
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+                </ul>
+
+            </div>
+            <!-- Save Button -->
+
+
+                <div class="save md-gy-3">
 
                     {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
                     {% is_item_already_saved item request.user as is_saved %}
                     {% if is_saved %}
                     <button class="saved-btn btn-danger" type="submit"><i class="fa fa-heart"></i> Saved</button>
+                    
                     {% else %}
-
-                    <form action="{% url 'explore:saved-item' item.id %} d-inline" method="POST">
+                    <form action="{% url 'explore:saved-item' item.id %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="item" value="{{ item.id }}">
-
+                        
                         <button class="btn save-btn" type="submit"><i class="fa-solid fa-heart-crack"></i> Save</button>
 
                     </form>
-
                     {% endif %}
+
 
 
                     {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified %}
@@ -271,8 +348,8 @@
 
                     <!-- Delete Confirmation Modal -->
                     <button
-                        onclick="call_sw_alert_func('{% url 'explore:delete_item' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
-                        class="btn-danger btn-sm saved-btn">Delete</button>
+                       onclick="call_sw_alert_func('{% url 'explore:delete-item' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
+                        class="btn-danger btn-sm saved-btn">Delete</button> 
                     {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
 
                     <p>
@@ -280,13 +357,13 @@
 
                     </p>
 
-                    {% elif not user.is_authenticated%}
                     <form action="{% url 'explore:saved-item' item.id %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="item" value="{{ item.id }}">
+                        {% elif not user.is_authenticated%}
                         <button class="save-btn" type="submit"><i class="fa fa-heart"></i> Save</button>
+                        {% endif %}
                     </form>
-                    {% endif %}
                     <!-- saved item -->
 
                     {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
@@ -294,17 +371,17 @@
 
                     {% is_item_already_rented item request.user as is_rented %}
                     {% if is_rented %}
-                    <button type="button" class="btn btn-success btn-md">
+                    <button type="button" class="rented-btn btn-md">
                         Already Rented
                     </button>
                     {% else %}
                     {% if Available %}
-                    <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal"
+                    <button type="button" class="rent-btn btn-md" id="myButton1" data-toggle="modal"
                         data-target="#exampleModalCenter" hidden>
                         Rent now
                     </button>
                     {% else %}
-                    <button type="button" class="btn btn-primary btn-md" id="myButton1" data-toggle="modal"
+                    <button type="button" class="rent-btn btn-md" id="myButton1" data-toggle="modal"
                         data-target="#exampleModalCenter">
                         Rent now
                     </button>
@@ -316,8 +393,7 @@
 
 
 
-                    {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and
-                    user.is_verified %}
+                    {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
 
 
 
@@ -353,24 +429,6 @@
 
 
                 </div>
-
-
-
-                <ul class="product-links">
-                    <li>Category:</li>
-                    <li><a href="#">Headphones</a></li>
-                    <li><a href="#">Accessories</a></li>
-                </ul>
-
-                <ul class="product-links">
-                    <li>Share:</li>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                </ul>
-
-            </div>
 
             {%if NotAvailable%}
             <div class="container">
@@ -468,31 +526,63 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div id="product-tab">
-                <ul class="nav nav-tabs justify-content-center explore-nav" role="tablist">
-                    <li class="nav-item explore-nav-item" role="presentation">
-                        <a class="nav-link active " id="simple-tab-0" data-bs-toggle="tab" href="#simple-tabpanel-0"
-                            role="tab" aria-controls="simple-tabpanel-0" aria-selected="true">Description</a>
-                    </li>
-                    <li class="nav-item explore-nav-item" role="presentation">
-                        <a class="nav-link" id="simple-tab-1" data-bs-toggle="tab" href="#simple-tabpanel-1" role="tab"
-                            aria-controls="simple-tabpanel-1" aria-selected="false">Details</a>
-                    </li>
-                    <li class="nav-item explore-nav-item" role="presentation">
-                        <a class="nav-link" id="simple-tab-2" data-bs-toggle="tab" href="#simple-tabpanel-2" role="tab"
-                            aria-controls="simple-tabpanel-2" aria-selected="false">Review</a>
-                    </li>
-                </ul>
-                <div class="tab-content pt-5" id="tab-content">
-                    <div class="tab-pane active" id="simple-tabpanel-0" role="tabpanel" aria-labelledby="simple-tab-0">
-                        {{item.description}}
+            <div class="p-5 bg-white rounded shadow mb-5 ">
+                <!-- Bordered tabs-->
+            <ul id="myTab1" role="tablist" class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center ">
+                <li class="nav-item flex-sm-fill mx-2">
+                    <a id="home1-tab" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="true"
+                        class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Description</a>
+                </li>
+                <li class="nav-item flex-sm-fill mx-2">
+                    <a id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1"
+                        aria-selected="false" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Location</a>
+                </li>
+                <li class="nav-item flex-sm-fill mx-2">
+                    <a id="contact1-tab" data-toggle="tab" href="#contact1" role="tab" aria-controls="contact1"
+                        aria-selected="false" class="nav-link text-uppercase font-weight-bold rounded-5 border">Review</a>
+                </li>
+            </ul>
+                <div id="myTab1Content" class="tab-content">
+                    <div id="home1" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                     </div>
-                    <div class="tab-pane" id="simple-tabpanel-1" role="tabpanel" aria-labelledby="simple-tab-1">Tab 2
-                        selected</div>
-                    <div class="tab-pane" id="simple-tabpanel-2" role="tabpanel" aria-labelledby="simple-tab-2">Tab 3
-                        selected</div>
+                    <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
+                    <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade px-4 py-5">
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    </div>
                 </div>
+                <!-- End bordered tabs -->
             </div>
+
         </div>
     </div>
 
@@ -554,7 +644,6 @@
 
 </div>
 
-
 <!-- Include Khalti Checkout Web library -->
 <script src="https://unpkg.com/khalti-checkout-web"></script>
 
@@ -593,7 +682,7 @@
         const config = {
             publicKey: "test_public_key_dc1970829015486687411487e45d789a",
             productIdentity: 1,
-            productName: "Service Provider",
+            productName: "Muse rental HUb",
             productUrl: "http://127.0.0.1:8000/",
             eventHandler: {
                 onSuccess: async (payload) => {
@@ -640,7 +729,7 @@
 
     async function pays(paymentToken, amount) {
         try {
-            const response = await fetch('event:khalti-payment', {
+            const response = await fetch('explore:khalti-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

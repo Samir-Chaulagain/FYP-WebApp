@@ -1,8 +1,10 @@
 from django import forms
 
 from explore.models import *
+from event.models import *
 
 
+   
 
 class additemForm(forms.ModelForm):
     

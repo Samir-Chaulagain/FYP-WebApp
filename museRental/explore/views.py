@@ -1,9 +1,12 @@
 from email.message import EmailMessage
-import json
+
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.template.loader import render_to_string
+import event
+
+from event.forms import EventBooked
 from .forms import *
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
@@ -19,6 +22,7 @@ from explore.models import *
 from event.models import saved_event,Booking
 from accounts.permission import *
 import json
+import requests
 import logging
 from django.core.mail import send_mail
 from django.http import JsonResponse
@@ -397,3 +401,52 @@ def send_email_after_payment(request):
     except Exception as e:
         logger.error(f"Error sending email: {e}")
         return JsonResponse({'status': 'error'}, status=500)
+
+
+def payment(request):
+    user = get_object_or_404(User, id=request.user.id)
+    form = EventBooked(request.POST or None)
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        payment_token = data.get('payment_token')
+        payment_amount = data.get('payment_amount')
+        print(payment_token)
+        khalti_secret_key = "test_secret_key_ce1adf77ac904ffbba3bc3687d287103"
+        verification_url = "https://khalti.com/api/v2/payment/verify/"
+
+        headers = {
+            'Authorization': f'key {khalti_secret_key}',
+        }
+        payload = {
+            'token': payment_token,
+            'amount': payment_amount,
+        }
+
+        response = requests.post(verification_url, headers=headers, json=payload)
+
+        
+        if form.is_valid():
+            num_tickets = form.cleaned_data['num_tickets']
+
+            # Check if the user has already booked tickets for this event
+            events = Booking.objects.filter(user=user, event=event).first()
+            total_price = num_tickets * event.ticket_price
+            if not events:
+                instance = Booking(
+                    user=user,
+                    event=event,
+                    num_tickets=num_tickets,
+                    total_price=total_price,
+                    # Add other fields if needed
+                )
+                instance.save()
+
+                messages.success(request, 'You have successfully applied for this event!')
+                return redirect(reverse("event:event-details", kwargs={'id': id}))
+            else:
+                messages.error(request, 'You have already booked tickets for this event!')
+        else:
+            messages.error(request, 'Invalid form submission. Please check the form data.')
+
+    return render(request, 'explore/dashboard.html')
+

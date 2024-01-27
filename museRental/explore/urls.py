@@ -22,7 +22,11 @@ urlpatterns = [
     
     path('save-item/<int:id>/', views.item_saved_view, name='saved-item'),
     path('dashboard/customer/delete-saved/<int:id>/', views.delete_save_view, name='delete-saved'),
-    path('paypal/<int:id>', views.paypal, name="paypal"),
+
+    
+    
+    path('khalti-payment', views.payment, name='khalti-payment'),
+
     path('send-email-after-payment/', views.send_email_after_payment, name='send_email_after_payment'),
 
     # path('items/<int:pk>/', views.showdetails, name='details'),

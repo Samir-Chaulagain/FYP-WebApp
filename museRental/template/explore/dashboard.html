@@ -3,6 +3,15 @@
 {% load get_total_customer %}
 {% block content %}
 
+<!-- Include SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
+
+<!-- Your existing HTML content -->
+
+<!-- Include SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.js"></script>
+
+<!-- Your existing script tags -->
 <div class="text-center bg-image"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 400px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
@@ -31,9 +40,9 @@
             <div class="col-lg-12 mb-5">
                 {% include 'messages.html' %}
 
-                <div class="card">
+                <div class="">
                     {% if user.role == "lessor" %}
-                    <h5 class="card-header text-center">My All item</h5>
+                    <h5 class="text-center">My All item</h5>
                     {% if items %}
                     <table class="table text-center mt-5">
                         <thead class="thead-dark">
@@ -131,7 +140,7 @@
                     <div class="container">
                         <div class="row justify-content-md-center">
                             <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                                <h4 class="mb-4 display-5 text-center">Your Items</h2>
+                                <h4 class="mb-4 display-5 text-center">My items</h2>
 
                                     <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2 ">
                             </div>
@@ -146,6 +155,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-black" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
                                 aria-controls="profile" aria-selected="false" style="color: black;">Rented Item</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="eventsaved-tab" data-toggle="tab" href="#eventsaved" role="tab" aria-controls="home"
+                                aria-selected="true" style="color: black;">Saved
+                                Event</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black" id="appliedevent-tab" data-toggle="tab" href="#appliedevent" role="tab"
+                                aria-controls="profile" aria-selected="false" style="color: black;">Booked
+                                Event</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -165,7 +184,7 @@
                                 <tbody>
                                     {% for item in saveditems %}
                                     <tr id="row_{{ item.id }}">
-                                        <td><img src="{{item.item.instrument_image1.url}}" alt="" height="35px"
+                                        <td><img src="{{item.item.image.url}}" alt="" height="35px"
                                                 width="35px"></td>
                                         <td><a href="{% url 'explore:details' item.item.id %}"
                                                 style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name }}</a>
@@ -173,9 +192,8 @@
                                         <td>{{ item.created_at | date:'M d, Y' }}</td>
                                         <td>{{ item.item.last_date | date:'M d, Y' }}</td>
                                         <td>
-                                            <button
-                                                onclick="call_sw_alert_func('{% url 'explore:delete-saved' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
-                                                class="btn btn-danger btn-sm">Delete</button>
+                                                                                <button id="deleteButton" data-item-id="{{ item.id }}" class="btn btn-danger">Delete Item</button>
+
 
 
                                         </td>
@@ -197,7 +215,7 @@
                             <table class="table text-center mt-5">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>Item Photo</th>
+                                        <th>Item Photo</zth>
                                         <th>Item Title</th>
                                         <th>Posted Date</th>
                                         <th>Pick Date</th>
@@ -235,49 +253,8 @@
                             {% endif %}
                         </div>
 
-                    </div>
-
-                    {% endif %}
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- savedevents and appplied events -->
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-                <h2 class="mb-4 display-5 text-center">Your Events</h2>
-
-                <hr class="w-50 mx-auto mb-5 mb-xl-9 border-dark-subtle border-2 ">
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 mb-5">
-                {% include 'messages.html' %}
-
-                <div class="card">
-
-                    {% if user.role == "lessor" %}
-                    <ul class="mb-3 nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="eventsaved-tab" data-toggle="tab" href="#eventsaved"
-                                role="tab" aria-controls="home" aria-selected="true" style="color: black;">Saved
-                                Event</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" id="appliedevent-tab" data-toggle="tab" href="#appliedevent"
-                                role="tab" aria-controls="profile" aria-selected="false" style="color: black;">Booked
-                                Event</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="eventsaved" role="tabpanel"
-                            aria-labelledby="eventsaved-tab">
+                        {% if user.is_authenticated and user.is_verified %}
+                        <div class="tab-pane fade show" id="eventsaved" role="tabpanel" aria-labelledby="eventsaved-tab">
                             <h5 class="card-header text-center text-black">Saved Events </h5>
                             {% if savedevent %}
                             <table class="table text-center mt-5">
@@ -286,7 +263,7 @@
                                         <th>Event Photo</th>
                                         <th>Event Title</th>
                                         <th>Ticket Price</th>
-
+                        
                                         <th>Date expiring</th>
                                         <th>Actions</th>
                                     </tr>
@@ -296,7 +273,7 @@
                                     <tr id="row_{{ event.pk }}">
                                         <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
                                         </td>
-
+                        
                                         <td><a href="{% url 'event:event-details' event.event.pk %}"
                                                 style="text-decoration: none; text-transform: uppercase; color:black;">{{event.event.name}}</a>
                                         </td>
@@ -315,271 +292,182 @@
                             <p class="m-5">You have not any save item yet !! </p>
                             {% endif %}
                         </div>
-                        <div class="tab-pane fade" id="appliedevent" role="tabpanel" aria-labelledby="appliedevent-tab">
-                            <h5 class="card-header text-center text-black">Booked Events</h5>
-                            {% if appliedevent %}
-                            <table class="table text-center mt-5">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Event Photo</th>
-                                        <th>Event Title</th>
-                                        <th>Booking Date</th>
-                                        <th>Tickets</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
+
+                    
+
+                    <div class="tab-pane fade" id="appliedevent" role="tabpanel" aria-labelledby="appliedevent-tab">
+                        <h5 class="card-header text-center text-black">Booked Events</h5>
+                        {% if appliedevent %}
+                        <table class="table text-center mt-5">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Event Photo</th>
+                                    <th>Event Title</th>
+                                    <th>Booking Date</th>
+                                    <th>Tickets</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                    
+                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in appliedevent %}
+                                <tr id="row_{{ event.pk }}">
+                                    <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
+                                    </td>
+                    
+                                    <td><a href="{% url 'event:event-details' event.event.pk %}"
+                                            style="text-decoration: none; text-transform: uppercase; color: black;">{{event.event.name}}</a>
+                                    </td>
+                                    <td>{{ event.booked_at | date:'M d, Y' }}</td>
+                                    <td>{{ event.num_tickets}}</td>
+                                    <td>{{ event.total_price}}</td>
+                                    <td>
+                                        {% if not event.is_paid %}
+                                        <form method="post" action="{% url 'event:mark-paid' event.pk %}" id="applyForm"> 
+                                            {% csrf_token %}
+                                            
+                                            
+                                            <button type="submit" class="btn btn-primary" id="enrollButton">Pay</button>
+                                            {% else %}
+                                            <button type="button" id="example" class="btn btn-danger" data-bs-toggle="popover" data-bs-placement="top"
+                                                data-bs-trigger="hover" data-bs-content="Paid ticket for {{event.event.name}}">
+                                                Paid
+                                            </button>
+                                            {% endif %}
 
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for event in appliedevent %}
-                                    <tr id="row_{{ event.pk }}">
-                                        <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                        </td>
+                                        </form>
 
-                                        <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                                style="text-decoration: none; text-transform: uppercase; color: black;">{{event.event.name}}</a>
-                                        </td>
-                                        <td>{{ event.booked_at | date:'M d, Y' }}</td>
-                                        <td>{{ event.num_tickets}}</td>
-                                        <td>{{ event.total_price}}</td>
-                                        <td>
-                                            <button onclick="Pay_Khalti()" class="btn btn-secondary"
-                                                style="background-color: purple; color: white;">Pay with
-                                                Khalti</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            {% else %}
-                            <p class="m-5">You have not any Applied To any events yet !! </p>
-                            {% endif %}
-                        </div>
-
-                    </div>
-
-
-
-
-                    {% elif user.role == "customer" %}
-
-
-                    <ul class="mb-3 nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="eventsaved-tab" data-toggle="tab" href="#eventsaved"
-                                role="tab" aria-controls="home" aria-selected="true" style="color: black;">Saved
-                                Event</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" id="appliedevent-tab" data-toggle="tab" href="#appliedevent"
-                                role="tab" aria-controls="profile" aria-selected="false" style="color: black;">Booked
-                                Event</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="eventsaved" role="tabpanel"
-                            aria-labelledby="eventsaved-tab">
-                            <h5 class="card-header text-center text-black">Saved Events </h5>
-                            {% if savedevent %}
-                            <table class="table text-center mt-5">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Event Photo</th>
-                                        <th>Event Title</th>
-                                        <th>Ticket Price</th>
-
-                                        <th>Date expiring</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for event in savedevent %}
-                                    <tr id="row_{{ event.pk }}">
-                                        <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                        </td>
-
-                                        <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{
-                                                event.event.name }}</a>
-                                        </td>
-                                        <td>{{event.event.ticket_price}}</td>
-                                        <td>{{ event.event.last_date | date:'M d, Y' }}</td>
-                                        <td>
-                                            <button
-                                                onclick="call_sw_alert_func('{% url 'event:delete-saved-event' event.pk %}','{{ event.pk }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
-                                                class="btn btn-danger btn-sm">Delete</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            {% else %}
-                            <p class="m-5">You have not any save item yet !! </p>
-                            {% endif %}
-                        </div>
-                        <div class="tab-pane fade" id="appliedevent" role="tabpanel" aria-labelledby="appliedevent-tab">
-                            <h5 class="card-header text-center text-black">Booked Events</h5>
-                            {% if appliedevent %}
-                            <table class="table text-center mt-5">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Event Photo</th>
-                                        <th>Event Title</th>
-                                        <th>Booking Date</th>
-                                        <th>Tickets</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for event in appliedevent %}
-                                    <tr id="row_{{ event.pk }}">
-                                        <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                        </td>
-
-                                        <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                                style="text-decoration: none; text-transform: uppercase; color: black;">{{event.event.name}}</a>
-                                        </td>
-                                        <td>{{ event.booked_at | date:'M d, Y' }}</td>
-                                        <td>{{ event.num_tickets}}</td>
-                                        <td>{{ event.total_price}}</td>
-                                        <td>
-                                            <button onclick="Pay_Khalti()" class="btn btn-secondary"
-                                                style="background-color: purple; color: white;">Pay with
-                                                Khalti</button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                            {% else %}
-                            <p class="m-5">You have not any Applied To any events yet !! </p>
-                            {% endif %}
-                        </div>
-
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="m-5">You have not any Applied To any events yet !! </p>
+                        {% endif %}
                     </div>
 
                     {% endif %}
+                    {% endif %}
 
+                </div>
                 </div>
             </div>
         </div>
 
     </div>
-
-
-
-
-
-
-
-
-
-
-
 </section>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Function to handle delete button click
-        function handleDeleteButtonClick(itemId) {
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: "btn btn-success",
-                    cancelButton: "btn btn-danger"
-                },
-                buttonsStyling: false
-            });
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        });
+    });
+</script>
+<!-- Include Khalti Checkout Web library -->
+{% for event in appliedevent %}
+<script src="https://unpkg.com/khalti-checkout-web"></script>
+<script>
+    document.getElementById('applyForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-            // Show SweetAlert confirmation dialog
-            swalWithBootstrapButtons.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
+            // Get the course fee from your Django template
+            var originalFee = parseFloat("{{ event.total_price }}");
+            var editedFee = originalFee;
+
+            // Prompt the user for the number of tickets using Swal
+            Swal.fire({
+                imageUrl: "https://indian-retailer.s3.ap-south-1.amazonaws.com/s3fs-public/2022-10/Coupons.jpg",
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: "Custom image",
+                title: 'Number of Tickets',
+                input: 'number',
+                inputPlaceholder: 'Enter number of tickets',
+                inputAttributes: {
+                    min: 1,
+                    step: 1,
+                },
                 showCancelButton: true,
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!",
-                reverseButtons: true
+                confirmButtonText: 'Apply',
+                cancelButtonText: 'Cancel',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, display Toastr success message
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": false,
-                        "progressBar": true,
-                        "positionClass": "toast-top-right",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    };
-                    toastr.success("Your Item deleted successfully!!!", "Deleted");
+                    var numberOfTickets = result.value;
 
-                    // If confirmed, redirect to the delete view
-                    window.location.href = `/dashboard/lessor/delete/${itemId}/`;
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // If canceled, show cancellation message
-                    swalWithBootstrapButtons.fire({
-                        title: "Cancelled",
-                        text: "Your item is safe :)",
-                        icon: "error"
+                    // Calculate the edited fee based on the number of tickets
+                    editedFee = originalFee * numberOfTickets;
+
+                    // Show a Swal confirmation with the updated fee
+                    Swal.fire({
+                        imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Khalti_Digital_Wallet_Logo.jpg/1200px-Khalti_Digital_Wallet_Logo.jpg?20180702123857",
+                        imageWidth: 400,
+                        imageHeight: 200,
+                        imageAlt: "Custom image",
+                        title: 'Fee Details',
+                        html: '<p>Original Fee: NPR ' + originalFee + '</p>' +
+                            '<p>Number of Tickets: ' + numberOfTickets + '</p>' +
+                            '<p>Edited Fee: NPR ' + editedFee + '</p>',
+                        confirmButtonText: 'Proceed to Payment',
+                        showCancelButton: true,
+                        cancelButtonText: 'Cancel',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Create a Khalti configuration object
+                            var courseFee = Math.round(editedFee); // Amount should be in paisa (multiply by 100)
+                            var config = {
+                                publicKey: 'test_public_key_dc1970829015486687411487e45d789a',
+                                productIdentity: 'Event Price' + Math.floor(Math.random() * 1000), // Use a unique identifier
+                                productName: 'Event Tickets',
+                                productUrl: window.location.href,
+                                eventHandler: {
+                                    onSuccess: function (payload) {
+                                        // Handle successful payment
+                                        console.log("Payment successful", payload);
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Payment Successful!',
+                                            text: "Congratulations! You have successfully bought tickets to the event.",
+                                        }).then(() => {
+                                            // Submit the form after successful payment
+                                            document.getElementById('applyForm').submit();
+                                        });
+                                    },
+                                    onError: function (error) {
+                                        // Handle payment error
+                                        console.log("Payment error", error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Payment Failed',
+                                            text: 'Payment failed. Please try again.',
+                                        });
+                                    },
+                                    onClose: function () {
+                                        // Handle modal close
+                                        console.log("Payment modal closed");
+                                    },
+                                },
+                                paymentPreference: ['KHALTI'],
+                                productAmount: courseFee,
+                            };
+
+                            // Initialize Khalti Checkout with the configuration
+                            var checkout = new KhaltiCheckout(config);
+
+                            // Open the Khalti Checkout modal
+                            checkout.show({ amount: courseFee });
+                        }
                     });
                 }
             });
-        }
-
-        // Add event listener to the delete button
-        const deleteButton = document.getElementById('deleteButton');
-        if (deleteButton) {
-            deleteButton.addEventListener('click', function () {
-                // Get the item ID from the button's data attribute
-                const itemId = deleteButton.getAttribute('data-item-id');
-                // Call the function to handle delete button click
-                handleDeleteButtonClick(itemId);
-            });
-        }
-
-        // Listen for the onbeforeunload event
-        window.onbeforeunload = function () {
-            // Display Toastr success message just before unloading the page
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            };
-            toastr.success("Your Item deleted successfully!!!", "Deleted");
-        };
-    });
+        });
 </script>
-</div>
-
-
-
-
-
-
+{% endfor %}
 
 
 

@@ -28,16 +28,16 @@
     </div>
 
 </div>
-<div class="container my-5">
+<div class="container-fluid my-5">
     <div class="row">
         <!-- carousel Image -->
-        <div class=" col-sm-12 col-md-6 ">
+        <div class="col-lg-5 col-sm-12 col-md-6 ">
             <img src="{{ event.image.url }}" class="rounded-xl img-fluid" style="height: Auto; width: 100%;">
         </div>
 
         <!-- Information -->
 
-        <div class="col-md-6 col-sm-12">
+        <div class="col-lg-7 col-md-6">
             <div class="card p-1" style="width: auto;">
                 <div class="card-body">
                     <div class="row">
@@ -85,12 +85,6 @@
                             ₹{{event.ticket_price}} (per hour)
                         </div>
                     </div>
-
-
-
-
-
-
                 </div>
             </div>
             {% if user.is_authenticated %}
@@ -98,8 +92,9 @@
             {% if is_booked %}
             <span class="btn btn-block btn-dark btn-md mt-4"><span class="icon-heart-o mr-2 text-danger"></span>Already
                 Purchased </span>
-            {% else %}
-            <form action="{% url 'event:book-event' event.id %}" method="POST">
+                {% else %}
+                <form action="{% url 'event:book-event' event.id %}" method="POST">
+                
                 {% csrf_token %}
                 {{form.as_p}}
                 <input type="hidden" name="event" value="{{ event.id }}">

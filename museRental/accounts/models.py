@@ -12,6 +12,12 @@ ROLE = (
     ('customer', _("customer")),
     ('lessor', _("lessor")),
 )
+DOCUMENT_TYPES = (
+        ('citizenship', _('Citizenship')),
+        ('license', _('License')),
+        ('passport', _('Passport')),
+        ('others', _('Others')),
+    )
 
 class User(AbstractUser):
     username = None
@@ -22,14 +28,16 @@ class User(AbstractUser):
             'unique': _("A user with that email already exists."),
         }
     )
+
     
     role = models.CharField(choices=ROLE, max_length=10)
     gender = models.CharField(choices=gender, max_length=1)
     phone_number = models.CharField(max_length=10, null=True, blank=True)
     photo=models.ImageField(upload_to='images',null=True, blank=True, default='images/default_image.png')
-    document_photo=models.ImageField(upload_to='images',null=True, blank=True)
     is_verified=models.BooleanField(default=False)
-
+    
+    document_type = models.CharField(choices=DOCUMENT_TYPES, max_length=20,default='citizenship')
+    document_photo=models.ImageField(upload_to='images',null=True, blank=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 

@@ -36,11 +36,13 @@
         {% endfor %}
     </div>
 </div>
-<section class="py-3 py-md-5">
-    <div class="container-fluid overflow-hidden  align-items-center">
+<section class="py-md-5">
+    <div class="container overflow-hidden  align-items-center">
         <div class="row gy-4 gy-lg-0 justify-content-center">
+
             {% for event in page_obj %}
-            <div class="col-lg-3 col-md-3 ms-3">
+            
+            <div class="col-lg-4 col-md-6 col-sm-6 my-3">
 
                 <div class="card border-0 shadow mb-5 ">
                     <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
@@ -58,15 +60,30 @@
                                 <a class="link-dark text-decoration-none" href="#!">{{event.name}}</a>
                             </h2>
                         </div>
+                        {% if event.is_active %}
+                        <span class="badge rounded-pill bg-success text-black">Active</span>
+                        {%elif event.is_sold%}
+                        <span class="badge rounded-pill bg-danger text-black">Sold</span>
+                        {%endif%}
+                        
                         <p class="card-text entry-summary text-secondary">
                             <p><span class="text-strong">Location:</span> {{event.location}}</p>
                             <p><span class="text-strong">Date:</span> {{event.date}}</p>
                             <p><span class="text-strong">No. of People:</span> {{event.maximum_attende}}</p>
                         </p>
+
+                        
                     </div>
                     <div class="card-footer border text-center bg-white">
                         <ul class="entry-meta list-unstyled d-flex align-items-center  m-0">
+                            {% if event.is_active %}
                             <a href="{% url 'event:book-event' event.id %}" class="btn btn-primary ">Buy now</a>
+                            {% elif event.is_sold %}
+                            <button type="button" id="example" class="btn btn-danger" data-bs-toggle="popover" data-bs-placement="top"
+                                data-bs-trigger="hover" data-bs-content="Sold out ticket for {{event.name}}">
+                                Sold
+                            </button>
+                            {%endif%}
                         </ul>
                     </div>
                 </div>
@@ -79,5 +96,13 @@
         {% include 'paginator.html' %}
     </div>
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        });
+    });
+</script>
 
 {%endblock %}

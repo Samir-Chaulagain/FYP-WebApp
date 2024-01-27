@@ -151,6 +151,9 @@ def user_logIn(request):
                 request.session.set_expiry(0)
 
             next_url = request.GET.get('next', 'main:index')
+             # Display SweetAlert for login success
+            messages.success(request, 'Login successful!')
+            
             return redirect(next_url)
         else:
             # Use the messages framework to display an error message
