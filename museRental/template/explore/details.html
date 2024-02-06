@@ -7,40 +7,42 @@
 {% load static %}
 
 <style>
-   .with-arrow .nav-link{
-    background-color: #D10024;
-    border-radius: 40px;
-    color:white
-   }
-   .with-arrow .nav-link:hover{
-    background-color: white;
-    border-radius: 40px;
-    color:black
-   }
-   .nav-tabs {
-    border-bottom: 0px;
-}
-    
+    .with-arrow .nav-link {
+        background-color: #D10024;
+        border-radius: 40px;
+        color: white
+    }
+
+    .with-arrow .nav-link:hover {
+        background-color: white;
+        border-radius: 40px;
+        color: black
+    }
+
+    .nav-tabs {
+        border-bottom: 0px;
+    }
+
     .with-arrow .nav-link.active {
         color: #D10024;
         position: relative;
         background-color: white;
-        border: 13px solid  ;
+        border: 13px solid;
     }
 
     .with-arrow .nav-link.active::after {
-    content: '';
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid #D10024;
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: block;
-     
-    
-}
+        content: '';
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #D10024;
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+
+
+    }
 
 
     .product-details .product-name {
@@ -61,9 +63,7 @@
         color: #D10024;
     }
 
-    .product-details .review-link {
-        font-size: 12px;
-    }
+
 
     .product-details .product-price {
         display: inline-block;
@@ -108,7 +108,8 @@
         margin-bottom: 30px;
     }
 
-    .save .save-btn {
+
+    .save-btn {
         position: relative;
         border: 2px solid transparent;
         height: 40px;
@@ -122,48 +123,27 @@
         transition: 0.2s all;
     }
 
-    .save .saved-btn {
-        position: relative;
-        border: 2px solid transparent;
+    .book-now {
+
+
         height: 40px;
         padding: 0 30px;
-        background-color: #ef233c;
-        color: #FFF;
         text-transform: uppercase;
         font-weight: 700;
         border-radius: 40px;
-        -webkit-transition: 0.2s all;
-        transition: 0.2s all;
-    }
-    .save .rent-btn {
-        position: relative;
-        border: 2px solid transparent;
-        height: 40px;
-        padding: 0 30px;
-        background-color: #3e23ef;
-        color: #FFF;
-        text-transform: uppercase;
-        font-weight: 600;
-        border-radius: 40px;
-        -webkit-transition: 0.2s all;
-        transition: 0.2s all;
+
     }
 
-    .save .rented-btn {
-        position: relative;
+    .booked {
         border: 2px solid transparent;
         height: 40px;
         padding: 0 30px;
-        background-color: #198754;;
-        color: #FFF;
         text-transform: uppercase;
         font-weight: 700;
         border-radius: 40px;
-        -webkit-transition: 0.2s all;
-        transition: 0.2s all;
     }
 
-    .save .save-btn>i {
+    .save-btn>i {
         position: absolute;
         left: 0;
         top: 0;
@@ -175,18 +155,17 @@
         visibility: hidden;
     }
 
-    .save .save-btn:hover {
+    .save-btn:hover {
         background-color: #FFF;
         color: #D10024;
         border-color: #D10024;
         padding: 0px 30px 0px 50px;
     }
 
-    .save .save-btn:hover>i {
+    .save-btn:hover>i {
         opacity: 1;
         visibility: visible;
     }
-
 
 
 
@@ -200,10 +179,6 @@
         text-transform: uppercase;
         font-size: 13px;
     }
-
-    
-
-    
 </style>
 
 
@@ -233,10 +208,10 @@
 
 </div>
 
-<div class="container my-5 py-5 ">
+<div class="container my-5 py-2 ">
     <div class="row" height="100vh">
         <!-- carousel Image -->
-        <div class="col-md-7 col-md-push-2">
+        <div class="col-md-6 col-md-push-2">
 
             <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
                 <div class="carousel-indicators">
@@ -269,13 +244,10 @@
 
         </div>
 
+        <!-- Item Information -->
 
+        <div class="col-md-6 ">
 
-
-        <!-- Information -->
-
-
-        <div class="col-md-5 ">
             <div class="product-details">
                 <h2 class="product-name">{{item.name}}</h2>
                 <div>
@@ -286,7 +258,7 @@
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star-o"></i>
                     </div>
-                    <a class="review-link" href="#">10 Review(s) | Add your review</a>
+                    <a class="review-link" href="#"></a>
                 </div>
                 <div>
                     <h3 class="product-price"> <del class="product-old-price">रु {{ item.price }}</del></h3>
@@ -294,294 +266,396 @@
                 </div>
                 <p>{{ item.description}}
                 </p>
-
-                
-
-
-
                 <ul class="product-links">
                     <li>Category:</li>
-                    <li><a href="#">Headphones</a></li>
-                    <li><a href="#">Accessories</a></li>
+                    <li><a href="#"
+                            style="text-decoration: none; color:#D10024;">{{item.get_item_type_display_name}}</a></li>
+                    <li><a href="#" style="text-decoration: none; color:#D10024;">{{item.category}}</a></li>
                 </ul>
-
                 <ul class="product-links">
                     <li>Share:</li>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-envelope"></i></a></li>
+                    <div>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="" class="me-4 text-reset">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+
                 </ul>
 
             </div>
+
+
             <!-- Save Button -->
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                        {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+                        {% is_item_already_saved item request.user as is_saved %}
+                        {% if is_saved %}
+                        <form id="deleteSavedForm" action="{% url 'explore:delete-saved' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn save-btn" type="submit"><i class="fa-solid fa-heart-crack"></i>
+                                Saved</button>
+                        </form>
 
+                        {% else %}
+                        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item" value="{{ item.id }}">
 
-                <div class="save md-gy-3">
+                            <button class=" save-btn btn" type="submit"><i class="fa-solid fa-heart-crack"></i>
+                                Save</button>
 
-                    {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
-                    {% is_item_already_saved item request.user as is_saved %}
-                    {% if is_saved %}
-                    <button class="saved-btn btn-danger" type="submit"><i class="fa fa-heart"></i> Saved</button>
-                    
-                    {% else %}
-                    <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="item" value="{{ item.id }}">
-                        
-                        <button class="btn save-btn" type="submit"><i class="fa-solid fa-heart-crack"></i> Save</button>
-
-                    </form>
-                    {% endif %}
-
-
-
-                    {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified %}
-                    <p>
-                        Customer have to Verify Account in Profile by Uploading documents
-
-                    </p>
-
-
-                    {% elif request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
-
-
-                    <!-- Delete Confirmation Modal -->
-                    <button
-                       onclick="call_sw_alert_func('{% url 'explore:delete-item' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
-                        class="btn-danger btn-sm saved-btn">Delete</button> 
-                    {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
-
-                    <p>
-                        Lessor have to Verify Account in Profile by Uploading documents and wait until verification
-
-                    </p>
-
-                    <form action="{% url 'explore:saved-item' item.id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="item" value="{{ item.id }}">
-                        {% elif not user.is_authenticated%}
-                        <button class="save-btn" type="submit"><i class="fa fa-heart"></i> Save</button>
+                        </form>
                         {% endif %}
-                    </form>
-                    <!-- saved item -->
-
-                    {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
-
-
-                    {% is_item_already_rented item request.user as is_rented %}
-                    {% if is_rented %}
-                    <button type="button" class="rented-btn btn-md">
-                        Already Rented
-                    </button>
-                    {% else %}
-                    {% if Available %}
-                    <button type="button" class="rent-btn btn-md" id="myButton1" data-toggle="modal"
-                        data-target="#exampleModalCenter" hidden>
-                        Rent now
-                    </button>
-                    {% else %}
-                    <button type="button" class="rent-btn btn-md" id="myButton1" data-toggle="modal"
-                        data-target="#exampleModalCenter">
-                        Rent now
-                    </button>
-
-                    {% endif %}
-                    {% endif %}
 
 
 
+                        {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified %}
+                        <button type="button" id="example" class="btn btn-danger" data-bs-toggle="popover"
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Verify Account Uploading document or wait until verification">
+                            Need Verification
+                        </button>
 
 
-                    {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+                        {% elif request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+
+
+                        <!-- Delete Confirmation Modal -->
+                        <button
+                            onclick="call_sw_alert_func('{% url 'explore:delete-item' item.id %}','{{ item.id }}','Once Deleted, You Will Not be Able To Recover This Post!')"
+                            class="btn-danger btn-sm save-btn"><i class="fa-solid fa-xmark"></i>Delete</button>
+                        {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
+
+                        <button type="button" id="example" class="btn btn-danger" data-bs-toggle="popover"
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Verify Account Uploading document or wait until verification">
+                            Need Verification
+                        </button>
+
+                        <form action="{% url 'explore:saved-item' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="item" value="{{ item.id }}">
+                            {% elif not user.is_authenticated%}
+                            <button class="save-btn" type="submit"><i class="fa fa-heart"></i> Save</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                    <!-- Save Button -->
+
+                    <div class="col-6">
+                        {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+
+
+                        {% is_item_already_rented item request.user as is_rented %}
+                        {% if is_rented %}
+                        <button type="button" class="btn btn-dark" style="font-weight: 700;
+                                                                border-radius: 40px;" id="myButton1"
+                            data-toggle="modal" disabled>
+                            Already Rented</a>
+                        </button>
+                        {% else %}
+                        {% if Available %}
+                        <button type="button" class="rent-btn btn-md" id="myButton1" data-toggle="modal"
+                            data-target="#exampleModalCenter" hidden>
+                            <i class="fa fa-heart"></i> Rent Now</button>
+
+                        {% else %}
+                        <button type="button" class="btn btn-dark btn-md" style="font-weight: 700;
+                                    border-radius: 40px;" id="myButton1" data-toggle="modal"
+                            data-target="#exampleModalCenter">
+                            Rent Now
+                        </button>
+
+
+                        {% endif %}
+                        {% endif %}
+                        {%if Available%}
+                        <!-- Trigger button to open the modal -->
+                        <button type="button" class="btn btn-outline-dark booked" data-toggle="modal"
+                            data-target="#bookingModal">
+                            Book
+                        </button>
+
+                        {%endif%}
+
+
+
+
+                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and  user.is_verified %}
 
 
 
 
 
-                    <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-block btn-light btn-md">Edit</a>
-
-
-
-                    {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
-                    <a class="btn btn-danger btn-md" aria-disabled="true">Need Verification</a>
+                        <a href="{% url 'explore:edit-item' item.id %}" class="btn btn-outline-dark book-now"
+                            style="padding-top:6px;">Edit</a>
 
 
 
 
 
-                    {% elif not user.is_verified and user.role == 'customer' %}
-
-                    <a class="btn btn-danger btn-md" aria-disabled="true">Need Verification</a>
-
-
-                    {%elif not user.is_authenticated%}
-
-                    <a class="btn btn-block btn-light btn-md"
-                        href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}">Login</a>
-
-
-                    {%endif%}
+                        {% elif request.user.id == item.user.id and user.role == 'lessor' and not user.is_verified %}
+                        <button type="button" id="example" class="btn btn-outline-danger" data-bs-toggle="popover"
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Verify Account Uploading document or wait until verification"
+                            hidden>
+                            Need Verification
+                        </button>
 
 
 
 
 
+                        {% elif not user.is_verified and user.role == 'customer' %}
 
+                        <button type="button" id="example" class="btn btn-outline-danger" data-bs-toggle="popover"
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Verify Account Uploading document or wait until verification. "
+                            hidden>
+                            Need Verifiation
+                        </button>
+
+
+                        {%elif not user.is_authenticated%}
+
+                        <a class="btn btn-outline-dark book-now"
+                            href="{% url 'accounts:login' %}?next={% url 'explore:details' item.id %}"
+                            style="padding-top:6px;">Login</a>
+
+
+                        {%endif%}
+
+                    </div>
                 </div>
 
-            {%if NotAvailable%}
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <strong>Item is not Available for this dates!!</strong>
-                    <p>
-                        It is rented from {{dates.Rentitem_Date_of_Booking}} to
-                        {{dates.Rentitem_Date_of_Return}}
-                    </p>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+
+                <!-- saved item -->
+
             </div>
-            {%endif%}
-
-            {%if Incorrect_dates%}
-            <div class="container">
-                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-                    <strong>{{Incorrect_dates}}</strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            {%endif%}
-            {%if Available%}
-            <div class="container">
-                <div class="alert alert-success alert-dismissible fade show my-2" role="alert">
-                    <strong>Item is Available (Send Request to book it)</strong>
-                    {%if Message%}
-                    <p>
-                        {{Message}}. So there are some chances that you might not get it. As items are
-                        rented on
-                        First come
-                        first serve policy. You may get this item if the other person decline his/her
-                        request.
-                    </p>
-                    {%endif%}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-            {%endif%}
 
 
-            {%if Available%}
-            <h5 class="text-light" style=" background-color: black; text-align: center;">Book items
-            </h5>
-            <form id="rentForm" action="{% url 'explore:rent-item' item.id %}" method="post">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="pickupdate"><b>Pickup Date</b></label>
-                        <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
-                            value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="returndate"><b>Return Date</b></label>
-                        <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
-                            value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="totaldays"><b>Total days</b></label>
-                        <input type="text" class="form-control" id="totaldays" name="Total_days"
-                            value="{{rent_data.days}}" readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="totalamount"><b>Total Amount</b></label>
-                        <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
-                            value="{{rent_data.total}}" readonly>
-                    </div>
-                    {% is_item_already_rented item request.user as is_rented %}
-                    {% if is_rented %}
-                    <button type="button" class="btn btn-success btn-md">
-                        Already Rented
-                    </button>
-                    {% else %}
 
 
-                    <button onclick="Pay_Khalti(event)" class="btn btn-secondary"
-                        style="background-color: rgb(107, 8, 168); color: white; margin-top: 15px;">
-                        Pay
-                    </button>
 
 
-                    {% endif %}
-                </div>
-            </form>
 
-            {%endif%}
         </div>
     </div>
+    <!-- If Items are ot available for this day -->
+
+    {%if NotAvailable%}
+    <div class="container">
+        <div id="success-alert" class="alert alert-success alert-dismissible fade show my-2" role="alert">
+            <strong>Item is not Available for this dates!!</strong>
+            <p>
+                {{Message}}
+            </p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {%endif%}
+
+    {%if Incorrect_dates%}
+    <div class="container">
+        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            <strong>{{Incorrect_dates}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {%endif%}
+
+    {%if Available%}
+
+    <div class="container">
+        <div id="success-alert" class="alert alert-success alert-dismissible fade show my-2" role="alert">
+            <strong>Item Details.</strong>
+            {%if Message%}
+            <p>
+                {{Message}}.
+            </p>
+            {%endif%}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Book items</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="rentForm" action="{% url 'explore:rent-item' item.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="pickupdate"><b>Pickup Date</b></label>
+                                <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
+                                    value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="returndate"><b>Return Date</b></label>
+                                <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
+                                    value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="totaldays"><b>Total days</b></label>
+                                <input type="text" class="form-control" id="totaldays" name="Total_days"
+                                    value="{{rent_data.days}}" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="totalamount"><b>Total Amount</b></label>
+                                <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
+                                    value="{{rent_data.total}}" readonly>
+                            </div>
+                            <!-- Button to open the map for location selection -->
+                            <button type="button" onclick="openMap()">Select Location</button>
+                            <button type="button" onclick="useMyLocation()">Use My Location</button>
+
+                            <!-- Map container -->
+                            <div id="map" style="height: 400px;"></div>
+
+                            <!-- Add fields for capturing user location -->
+                            <input type="" name="latitude" id="latitude" value="">
+                            <input type="" name="longitude" id="longitude" value="">
+
+                            {% is_item_already_rented item request.user as is_rented %}
+                            {% if is_rented %}
+                            <button type="button" class="btn btn-success btn-md" disabled>
+                                Already Rented
+                            </button>
+                            {% else %}
+                            <button onclick="Pay_Khalti(event)" class="btn btn-secondary"
+                                style="background-color: rgb(107, 8, 168); color: white; margin-top: 15px;">
+                                Pay with Khalti
+                            </button>
+                            {% endif %}
+                            xx
+                        </div>
+                    </form>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
 
         <div class="col-md-12">
             <div class="p-5 bg-white rounded shadow mb-5 ">
                 <!-- Bordered tabs-->
-            <ul id="myTab1" role="tablist" class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center ">
-                <li class="nav-item flex-sm-fill mx-2">
-                    <a id="home1-tab" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="true"
-                        class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Description</a>
-                </li>
-                <li class="nav-item flex-sm-fill mx-2">
-                    <a id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1"
-                        aria-selected="false" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Location</a>
-                </li>
-                <li class="nav-item flex-sm-fill mx-2">
-                    <a id="contact1-tab" data-toggle="tab" href="#contact1" role="tab" aria-controls="contact1"
-                        aria-selected="false" class="nav-link text-uppercase font-weight-bold rounded-5 border">Review</a>
-                </li>
-            </ul>
+                <ul id="myTab1" role="tablist"
+                    class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center ">
+                    <li class="nav-item flex-sm-fill mx-2">
+                        <a id="home1-tab" data-toggle="tab" href="#home1" role="tab" aria-controls="home1"
+                            aria-selected="true"
+                            class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Description</a>
+                    </li>
+                    <li class="nav-item flex-sm-fill mx-2">
+                        <a id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1"
+                            aria-selected="false"
+                            class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Location</a>
+                    </li>
+                    <li class="nav-item flex-sm-fill mx-2">
+                        <a id="contact1-tab" data-toggle="tab" href="#contact1" role="tab" aria-controls="contact1"
+                            aria-selected="false"
+                            class="nav-link text-uppercase font-weight-bold rounded-5 border">Review</a>
+                    </li>
+                </ul>
                 <div id="myTab1Content" class="tab-content">
-                    <div id="home1" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-5 show active">
-                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    <div id="home1" role="tabpanel" aria-labelledby="home-tab"
+                        class="tab-pane fade px-4 py-5 show active">
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                            eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco
                             laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                            do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation
                             ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
                     </div>
                     <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
-                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                            eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco
                             laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                            do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation
                             ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
                     </div>
                     <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade px-4 py-5">
-                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                            eiusmod tempor
+                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation ullamco
                             laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
+                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                            do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                            exercitation
                             ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            Excepteur
+                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                            laborum.</p>
                     </div>
                 </div>
-                <!-- End bordered tabs -->
             </div>
+            <!-- End bordered tabs -->
 
         </div>
     </div>
@@ -644,8 +718,81 @@
 
 </div>
 
+
+<!-- for popover -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        });
+    });
+</script>
+
 <!-- Include Khalti Checkout Web library -->
 <script src="https://unpkg.com/khalti-checkout-web"></script>
+<!-- Include Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Include Leaflet library -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Script to handle opening the map -->
+<script>
+    var mymap;
+    var marker;
+
+    function openMap() {
+        mymap = L.map('map').setView([27.7172, 85.3240], 12);
+
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(mymap);
+
+        marker = L.marker([51.505, -0.09], { draggable: true }).addTo(mymap);
+
+        // Function to update hidden input fields with marker's coordinates
+        function updateMarkerCoordinates() {
+            document.getElementById('latitude').value = marker.getLatLng().lat;
+            document.getElementById('longitude').value = marker.getLatLng().lng;
+        }
+
+        // Initial update of hidden input fields
+        updateMarkerCoordinates();
+
+        // Event listener for marker dragend
+        marker.on('dragend', function (e) {
+            // Update hidden input fields with marker's new coordinates
+            updateMarkerCoordinates();
+        });
+
+        // Event listener for map click
+        mymap.on('click', function (e) {
+            // Move marker to the clicked location
+            marker.setLatLng(e.latlng);
+            // Update hidden input fields with marker's new coordinates
+            updateMarkerCoordinates();
+        });
+    }
+
+    function useMyLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+                // Set marker to user's current location
+                marker.setLatLng(userLatLng);
+                mymap.setView(userLatLng);
+
+                // Update hidden input fields with user's current coordinates
+                updateMarkerCoordinates();
+            });
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    }
+</script>
 
 <script>
     const csrf_token = "{{ csrf_token }}";
@@ -658,7 +805,9 @@
 
         // Get the total amount from Django context
         const amt = '{{ rent_data.total }}';
-        const mail = '{{ item.user.email }}';
+        const mail_1 = '{{ item.user.email }}';
+        const mail_2 = '{{ request.user.email }}';
+
         async function sendEmailAfterPayment() {
             try {
                 const response = await fetch('{% url "explore:send_email_after_payment" %}', {
@@ -668,7 +817,8 @@
                         'X-CSRFToken': csrf_token,
                     },
                     body: JSON.stringify({
-                        receiver_email: mail,
+                        lessor_email: mail_1,
+                        customer_email: mail_2,
                     }),
                 });
 
@@ -680,7 +830,7 @@
         }
 
         const config = {
-            publicKey: "test_public_key_dc1970829015486687411487e45d789a",
+            publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
             productIdentity: 1,
             productName: "Muse rental HUb",
             productUrl: "http://127.0.0.1:8000/",
@@ -749,7 +899,17 @@
     }
 </script>
 
-
+<script>
+    // Add this script to hide the success message after 3 seconds
+    document.addEventListener("DOMContentLoaded", function () {
+        var successAlert = document.getElementById('success-alert');
+        if (successAlert) {
+            setTimeout(function () {
+                successAlert.style.display = 'none';
+            }, 3000); // 3000 milliseconds (3 seconds)
+        }
+    });
+</script>
 
 
 {% endblock %}

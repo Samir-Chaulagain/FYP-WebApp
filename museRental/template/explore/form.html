@@ -1,27 +1,37 @@
-{% extends 'base.html' %}
-
-{% block title %}{{ title }}{% endblock %}
-
-{% block content %}
-<h1 class="mb-6 text-3xl">{{ title }}</h1>
-
-<form method="post" action="." enctype="multipart/form-data">
-    {% csrf_token %}
-
-    <div class="space-y-4">
-        {{ form.as_p }}
+<ul id="myTab1" role="tablist" class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center mt-4">
+    <li class="nav-item flex-sm-fill mx-2">
+        <a id="saveditem-tab" data-toggle="tab" href="#saveditem" role="tab" aria-controls="saveditem"
+            aria-selected="true" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Saved
+            Items</a>
+    </li>
+    <li class="nav-item flex-sm-fill mx-2">
+        <a id="renteditem-tab" data-toggle="tab" href="#renteditem" role="tab" aria-controls="renteditem"
+            aria-selected="true" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Rented
+            Items</a>
+    </li>
+    <li class="nav-item flex-sm-fill mx-2">
+        <a id="saved-event-tab" data-toggle="tab" href="#saved-event" role="tab" aria-controls="saved-event"
+            aria-selected="false" class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Saved
+            Events</a>
+    </li>
+    <li class="nav-item flex-sm-fill mx-2">
+        <a id="booked-event-tab" data-toggle="tab" href="#booked-event" role="tab" aria-controls="booked-event"
+            aria-selected="false" class="nav-link text-uppercase font-weight-bold rounded-5 border">Booked Events</a>
+    </li>
+</ul>
+<div id="myTab1Content" class="tab-content">
+    <div id="myitems" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade px-4 py-3 show active">
+        
     </div>
+    <div id="saved-event" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-3">
+        
 
-    {% if form.errors or form.non_field_errors %}
-        <div class="mb-3 p-6 bg-red-100 rounded-xl">
-            {% for field in form %}
-                {{ field.errors }}
-            {% endfor %}
+    </div>
+    <div id="booked-event" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade px-4 py-3">
 
-            {{ form.non_field_errors }}
-        </div>
-    {% endif %}
 
-    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
-</form>
-{% endblock %}
+        
+
+    </div>
+    
+</div>

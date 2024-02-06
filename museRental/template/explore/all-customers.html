@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
 <div class="text-center bg-image"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px">
@@ -24,27 +26,74 @@
                         <table class="table text-center">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Email</th>
-                                    <th>Item Title</th>
-                                    <th>Applied Date</th>
-                                    <th>View </th>
-                        
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Pickup Date</th>
+                                    <th>Return Date</th>
+                                    <th>Location</th>
+                                    <th>Status </th>
+                                    <th>Action </th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for customer in all_Customers %}
-                            {{ customer.get_total_customer }}
+                                {{ customer.get_total_customer }}
 
                                 <tr>
-                                    <td class="text-center"><a href="">{{ customer.user.get_full_name }}</a></td     >
-                                    <td>{{ customer.item.title }}</td>
-                                    <td>{{ customer.created_at }}</td>
+                                    <td class="text-center"><a href="">{{ customer.user.get_full_name }}</a></td>
+                                    <td>{{ customer.item.name }}</td>
+                                    <td>{{ customer.Rentitem_Date_of_Booking }}</td>
+                                    <td>{{ customer.Rentitem_Date_of_Return }}</td>
+                                    <!-- Add this inside your for loop, where you display customer information -->
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="{% url 'explore:customer-details' customer.user.id %}"
-                                                role="button">
-                                            Click
-                                        </a>
+                                        <button class="btn btn-primary btn-sm view-map-btn" data-toggle="modal" data-target="#mapModal"
+                                            data-latitude="{{ customer.latitude }}" data-longitude="{{ customer.longitude }}">
+                                            View Map
+                                        </button>
+                                        
                                     </td>
+
+                                    {% if customer.request_status == "Pending" %}
+                               
+                                    <td>
+                                    
+                                    <span class="badge rounded-pill bg-info text-white">Pending</span>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="in_progress">Proceed to shipment</a>
+                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="completed">Done</a>
+                                    </td>
+
+                                    {% elif customer.request_status == "Completed" %}
+                                    <td>
+
+                                        <span class="badge rounded-pill bg-success text-white">Completed</span>
+                                    </td>
+                                    <td>
+                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="in_progress">Proceed to shipment</button>
+                                        <button disabled class="btn btn-warning btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="completed">Done</button>
+                                    </td>
+                                    {% else %}
+                                    <td>
+
+                                        <span class="badge rounded-pill bg-dark text-white">Shipping</span>
+                                    </td>
+                                    <td>
+                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="in_progress">Proceed to shipment</button>
+                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                            data-status="completed">Done</a>
+                                    </td>
+                                    {% endif %}
+                                
+
+
+
 
                                 </tr>
                                 {% endfor %}
@@ -57,5 +106,110 @@
     </div>
 
 </section>
+<!-- Add this at the end of your template, after the closing </section> tag -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Location Map</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Map container -->
+                <div id="map" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Include jQuery at the end of the body -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- Include Khalti Checkout Web library -->
+<!-- Include Leaflet CSS -->
+
+<!-- Include Leaflet library -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Your existing jQuery and modal script -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        $('.view-map-btn').on('click', function () {
+            var latitude = $(this).data('latitude');
+            var longitude = $(this).data('longitude');
+
+            // Wait for a short delay before initializing the Leaflet map
+            setTimeout(function () {
+                initLeafletMap(latitude, longitude);
+            }, 100);
+        });
+
+        // Function to initialize the Leaflet map
+        function initLeafletMap(latitude, longitude) {
+            // Create a map using Leaflet
+            var map = L.map('map').setView([parseFloat(latitude), parseFloat(longitude)], 15);
+
+            // Add a tile layer (you can choose a different provider)
+           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+
+        
+            // Add a marker for the location
+            L.marker([parseFloat(latitude), parseFloat(longitude)]).addTo(map)
+                .bindPopup('Customer Location')
+                .openPopup();
+        }
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Function to handle the button clicks
+        function updateStatus(userId, newStatus) {
+            // Send an AJAX request to update the status
+            $.ajax({
+                type: "POST",  // You might need to change this based on your implementation
+                url: "{% url 'explore:update_status' %}",  // Replace with the actual URL for updating status
+                data: {
+                    user_id: userId,
+                    new_status: newStatus,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',  // Add CSRF token for security
+                },
+                success: function (data) {
+                    // Update the status on success
+                    alert('Status updated successfully!');
+                    // You can update the UI here if needed
+                     location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating status:', error);
+                }
+            });
+        }
+
+        // Click event for 'Proceed to shipment' button
+        $('.proceed-btn').on('click', function () {
+            var userId = $(this).data('user-id');
+            updateStatus(userId, 'In progress');
+        });
+
+        // Click event for 'Done' button
+        $('.done-btn').on('click', function () {
+            var userId = $(this).data('user-id');
+            updateStatus(userId, 'Completed');
+        });
+    });
+</script>
+
+
 
 {% endblock %}

@@ -44,14 +44,6 @@ class CustomerRegistrationForm(UserCreationForm):
             raise forms.ValidationError("Gender is required")
         return gender
 
-    def save(self, commit=True):
-        user = super(CustomerRegistrationForm, self).save(commit=False)
-        user.role = "customer"
-        if user.document_photo:
-            user.is_verified = True
-        if commit:
-            user.save()
-        return user
     
 class LessorRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=10, required=True, label='Phone Number',
@@ -117,14 +109,7 @@ class LessorRegistrationForm(UserCreationForm):
             raise forms.ValidationError("Gender is required")
         return gender
 
-    def save(self, commit=True):
-        user = UserCreationForm.save(self,commit=False)
-        user.role = "lessor"
-        if user.document_photo:
-            user.is_verified = True
-        if commit:
-            user.save()
-        return user
+    
 
 class CustomerProfileEditForm(forms.ModelForm):
     
@@ -182,6 +167,7 @@ class LessorProfileEditForm(forms.ModelForm):
         self.fields['photo'].widget.attrs.update({'placeholder': 'Change Profile Picture'})
         self.fields['document_type'].widget.attrs.update({'placeholder': 'Change Document Type'})
         self.fields['document_photo'].widget.attrs.update({'placeholder': 'Change Document photo'})
+        
 
     class Meta:
         model = User

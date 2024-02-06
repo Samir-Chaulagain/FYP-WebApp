@@ -1,6 +1,7 @@
 import logging
 import uuid
 import requests
+from django.db.models import Q
 import json
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -22,23 +23,32 @@ def event(request):
     query = request.GET.get('query', '')
     category_id = request.GET.get('category', 0)
     categories = Category.objects.all()
-    event = Event.objects.all()
+    all_events = Event.objects.all()
 
-    paginator = Paginator(event, 6)
+    
+
+    
+
+    if category_id:
+        filtered_events = all_events.filter(category__id=category_id)
+    else:
+        filtered_events = all_events
+
+    if query:
+        filtered_events = filtered_events.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    paginator = Paginator(filtered_events, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    if category_id:
-        event = event.filter(category_id=category_id)
+    print(f"Category ID: {category_id}, Filtered Events Count: {filtered_events.count()}")
 
-    if query:
-        event = event.filter(Q(name__icontains=query) | Q(description__icontains=query))
     return render(request, 'events/event.html', {
         'page_obj': page_obj,
         'query': query,
         'categories': categories,
         'category_id': int(category_id),
-        'uuid':id
+        'uuid': id,
+        'events': filtered_events,
     })
 
 def showdetails(request,pk):
@@ -97,22 +107,29 @@ def event_saved_view(request, pk):
         else:
             return redirect(reverse("event:event-details", kwargs={'pk': pk}))
 
-    else:
-        messages.error(request, 'You already saved this item!')
+    
     return redirect(reverse("event:event-details", kwargs={'pk': pk}))
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 def delete_savedevent_view(request, pk):
+    try:
+        event = saved_event.objects.filter(event=pk, user=request.user).first()
 
-    event = get_object_or_404(saved_event, pk=pk, user=request.user.pk)
+        # Debugging prints
+        print(f"Requested pk: {pk}")
+        print(f"Request user: {request.user}")
+        print(f"Found saved event: {saved_event.event}")
 
-    if event:
-        event.delete()
-        messages.success(request, 'Saved item was successfully deleted!')
+        if event:
+            event.delete()
+            messages.success(request, 'Saved item was successfully deleted!')
+        else:
+            messages.error(request, 'Saved item not found or you do not have permission to delete it.')
+    except saved_event.DoesNotExist:
+        messages.error(request, 'Saved item not found or you do not have permission to delete it.')
 
-    return redirect('explore:dashboard')
-
-
+    # Assuming 'event-details' is a valid URL pattern, redirect to it after deletion
+    return redirect('event:event-details', pk=pk)
 
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -131,23 +148,22 @@ def event_view(request, pk):
     # Assuming `pk` is the event pk.
     event = get_object_or_404(Event, pk=pk)
     user = get_object_or_404(User, id=request.user.id)
-    form = EventBooked(request.POST or None)
 
     if request.method == 'POST':
+        num_tickets = int(request.POST.get('no_of_tickets', 0))
 
-        if form.is_valid():
-            num_tickets = form.cleaned_data['num_tickets']
+        # Check if the user has already booked tickets for this event
+        events = Booking.objects.filter(user=user, event=event).first()
+        total_price = num_tickets * event.ticket_price
 
-            # Check if the user has already booked tickets for this event
-            events = Booking.objects.filter(user=user, event=event).first()
-            total_price = num_tickets * event.ticket_price
+        if num_tickets > 0:
             if not events:
                 instance = Booking(
                     user=user,
                     event=event,
                     num_tickets=num_tickets,
                     total_price=total_price,
-                    # Add other fields if needed
+                    
                 )
                 instance.save()
 
@@ -156,9 +172,9 @@ def event_view(request, pk):
             else:
                 messages.error(request, 'You have already booked tickets for this event!')
         else:
-            messages.error(request, 'Invalid form submission. Please check the form data.')
+            messages.error(request, 'Please enter a valid number of tickets (greater than zero).')
 
-    return render(request, 'events/event-details.html', {'form': form, 'event': event})
+    return render(request, 'events/event-details.html', {'event': event})
 
 
 logger = logging.getLogger(__name__)
@@ -184,15 +200,7 @@ def send_email_after_payment(request):
 
 
 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
-from django.contrib import messages
-from .models import Event, Booking
-from .forms import EventEditForm
-import requests
-import json
 
-def payment(request, id):
     user = get_object_or_404(User, id=request.user.id)
     event = get_object_or_404(Event, id=id)
     

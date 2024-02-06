@@ -20,7 +20,7 @@ function call_sw_alert_func(route, id, message){
               if (route.includes('delete')) { 
                 swal({
                   title: "Delete Done!",
-                  text: "Your Job Was Deleted!",
+                  text: "Your  Was Deleted!",
                   icon: "success",
                   button: "Done",
                 });
@@ -28,7 +28,7 @@ function call_sw_alert_func(route, id, message){
               }else if(route.includes('close')){
                 swal({
                   title: "Done!",
-                  text: "Your Job was marked closed!",
+                  text: "Your item has been deleted",
                   icon: "success",
                   button: "Done",
                 });

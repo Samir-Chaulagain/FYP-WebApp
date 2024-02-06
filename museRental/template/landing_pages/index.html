@@ -183,10 +183,17 @@
 
                     <div class="card shadow mb-5" style="height: 450px;">
                         <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
-                            <a href="{% url 'explore:details' item.id %}">
-                                <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{{item.instrument_image1.url}}" alt="" 
-                                    style="height: 100%; width: 100%; object-fit: cover;">
-                            </a>
+                        {% if item.image_set.all %}
+                        {% with first_image=item.image_set.first %}
+                        <a href="{% url 'explore:details' item.id %}">
+                            <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{{ first_image.image.url }}" alt=""
+                                style="height: 100%; width: 100%; object-fit: cover;">
+                        </a>
+                        {% endwith %}
+                        {% else %}
+                        <p>No image available</p>
+                        {% endif %}
+                            
 
                         </figure>
                         <div class="card-body border bg-white p-4">
@@ -289,7 +296,7 @@
     </div>
 
     <div class="container">
-        <div class="row gy-4 gy-lg-0 justify-content-lg-center" style="height: 580px;">
+        <div class="row gy-4 gy-lg-0 justify-content-lg-center" >
             {% for post in posts|slice:":2" reversed %}
             <div class="col-md-12 col-lg-5">
                 <div class="card border-0">

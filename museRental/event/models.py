@@ -20,8 +20,9 @@ class Event(models.Model):
     image = models.ImageField(upload_to='images/', default='default_image.jpg')
     description = models.TextField()
     date = models.DateTimeField(default=datetime.now)
+
     location = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)    
+    category = models.ForeignKey(Category, related_name='events', on_delete=models.CASCADE)    
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_active = models.BooleanField(default=True)
     is_sold = models.BooleanField(default=False)
@@ -31,6 +32,12 @@ class Event(models.Model):
     
     def __str__(self):
         return self.name
+    def delete_if_expired(self):
+        # Check if the current date and time exceed the event's date
+        if timezone.now() > self.date:
+            self.delete()
+
+            
 class Booking(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='bookings')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='booked_events')

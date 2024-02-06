@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext as _
 from accounts.managers import CustomUserManager
 from django.contrib.auth.models import AbstractUser
-gender = (
+Gender_TYPE = (
     ('M', _("Male")),
     ('F', _("Female")),
 )
@@ -31,7 +31,7 @@ class User(AbstractUser):
 
     
     role = models.CharField(choices=ROLE, max_length=10)
-    gender = models.CharField(choices=gender, max_length=1)
+    gender = models.CharField(choices=Gender_TYPE, max_length=1)
     phone_number = models.CharField(max_length=10, null=True, blank=True)
     photo=models.ImageField(upload_to='images',null=True, blank=True, default='images/default_image.png')
     is_verified=models.BooleanField(default=False)

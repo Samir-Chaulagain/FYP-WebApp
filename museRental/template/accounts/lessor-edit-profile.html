@@ -10,8 +10,8 @@
   }
 
   .nav-pills-custom .nav-link.active {
-    color: #45b649;
-    background: #fff;
+    color: #fff;
+    background: black;
   }
 
 
@@ -70,34 +70,34 @@
 
 
   <div class="row">
-    <div class="col-md-3">
+    
       <!-- Tabs nav -->
-      <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
+      <div class="nav nav-pills nav-pills-custom" id="v-pills-tab" role="tablist"
         aria-orientation="vertical">
-        <a class="nav-link mb-3 p-3 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+        <a class="nav-link m-2 px-5 py-2 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
           role="tab" aria-controls="v-pills-home" aria-selected="true">
           <i class="fa fa-user-circle-o mr-2"></i>
           <span class="font-weight-bold small text-uppercase">Personal Information</span></a>
 
-        <a class="nav-link mb-3 p-3 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+        <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
           role="tab" aria-controls="v-pills-profile" aria-selected="false">
           <i class="fa fa-calendar-minus-o mr-2"></i>
           <span class="font-weight-bold small text-uppercase">Password</span></a>
 
-        <a class="nav-link mb-3 p-3 shadow" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages"
+        <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages"
           role="tab" aria-controls="v-pills-messages" aria-selected="false">
           <i class="fa fa-star mr-2"></i>
           <span class="font-weight-bold small text-uppercase">Reviews</span></a>
 
-        <a class="nav-link mb-3 p-3 shadow" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings"
+        <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings"
           role="tab" aria-controls="v-pills-settings" aria-selected="false">
           <i class="fa fa-check mr-2"></i>
           <span class="font-weight-bold small text-uppercase">Booked event</span></a>
       </div>
-    </div>
+    
 
 
-    <div class="col-md-9">
+   
       <!-- Tabs content -->
       <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade shadow rounded show active p-5" id="v-pills-home" role="tabpanel"
@@ -125,16 +125,20 @@
 
 
           {% include 'messages.html' %}
-          <form method="POST" action="" enctype="multipart/form-data" class="p-4  " style="background-color: #fff;">
+          <form method="POST" action="" enctype="multipart/form-data" class="p-2" style="background-color: #fff;">
 
-            <h4 class="font-italic mb-4">Personal information</h4>
-            {% csrf_token %}
+            
+            
 
-            {% csrf_token %}
-            <span class="text-primary d-block mb-6" style="text-align: center; object-fit: cover;">
-              <img src="{{ form.instance.photo.url }}" alt="Profile Picture" style="border-radius: 50%;" width="280"
-                height="300">
-            </span>
+            <div class="row">
+              <div class="col-6">
+                <span class="text-primary mb-6" style="text-align: center; object-fit: cover;">
+                  <img src="{{ form.instance.photo.url }}" alt="Profile Picture" style="border-radius: 50%;" width="280" height="300">
+                </span>
+              </div>
+              {% csrf_token %}
+
+              
 
 
             {% for field in form %}
@@ -166,7 +170,7 @@
                 <img src="{{ form.instance.document_photo.url }}" alt="Document Photo" width="280" height="300">
 
                 {% else %}
-                <p>For Verification Please upload image</p>
+                <span class="bg-danger text-light">For Verification Please upload image</span>
 
                 {% endif %}
 
@@ -175,24 +179,25 @@
 
             {% else %}
 
-            <div class="row form-group my-2">
-              <div class="row">
+            
+              <div class="form-group my-2">
 
-                <div class="col-md-12 mb-3 mb-md-0">
+                
                   <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
                   <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
                     id="id_{{ field.name }}" value="{{ field.value }}"
                     placeholder="{{ field.field.widget.attrs.placeholder }}">
-                </div>
+                
               </div>
 
 
 
-            </div>
+            
 
             {% endif %}
             {% endfor %}
             <button type="submit" class="btn px-4 btn-primary text-white mt-5 mx-auto">Update</button>
+            </div>
 
           </form>
 
@@ -246,7 +251,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 </div>
 
 

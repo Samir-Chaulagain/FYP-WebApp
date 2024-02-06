@@ -37,17 +37,19 @@ User = get_user_model()
 # Create your views here.
 
 #items function to display/render explore page 
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
+from django.db.models import Q
+from .models import Item, Category
+
 def items(request):
     query = request.GET.get('query', '')
     category_id = request.GET.get('category', 0)
+
+    # Use filter instead of get_object_or_404
     categories = Category.objects.all()
-    
+
     item_list = Item.objects.filter(is_published=True, is_sold=False).order_by('-created_at')
-    
-    # Create a paginator for the job list
-    paginator = Paginator(item_list, 6)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
 
     # Apply category filter
     if category_id:
@@ -59,14 +61,19 @@ def items(request):
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
-    return render(request, 'explore/explore.html', 
-    {
+    # Create a paginator for the filtered items
+    paginator = Paginator(items, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'explore/explore.html', {
         'query': query,
         'categories': categories,
         'category_id': int(category_id),
         'page_obj': page_obj,
         'items': items,
     })
+
 
 # View instrument details
 def showdetails(request,id):
@@ -166,6 +173,9 @@ def item_edit_view(request, id=id):
 
 
 
+
+
+
 @login_required(login_url=reverse_lazy('accounts:login'))
 def dashboard(request):
         
@@ -242,21 +252,21 @@ def delete_item(request, id):
     return redirect('explore:dashboard')
 
 
-# for mmarking sold 
-@login_required(login_url=reverse_lazy('accounts:login'))
-@user_is_lessor
-def make_complete_item_view(request, id):
-    item = get_object_or_404(Item, id=id, user=request.user.id)
+# # for mmarking sold 
+# @login_required(login_url=reverse_lazy('accounts:login'))
+# @user_is_lessor
+# def make_complete_item_view(request, id):
+#     item = get_object_or_404(Item, id=id, user=request.user.id)
 
-    if item:
-        try:
-            item.is_sold = True
-            item.save()
-            messages.success(request, 'Your item was marked closed!')
-        except:
-            messages.success(request, 'Something went wrong !')
+#     if item:
+#         try:
+#             item.is_sold = True
+#             item.save()
+#             messages.success(request, 'Your item was marked closed!')
+#         except:
+#             messages.success(request, 'Something went wrong !')
             
-    return redirect('explore:dashboard')
+#     return redirect('explore:dashboard')
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
@@ -295,19 +305,25 @@ def delete_save_view(request, id):
 
     return redirect('explore:dashboard')
 
-# for checking availability
+
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from datetime import datetime, date
+from .models import Customer, Item
+from django.contrib.auth.decorators import login_required
+# from .decorators import user_is_customer
+
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def CheckAvailability(request, id):
-    # user = get_object_or_404(User, id=request.user.id)
     customer = Customer.objects.filter(user=request.user.id, item_id=id)
     
     Rentitem_Date_of_Booking = request.POST.get('Rentitem_Date_of_Booking', '')
     Rentitem_Date_of_Return = request.POST.get('Rentitem_Date_of_Return', '')
+    
     Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%Y-%m-%d').date()
     Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%Y-%m-%d').date()
 
-    rentItem = Customer.objects.filter(user=request.user.id, item_id=id)
     item = Item.objects.get(id=id)
 
     if Rentitem_Date_of_Booking < date.today():
@@ -318,22 +334,25 @@ def CheckAvailability(request, id):
         Incorrect_dates = "Please give proper dates"
         return render(request, 'explore/details.html', {'Incorrect_dates': Incorrect_dates, 'item': item})
     
-    days = (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1
-    total = days * item.price
-    rent_data = {"Rentitem_Date_of_Booking": Rentitem_Date_of_Booking, "Rentitem_Date_of_Return": Rentitem_Date_of_Return, "days": days, "total": total}
-
+    rentItem = Customer.objects.filter(item_id=id, isAvailable=True)
+    
     for i in rentItem:
-        if (i.Rentitem_Date_of_Booking >= Rentitem_Date_of_Booking and Rentitem_Date_of_Return >= i.Rentitem_Date_of_Booking) or (Rentitem_Date_of_Booking >= i.Rentitem_Date_of_Booking and Rentitem_Date_of_Return <= i.Rentitem_Date_of_Return) or (Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return and Rentitem_Date_of_Return >= i.Rentitem_Date_of_Return):
-            if i.isAvailable:
-                Available = True
-                Message = "Note that somebody has also requested for this item from " + str(i.Rentitem_Date_of_Booking) + " to " + str(i.Rentitem_Date_of_Return)
-                return render(request, 'explore:check-availability', {'Message': Message, 'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
-
+        if (i.Rentitem_Date_of_Booking <= Rentitem_Date_of_Return and Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return) and (Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return and Rentitem_Date_of_Return <= i.Rentitem_Date_of_Return):
+            # Overlapping date range with an available item
             NotAvailable = True
-            return render(request, 'explore/details.html', {'NotAvailable': NotAvailable, 'dates': i, 'item': item, 'customer': customer})
-
+            Message = "Note that somebody has also requested for this item from " + str(i.Rentitem_Date_of_Booking) + " to " + str(i.Rentitem_Date_of_Return)+" So there are some chances that you might not get it. As items are rented on First come first serve policy."
+            messages.error(request, Message)
+            # rent_data = {"Rentitem_Date_of_Booking": Rentitem_Date_of_Booking, "Rentitem_Date_of_Return": Rentitem_Date_of_Return, "days": (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1, "total": item.price * ((Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1)}
+            return render(request, 'explore/details.html', {'Message': Message, 'NotAvailable': NotAvailable, 'item': item, 'customer': customer})
+    
+    # No overlapping date ranges found, the item is available
     Available = True
-    return render(request, 'explore/details.html', {'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
+    Message = "Items available to book for the given date range"
+
+    rent_data = {"Rentitem_Date_of_Booking": Rentitem_Date_of_Booking, "Rentitem_Date_of_Return": Rentitem_Date_of_Return, "days": (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1, "total": item.price * ((Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1)}
+    return render(request, 'explore/details.html', {'Message': Message,'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
+
+
 
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -341,11 +360,13 @@ def CheckAvailability(request, id):
 def rent_item_view(request, id):
     user = get_object_or_404(User, id=request.user.id)
     Customers = Customer.objects.filter(user=user, item=id)
-
+    
     if not Customers:
         if request.method == 'POST':
             Rentitem_Date_of_Booking = request.POST.get('Rentitem_Date_of_Booking', '')
             Rentitem_Date_of_Return = request.POST.get('Rentitem_Date_of_Return', '')
+            latitude = request.POST.get('latitude','')
+            longitude = request.POST.get('longitude','')
 
             Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%b. %d, %Y').date()
             Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%b. %d, %Y').date()
@@ -360,9 +381,14 @@ def rent_item_view(request, id):
                 Rentitem_Date_of_Booking=Rentitem_Date_of_Booking,
                 Rentitem_Date_of_Return=Rentitem_Date_of_Return,
                 Total_days=total_days,
-                Rentitem_Total_amount=total_amount
+                Rentitem_Total_amount=total_amount,
+                latitude=latitude,
+                longitude=longitude
+                
+                
             )
             instance.save()
+            
 
             messages.success(request, 'You have successfully applied for this item!')
             return redirect(reverse("explore:details", kwargs={'id': id}))
@@ -373,80 +399,65 @@ def rent_item_view(request, id):
     return redirect(reverse("explore:details", kwargs={'id': id}))
     
 
-def paypal(request, id):
-    orders = Customer.objects.get(id=id)
-    order = Customer.objects.all()
-    return render(request, 'paypal.html', {'orders': orders, 'order': order})
 
 
 
+# Get or create a logger for this module
 logger = logging.getLogger(__name__)
 
+# Decorators to exempt CSRF protection and require POST method for this view
 @csrf_exempt
 @require_POST
 def send_email_after_payment(request):
     try:
+        
         data = json.loads(request.body)
-        receiver_email = data.get('receiver_email')
+        lessor_email = data.get('lessor_email')
+        customer_email = data.get('customer_email')
 
         subject = 'Payment Successful'
-        message = 'User request for Your item.Payment was successful.User loaction is'
         from_email = 'muserentalhub@gmail.com'
-        recipient_list = [receiver_email]
-        print("Hello", recipient_list)
 
-        send_mail(subject, message, from_email, recipient_list)
+        # Load HTML templates and render with context
+        lessor_html_message = render_to_string('explore/lessor_email_after_payment.html')
+        customer_html_message = render_to_string('explore/customer_email_after_payment.html')
 
+         # Send email to the lessor with lessor_html_message
+        send_mail(subject, '', from_email, [lessor_email], html_message=lessor_html_message)
+        print(lessor_email)
+
+        # Send email to the customer with customer_html_message
+        send_mail(subject, '', from_email, [customer_email], html_message=customer_html_message)
+        print(customer_email)
         return JsonResponse({'status': 'success'})
     except Exception as e:
         logger.error(f"Error sending email: {e}")
         return JsonResponse({'status': 'error'}, status=500)
 
 
-def payment(request):
-    user = get_object_or_404(User, id=request.user.id)
-    form = EventBooked(request.POST or None)
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        payment_token = data.get('payment_token')
-        payment_amount = data.get('payment_amount')
-        print(payment_token)
-        khalti_secret_key = "test_secret_key_ce1adf77ac904ffbba3bc3687d287103"
-        verification_url = "https://khalti.com/api/v2/payment/verify/"
 
-        headers = {
-            'Authorization': f'key {khalti_secret_key}',
-        }
-        payload = {
-            'token': payment_token,
-            'amount': payment_amount,
-        }
 
-        response = requests.post(verification_url, headers=headers, json=payload)
 
-        
-        if form.is_valid():
-            num_tickets = form.cleaned_data['num_tickets']
 
-            # Check if the user has already booked tickets for this event
-            events = Booking.objects.filter(user=user, event=event).first()
-            total_price = num_tickets * event.ticket_price
-            if not events:
-                instance = Booking(
-                    user=user,
-                    event=event,
-                    num_tickets=num_tickets,
-                    total_price=total_price,
-                    # Add other fields if needed
-                )
-                instance.save()
 
-                messages.success(request, 'You have successfully applied for this event!')
-                return redirect(reverse("event:event-details", kwargs={'id': id}))
-            else:
-                messages.error(request, 'You have already booked tickets for this event!')
-        else:
-            messages.error(request, 'Invalid form submission. Please check the form data.')
 
-    return render(request, 'explore/dashboard.html')
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from .models import Customer
+
+@require_POST
+@csrf_exempt  # CSRF exemption for simplicity; consider using a decorator like csrf_protect in production
+def update_status(request):
+    user_id = request.POST.get('user_id')
+    new_status = request.POST.get('new_status')
+    print(new_status)
+    
+    customer = Customer.objects.get(id=user_id)
+    customer.request_status = new_status
+    customer.save()
+    print("hello")
+    return JsonResponse({'status': 'success'})
+    
 

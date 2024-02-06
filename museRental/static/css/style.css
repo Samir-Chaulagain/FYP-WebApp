@@ -104,7 +104,7 @@
 }
 .link-follow a:hover {
   transform: translateY(-2px);
-  color: #726fde;
+  color: #D10024e6;
 }
 .contact a {
   text-decoration: none;
@@ -112,7 +112,7 @@
 }
 .contact a:hover {
   transform: translateY(-2px);
-  color: #726fde;
+  color: #D10024e6;
 }
 
 /* ----------added preloader-------- */

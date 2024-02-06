@@ -27,6 +27,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 
+# Customer REgistration and ativtion via mail
 def customer_registration(request):   
     if request.method == 'POST':
         form = CustomerRegistrationForm(request.POST,request.FILES)
@@ -69,7 +70,7 @@ def customer_registration(request):
             }
     return render(request,'accounts/customer-registration.html',context)
 
-
+# TO Actvate User function for mail
 def activate_user(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -86,6 +87,8 @@ def activate_user(request, uidb64, token):
         messages.error(request, "Invalid Link. Please try again or contact support.")
         return redirect('accounts:login') 
     
+
+# Lessor Registration view function
 def lessor_registration(request):
     if request.method == 'POST':
         form = LessorRegistrationForm(request.POST, request.FILES)
@@ -130,6 +133,8 @@ def lessor_registration(request):
 
     return render(request,'accounts/lessor-registration.html',context)
 
+
+# User Login function
 def user_logIn(request):
 
     if request.user.is_authenticated:
@@ -144,6 +149,7 @@ def user_logIn(request):
 
         if user is not None:
             login(request, user)
+            # Remeber me in session 
 
             if remember_me:
                 request.session.set_expiry(2592000)
@@ -162,7 +168,7 @@ def user_logIn(request):
     return render(request, 'accounts/login.html')
 
 
-
+# Logout Function
 def user_logOut(request):
     """
     Provide the ability to logout
@@ -172,7 +178,7 @@ def user_logOut(request):
 
 
     
-
+# Customer edit Profile
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def customer_edit_profile(request, id):
@@ -211,12 +217,16 @@ def customer_edit_profile(request, id):
 
     return render(request, 'accounts/customer-edit-profile.html', context)
 
+
+# Lessor EDit Form
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def lessor_edit_profile(request, id):
 
     """
     Handle customer Profile Update Functionality
+
+
 
     """
 
@@ -232,6 +242,7 @@ def lessor_edit_profile(request, id):
     else:
         ChangePasswordForm1 = ChangePasswordForm(user=request.user)
     
+
     if request.method == 'POST':
         form = LessorProfileEditForm(request.POST , request.FILES, instance=user)
         if form.is_valid():
@@ -244,7 +255,7 @@ def lessor_edit_profile(request, id):
     
     context = {
         'form': form,
-        'form1':ChangePasswordForm1
+        'form1':ChangePasswordForm1,
     }
 
     return render(request, 'accounts/lessor-edit-profile.html', context)
@@ -252,11 +263,7 @@ def lessor_edit_profile(request, id):
 
 
 
-@login_required
-def change_password(request):
-    
 
-    return render(request, 'accounts/edit-profile.html', {'form1': ChangePasswordForm1})
 
 
 class CustomPasswordResetView(PasswordResetView):
