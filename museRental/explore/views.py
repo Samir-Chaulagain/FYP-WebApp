@@ -97,6 +97,10 @@ def add_item(request):
             instance = form.save(commit=False)
             instance.user = user
             instance.save()
+            item = form.save(commit=False)
+            item.latitude = request.POST.get('latitude')
+            item.longitude = request.POST.get('longitude')
+            item.save()
 
 
             # Save tags
@@ -105,6 +109,7 @@ def add_item(request):
             for file in request.FILES.getlist('file'):
                 # Create an Image instance and associate it with the created item
                 Image.objects.create(item=instance, image=file)
+            
 
             messages.success(
                 request, 'You have successfully posted your item! Please wait for review.')
@@ -409,6 +414,7 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 @require_POST
 def send_email_after_payment(request):
+    
     try:
         
         data = json.loads(request.body)

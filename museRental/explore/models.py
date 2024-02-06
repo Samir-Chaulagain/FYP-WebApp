@@ -28,6 +28,8 @@ class Item(models.Model):
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     description = RichTextField()
     location = models.CharField(max_length=55,default='Thimi')
+    latitude = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     quantity = models.IntegerField(default=1)
     item_type = models.CharField(choices=item_type, max_length=1,default=False)
     price = models.FloatField()

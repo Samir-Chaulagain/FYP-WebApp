@@ -398,7 +398,8 @@
 
 
 
-                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and  user.is_verified %}
+                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and
+                        user.is_verified %}
 
 
 
@@ -447,6 +448,7 @@
 
 
                 <!-- saved item -->
+
 
             </div>
 
@@ -614,24 +616,7 @@
                             laborum.</p>
                     </div>
                     <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
-                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                            eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                            laborum.</p>
-                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                            do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                            laborum.</p>
+                        <div class="mx-auto" id="itemmap" style="height: 400px; width: 100%; "></div>
                     </div>
                     <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade px-4 py-5">
                         <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -719,6 +704,55 @@
 </div>
 
 
+<!-- iTEMS LOCATION -->
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<!-- Link to Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- Script to initialize Leaflet map -->
+<script>
+    // Function to initialize Leaflet map
+    function initMap(latitude, longitude) {
+        // Initialize map
+        var map = L.map('itemmap').setView([latitude, longitude], 12);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var redIcon = L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41]
+        });
+
+        // Add a marker with the custom red icon for the location
+        L.marker([parseFloat(latitude), parseFloat(longitude)], { icon: redIcon }).addTo(map)
+            .bindPopup(`{{item.name}}'s Location`)
+            .openPopup();
+
+
+    }
+
+    // Set latitude and longitude for testing
+    var latitude = {{ item.latitude }}; // Example latitude
+    var longitude = {{ item.longitude }}; // Example longitude
+
+    setTimeout(function () {
+        initMap(latitude, longitude);
+    }, 3000); 
+</script>
+
 <!-- for popover -->
 
 <script>
@@ -732,11 +766,14 @@
 
 <!-- Include Khalti Checkout Web library -->
 <script src="https://unpkg.com/khalti-checkout-web"></script>
+
+
 <!-- Include Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <!-- Include Leaflet library -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <!-- Script to handle opening the map -->
 <script>
     var mymap;

@@ -88,6 +88,17 @@
           <div class="form-group mt-2">
             <input type="file" name="file" id="fileInput" multiple required>
           </div>
+
+          <!-- Button to open the map for location selection -->
+          <button type="button" onclick="openMap()">Select Location</button>
+          <button type="button" onclick="useMyLocation()">Use My Location</button>
+          
+          <!-- Map container -->
+          <div id="map" style="height: 400px;"></div>
+          
+          <!-- Add fields for capturing user location -->
+          <input type="hidden" name="latitude" id="latitude" value="">
+          <input type="hidden" name="longitude" id="longitude" value="">
     
         </div>
       </div>
@@ -108,28 +119,69 @@
 </section>
 
 
-<!-- <script>
-   var myDropzone = new Dropzone("#my-dropzone", {
-      url: "{% url 'explore:add_item' %}",
-      paramName: "file",
-      
-      maxFilesize: 5,
-      addRemoveLinks: true,
-      dictDefaultMessage: "Drop files here or click to upload",
-      headers: {
-        "X-CSRFToken": "{{ csrf_token }}"
-      },
-      success: function (file, response) {
-        // Handle success, if needed
-        console.log(response.message);
-      },
-      error: function (file, response) {
-        // Handle errors, if needed
-        console.log(response.message);
-      }
+<!-- Include Khalti Checkout Web library -->
+<script src="https://unpkg.com/khalti-checkout-web"></script>
+<!-- Include Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Include Leaflet library -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Script to handle opening the map -->
+<script>
+  var mymap;
+  var marker;
+
+  function openMap() {
+    mymap = L.map('map').setView([27.7172, 85.3240], 12);
+
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap);
+
+    marker = L.marker([51.505, -0.09], { draggable: true }).addTo(mymap);
+
+    // Function to update hidden input fields with marker's coordinates
+    function updateMarkerCoordinates() {
+      document.getElementById('latitude').value = marker.getLatLng().lat;
+      document.getElementById('longitude').value = marker.getLatLng().lng;
+    }
+
+    // Initial update of hidden input fields
+    updateMarkerCoordinates();
+
+    // Event listener for marker dragend
+    marker.on('dragend', function (e) {
+      // Update hidden input fields with marker's new coordinates
+      updateMarkerCoordinates();
     });
 
-</script> -->
+    // Event listener for map click
+    mymap.on('click', function (e) {
+      // Move marker to the clicked location
+      marker.setLatLng(e.latlng);
+      // Update hidden input fields with marker's new coordinates
+      updateMarkerCoordinates();
+    });
+  }
+
+  function useMyLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var userLatLng = L.latLng(position.coords.latitude, position.coords.longitude);
+
+        // Set marker to user's current location
+        marker.setLatLng(userLatLng);
+        mymap.setView(userLatLng);
+
+        // Update hidden input fields with user's current coordinates
+        updateMarkerCoordinates();
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  }
+</script>
 
 <script>
   document.getElementById('fileInput').addEventListener('change', function () {

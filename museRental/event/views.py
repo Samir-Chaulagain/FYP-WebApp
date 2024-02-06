@@ -131,6 +131,9 @@ def delete_savedevent_view(request, pk):
     # Assuming 'event-details' is a valid URL pattern, redirect to it after deletion
     return redirect('event:event-details', pk=pk)
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 def mark_paid_view(request, pk):
@@ -138,6 +141,14 @@ def mark_paid_view(request, pk):
     if booking:
         booking.is_paid = True
         booking.save()
+    
+    # Send email to the user
+    subject = 'Payment Confirmation'
+    html_message = render_to_string('events/booking_confirmation.html', {'booking': booking})
+    plain_message = strip_tags(html_message)
+    from_email = 'muserentalhub@gmail.com'
+    to_email = request.user.email  # Assuming the user is associated with the event
+    send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
     
     return redirect('explore:dashboard')
 
@@ -177,85 +188,9 @@ def event_view(request, pk):
     return render(request, 'events/event-details.html', {'event': event})
 
 
-logger = logging.getLogger(__name__)
-@csrf_exempt
-@require_POST
-def send_email_after_payment(request):
-    try:
-        data = json.loads(request.body)
-        receiver_email = data.get('receiver_email')
-
-        subject = 'Payment Successful'
-        message = 'User request for Your Event.Payment was successful.User loaction is'
-        from_email = 'muserentalhub@gmail.com'
-        recipient_list = [receiver_email]
-        print("Hello", recipient_list)
-
-        send_mail(subject, message, from_email, recipient_list)
-
-        return JsonResponse({'status': 'success'})
-    except Exception as e:
-        logger.error(f"Error sending email: {e}")
-        return JsonResponse({'status': 'error'}, status=500)
 
 
 
-
-    user = get_object_or_404(User, id=request.user.id)
-    event = get_object_or_404(Event, id=id)
-    
-    form = EventEditForm(request.POST or None)
-    
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        payment_token = data.get('payment_token')
-        payment_amount = data.get('payment_amount')
-        print(payment_token)
-        khalti_secret_key = "test_secret_key_ce1adf77ac904ffbba3bc3687d287103"
-        verification_url = "https://khalti.com/api/v2/payment/verify/"
-        headers = {
-            'Authorization': f'key {khalti_secret_key}',
-        }
-        payload = {
-            'token': payment_token,
-            'amount': payment_amount,
-        }
-
-        response = requests.post(verification_url, headers=headers, json=payload)
-
-        if response.status_code == 200:
-            # Payment verification successful
-            if form.is_valid():
-                num_tickets = form.cleaned_data['num_tickets']
-                total_price = num_tickets * event.ticket_price
-
-                # Check if the user has already booked tickets for this event
-                booking, created = Booking.objects.get_or_create(user=user, event=event)
-
-                if not created:
-                    booking.num_tickets = num_tickets
-                    booking.total_price = total_price
-                    booking.save()
-
-                    messages.success(request, 'Booking updated successfully!')
-                    return JsonResponse({'success': True})
-                else:
-                    booking.num_tickets = num_tickets
-                    booking.total_price = total_price
-                    booking.is_paid = True
-                    booking.save()
-
-                    messages.success(request, 'Booking created successfully!')
-                    return JsonResponse({'success': True})
-            else:
-                messages.error(request, 'Invalid form submission. Please check the form data.')
-                return JsonResponse({'success': False, 'error': 'Invalid form submission.'})
-        else:
-            # Payment verification failed
-            messages.error(request, 'Payment verification failed. Please try again.')
-            return JsonResponse({'success': False, 'error': 'Payment verification failed.'})
-
-    return render(request, 'explore/dashboard.html', {'form': form, 'event': event})
 
 
 

@@ -377,7 +377,7 @@
                                                                         <td class="v-text-align"
                                                                             style="padding-right: 0px;padding-left: 0px;"
                                                                             align="center">
-                                                                            < <img align="center" border="0"
+                                                                            <img align="center" border="0"
                                                                                 src="https://i.ibb.co/PmXNJCJ/image-6.png"
                                                                                 alt="image" title="image"
                                                                                 style="outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: inline-block !important;border: none;height: auto;float: none;width: 10%;max-width: 58px;"
@@ -403,12 +403,14 @@
 
                                                 <!-- Renting Status Content -->
                                                 <p align="justify">
-                                                    Dear {{ user.first_name }},
+                                                    Dear {{ customer.user.first_name }},
+                                                    <!-- Accessing the first name of the customer's user -->
                                                     <br>
-                                                    Congratulations! You have successfully rented {{}}.You will have
-                                                    your desired instrument by
-                                                    this time on {{}}.
-                                                <p>thank you!</p>
+                                                    Congratulations! You have successfully rented {{ customer.item.name}}. You will have your
+                                                    desired instrument by
+                                                    this time on {{ rent_date }}.
+                                                    <!-- Assuming you pass 'rent_date' from the view -->
+                                                <p>Thank you!</p>
 
                                                 <h3> Here are the details: </h3>
 
@@ -419,18 +421,20 @@
 
                                                         <ul class="responsive-table">
                                                             <li class="table-header">
-                                                                <div class="col col-1">Item Id</div>
+                                                                <div class="col col-1">Items name</div>
                                                                 <div class="col col-2">Customer Name</div>
                                                                 <div class="col col-3">Amount Due</div>
                                                                 <div class="col col-4">Payment Status</div>
                                                             </li>
                                                             <li class="table-row">
-                                                                <div class="col col-1" data-label="Item Name"></div>
-                                                                <div class="col col-2" data-label="Customer Name">John
-                                                                    Doe</div>
-                                                                <div class="col col-3" data-label="Amount">$350</div>
+                                                                <div class="col col-1" data-label="Item Name">
+                                                                    {{customer.item.name}}</div>
+                                                                <div class="col col-2" data-label="Customer Name">
+                                                                    {{customer.user.get_full_name}}</div>
+                                                                <div class="col col-3" data-label="Amount">
+                                                                    {{customer.Rentitem_Total_amount}}</div>
                                                                 <div class="col col-4" data-label="Payment Status">
-                                                                    Completed</div>
+                                                                    Pending</div>
                                                             </li>
 
 

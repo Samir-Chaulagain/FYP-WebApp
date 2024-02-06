@@ -62,7 +62,7 @@ class Booking(models.Model):
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        # Increase the number of attendees for the related event
+    # Increase the number of attendees for the related event
         self.event.maximum_attende += self.num_tickets
 
         # If the maximum_attende is greater than 0, update the status of the event

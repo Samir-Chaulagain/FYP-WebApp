@@ -1,0 +1,25 @@
+<!-- leaflet_widget.html -->
+{% load static %}
+<div id="{{ widget.attrs.id }}" class="leaflet-widget" style="height: 300px;"></div>
+
+<script src="{% static 'leaflet/leaflet.js' %}"></script>
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script>
+    (function () {
+        var map = L.map('{{ widget.attrs.id }}').setView([{{ widget.initial_lat }}, {{ widget.initial_lon }}], { { widget.initial_zoom } });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var marker = L.marker([{{ widget.initial_lat }}, { { widget.initial_lon } }], { draggable: true }).addTo(map);
+
+    marker.on('dragend', function (event) {
+        var marker = event.target;
+        var position = marker.getLatLng();
+        document.getElementById('{{ widget.attrs.id }}_latitude').value = position.lat;
+        document.getElementById('{{ widget.attrs.id }}_longitude').value = position.lng;
+    });
+    }) ();
+</script>

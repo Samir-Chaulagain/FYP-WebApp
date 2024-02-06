@@ -47,24 +47,26 @@
                                     <td>{{ customer.Rentitem_Date_of_Return }}</td>
                                     <!-- Add this inside your for loop, where you display customer information -->
                                     <td>
-                                        <button class="btn btn-primary btn-sm view-map-btn" data-toggle="modal" data-target="#mapModal"
-                                            data-latitude="{{ customer.latitude }}" data-longitude="{{ customer.longitude }}">
+                                        <button class="btn btn-primary btn-sm view-map-btn" data-toggle="modal"
+                                            data-target="#mapModal" data-latitude="{{ customer.latitude }}"
+                                            data-longitude="{{ customer.longitude }}">
                                             View Map
                                         </button>
-                                        
+
                                     </td>
 
                                     {% if customer.request_status == "Pending" %}
-                               
+
                                     <td>
-                                    
-                                    <span class="badge rounded-pill bg-info text-white">Pending</span>
+
+                                        <span class="badge rounded-pill bg-info text-white">Pending</span>
                                     </td>
                                     <td>
-                                        <a class="btn btn-info btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
-                                            data-status="in_progress">Proceed to shipment</a>
-                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
-                                            data-status="completed">Done</a>
+                                        <a class="btn btn-info btn-sm proceed-btn" href="#" role="button"
+                                            data-user-id="{{ customer.id }}" data-status="in_progress">Proceed to
+                                            shipment</a>
+                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button"
+                                            data-user-id="{{ customer.id }}" data-status="completed">Done</a>
                                     </td>
 
                                     {% elif customer.request_status == "Completed" %}
@@ -73,10 +75,11 @@
                                         <span class="badge rounded-pill bg-success text-white">Completed</span>
                                     </td>
                                     <td>
-                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#"
+                                            role="button" data-user-id="{{ customer.id }}"
                                             data-status="in_progress">Proceed to shipment</button>
-                                        <button disabled class="btn btn-warning btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
-                                            data-status="completed">Done</button>
+                                        <button disabled class="btn btn-warning btn-sm done-btn" href="#" role="button"
+                                            data-user-id="{{ customer.id }}" data-status="completed">Done</button>
                                     </td>
                                     {% else %}
                                     <td>
@@ -84,13 +87,14 @@
                                         <span class="badge rounded-pill bg-dark text-white">Shipping</span>
                                     </td>
                                     <td>
-                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#" role="button" data-user-id="{{ customer.id }}"
+                                        <button disabled class="btn btn-warning btn-sm proceed-btn" href="#"
+                                            role="button" data-user-id="{{ customer.id }}"
                                             data-status="in_progress">Proceed to shipment</button>
-                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button" data-user-id="{{ customer.id }}"
-                                            data-status="completed">Done</a>
+                                        <a class="btn btn-success btn-sm done-btn" href="#" role="button"
+                                            data-user-id="{{ customer.id }}" data-status="completed">Done</a>
                                     </td>
                                     {% endif %}
-                                
+
 
 
 
@@ -118,7 +122,7 @@
             </div>
             <div class="modal-body">
                 <!-- Map container -->
-                <div id="map" style="height: 400px;"></div>
+                <div id="map" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
@@ -129,17 +133,15 @@
 
 <!-- Include jQuery at the end of the body -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!-- Include Khalti Checkout Web library -->
-<!-- Include Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-<!-- Include Leaflet library -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<!-- Your existing jQuery and modal script -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
-        
+
         $('.view-map-btn').on('click', function () {
             var latitude = $(this).data('latitude');
             var longitude = $(this).data('longitude');
@@ -147,7 +149,7 @@
             // Wait for a short delay before initializing the Leaflet map
             setTimeout(function () {
                 initLeafletMap(latitude, longitude);
-            }, 100);
+            }, 200);
         });
 
         // Function to initialize the Leaflet map
@@ -156,16 +158,26 @@
             var map = L.map('map').setView([parseFloat(latitude), parseFloat(longitude)], 15);
 
             // Add a tile layer (you can choose a different provider)
-           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+               
+
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-
-
-        
-            // Add a marker for the location
-            L.marker([parseFloat(latitude), parseFloat(longitude)]).addTo(map)
-                .bindPopup('Customer Location')
+            // Define a custom red marker icon
+            var redIcon = L.icon({
+                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+            });
+            {% for customer in all_Customers %}
+            // Add a marker with the custom red icon for the location
+            L.marker([parseFloat(latitude), parseFloat(longitude)], { icon: redIcon }).addTo(map)
+                .bindPopup(`{{customer.user.get_full_name}}'s Location`)
                 .openPopup();
+            {% endfor %}
         }
 
     });
@@ -188,7 +200,7 @@
                     // Update the status on success
                     alert('Status updated successfully!');
                     // You can update the UI here if needed
-                     location.reload();
+                    location.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating status:', error);
