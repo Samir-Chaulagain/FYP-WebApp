@@ -36,6 +36,6 @@ jobs:
 
       - name: SSH into Google Cloud VM
         run: |
-          ssh -v np03cs4m210035@34.100.186.194 'sudo docker pull royalchaulagain321486/muserentalhub:latest && sudo docker run -d --name muserentalhub_container -p 80:8000 royalchaulagain321486/muserentalhub:latest'
+          ssh -v np03cs4m210035@34.100.186.194 'sudo docker container prune -f && sudo docker image prune -f && sudo docker pull royalchaulagain321486/muserentalhub:latest && sudo docker stop muserentalhub_container && sudo docker rm muserentalhub_container && sudo docker run -d --name muserentalhub_container -p 80:8000 royalchaulagain321486/muserentalhub:latest'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
