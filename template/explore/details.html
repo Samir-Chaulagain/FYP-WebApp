@@ -274,7 +274,7 @@
                     <h3 class="product-price"> <del class="product-old-price">रु {{ item.price }}</del></h3>
                     <span class="product-available">रु {{ item.price }}</span>
                 </div>
-                <p>{{ item.description}}
+                <p>{{ item.description | safe}}
                 </p>
                 <ul class="product-links">
                     <li>Category:</li>

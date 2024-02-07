@@ -1,12 +1,8 @@
-from email.message import EmailMessage
 
-from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.template.loader import render_to_string
-import event
 
-from event.forms import EventBooked
 from .forms import *
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
