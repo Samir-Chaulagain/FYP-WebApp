@@ -1,0 +1,41 @@
+name: Auto Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t royalchaulagain321486/muserentalhub:latest .
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          docker push royalchaulagain321486/muserentalhub:latest
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 34.100.186.194 >> ~/.ssh/known_hosts
+
+      - name: SSH into Google Cloud VM
+        run: |
+          ssh -v np03cs4m210035@34.100.186.194 'sudo docker pull royalchaulagain321486/muserentalhub:latest && sudo docker stop muserentalhub_container && sudo docker rm muserentalhub_container && sudo docker run -d --name muserentalhub_container -p 80:8000 royalchaulagain321486/muserentalhub:latest'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

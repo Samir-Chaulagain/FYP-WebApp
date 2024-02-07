@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+{% include 'head.html' %}
+
+<body>
+  <div id="preloader">
+    <div class="preloader-icon"></div>
+
+  </div>
+  {% include 'header.html' %}
+  {% block content %}{% endblock %}
+  {% include 'footer.html' %}
+  {% include 'scripts.html' %}
+  {% block extra_scripts %} {% endblock %}
+  
+</body>
+
+</html>
