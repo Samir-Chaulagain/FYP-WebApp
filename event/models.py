@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from django.db import models
+from ckeditor.fields import RichTextField
 from accounts.models import User
 
 
@@ -18,7 +19,7 @@ class Category(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='images/', default='default_image.jpg')
-    description = models.TextField()
+    description = RichTextField()
     date = models.DateTimeField(default=datetime.now)
 
     location = models.CharField(max_length=255)

@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style>
+  
+</style>
 
 <!-- edit profile page  -->
 
@@ -13,8 +16,9 @@
 </div>
 <!-- FORm -->
 
-<div class="container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto">
-  <h2 class="text-uppercase text-center">Login</h2>
+<div class="login-container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto " style="background: rgb(223,15,15);
+background: linear-gradient(180deg, rgb(221, 212, 212)0%, rgb(246, 192, 192)  43%, rgba(255,255,255,1) 100%);">
+  <h2 class="text-uppercase text-center" >Login</h2>
   <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
   <form method="POST" action="">
     {% include 'messages.html' %}
@@ -33,29 +37,29 @@
     Me
 
     <p class="mb-4 text-end">
-      <a href="{% url 'accounts:password_reset' %}">Forgot Password?</a>
+      <a href="{% url 'accounts:password_reset' %}" style="text-decoration:none; color:black;">Forgot Password?</a>
     </p>
-    
+
 
     <div class=" col-md-2 mx-auto">
-        <button type="submit" class="btn btn-primary">Login</button>
-</div>
-</form>
+      <button type="submit" class="btn btn-dark">Login</button>
+    </div>
+  </form>
 
 
-<div class=" dropdown mx-auto">
-          <span class="">Not a member?</span>
+  <div class=" dropdown mx-auto">
+    <span class="">Not a member?</span>
 
-          <a class="dropdown-toggle" href=" #" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Be part
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item text-black" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
-            <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
+    <a class="dropdown-toggle btn btn-outline-dark color:white" href=" #" id="navbarDropdownMenuLink" role="button"
+      data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration:none;">
+      Be part
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <li><a class="dropdown-item text-black" href="{% url 'accounts:customer_registration' %}">Customer</a></li>
+      <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a></li>
 
-          </ul>
-</div>
+    </ul>
+  </div>
 
 </div>
 

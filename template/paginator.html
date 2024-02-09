@@ -1,49 +1,70 @@
+<style>
+  .custom-pagination a {
+    color: black;
+    width: 40px;
+    height: 40px;
+    line-height: 35px;
+    display: inline-block;
+    border-radius: 5px;
 
+    border: 1px solid #dee2e6;
+    text-align: center;
 
+    text-decoration: none;
+  }
+
+  .custom-pagination a.prev,
+  .custom-pagination a.next {
+    width: auto;
+    height: 40px;
+    line-height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+  }
+
+  .custom-pagination a.active,
+  .custom-pagination a:hover {
+    background: #D10024;
+    color: #fff;
+    border-color: #D10024;
+  }
+</style>
 {% if page_obj.has_other_pages %}
-<div class="pagination"> <!-- Add bg-danger to change the background color -->
-  <div class="container">
-    <div class="row">
-      <div class="col-auto me-auto">
-        <div class="text-start">
-          <span id="page_navigator">Showing {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} Pages</span>
+<div class="row pagination-wrap">
+
+  <div class="col-md-12 text-center text-md-right">
+    <div class="custom-pagination ml-auto">
+
+      <span id="prev_page">
+        {% if page_obj.has_previous %}
+        <a id="ajax_paginator" href="?page={{ page_obj.previous_page_number }}" class="prev">&laquo;</a>
+        {% endif %}
+      </span>
+      <span id="page_no">
+        <div class="d-inline-block">
+          {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+          <a id="ajax_paginator" class="ajax_paginator_{{ i }} active" href="?page={{ i }}">{{ i }}</a>
+
+          {% else %}
+          <a class="ajax_paginator_{{ i }}" id="ajax_paginator" href="?page={{ i }}">{{ i }}</a>
+          {% endif %}
+          {% endfor %}
         </div>
-      </div>
+      </span>
+      {% if page_obj.has_next %}
+      <span id="next_page">
+        <a id="ajax_paginator" class="next" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+      </span>
+      {% endif %}
 
-      <div class="col-auto ">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" id="ajax_paginator" href="?page={{ page_obj.previous_page_number }}"
-                aria-label="Previous">
-                <span aria-hidden="true" >&laquo;</span>
-              </a>
-            </li>
-            {% endif %}
+    </div>
+    <div id="page_navigator" class="mt-2 "><strong>
 
-            {% for i in page_obj.paginator.page_range %}
-            {% if page_obj.number == i %}
-            <li class="page-item active">
-              <span class="page-link">{{ i }}</span>
-            </li>
-            {% else %}
-            <li class="page-item">
-              <a class="page-link" id="ajax_paginator" href="?page={{ i }}">{{ i }}</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-
-            {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" id="ajax_paginator" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
+        Showing {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        Pages
+      </strong>
     </div>
   </div>
 </div>

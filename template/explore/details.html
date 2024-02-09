@@ -8,9 +8,9 @@
 
 <style>
     .with-arrow .nav-link {
-        background-color: #D10024;
+        background-color: white;
         border-radius: 40px;
-        color: white
+        color: #D10024
     }
 
     .with-arrow .nav-link:hover {
@@ -24,9 +24,9 @@
     }
 
     .with-arrow .nav-link.active {
-        color: #D10024;
+        color: white;
         position: relative;
-        background-color: white;
+        background-color: #D10024;
         border: 13px solid;
     }
 
@@ -41,6 +41,18 @@
         transform: translateX(-50%);
         display: block;
 
+
+    }
+
+    @media (max-width: 576px) {
+        .with-arrow .nav-link.active::after {
+
+            position: none;
+            display: none;
+
+
+
+        }
 
     }
 
@@ -114,6 +126,7 @@
         border: 2px solid transparent;
         height: 40px;
         padding: 0 30px;
+        margin-right: 15px;
         background-color: #ef233c;
         color: #FFF;
         text-transform: uppercase;
@@ -125,7 +138,7 @@
 
     .book-now {
 
-
+        border: 2px solid black;
         height: 40px;
         padding: 0 30px;
         text-transform: uppercase;
@@ -181,6 +194,10 @@
     }
 
 
+    .review {
+        color: #D10024;
+    }
+
     .checked {
         color: #D10024;
     }
@@ -188,6 +205,77 @@
     .my-btn {
         background-color: inherit !important;
         border: 0 !important;
+    }
+
+    .reviews li {
+        position: relative;
+        padding-left: 145px;
+        margin-bottom: 10px;
+
+    }
+
+    .reviews .review-heading {
+        position: absolute;
+        width: 130px;
+        left: 0;
+        top: 0;
+        height: 70px;
+    }
+
+    .reviews {
+        min-height: 75px;
+    }
+
+    .reviews .review-heading .name {
+        margin-bottom: 5px;
+        margin-top: 0px;
+    }
+
+    .reviews .review-heading .date {
+        color: #8D99AE;
+        font-size: 10px;
+        margin: 0;
+    }
+
+    .reviews .review-heading .review-rating {
+        margin-top: 5px;
+    }
+
+    .user-image {
+        margin-left: 19%;
+    }
+
+
+    .avg_star {
+        margin-left: 42%;
+    }
+
+    .comments {
+        height: 100px;
+        width: 55%;
+        margin-top: 30px;
+        margin-left: 24%;
+    }
+
+    @media (max-width: 546px) {
+        .user-image {
+            margin-left: 18%;
+        }
+
+        .avg_star {
+            margin-left: 0;
+
+        }
+
+        .review-section {
+            margin-left: 25%;
+        }
+
+        .comments {
+            margin-left: 0;
+            width: 100%;
+
+        }
     }
 </style>
 
@@ -262,11 +350,13 @@
                 <h2 class="product-name">{{item.name}}</h2>
 
                 <div class="product-rating">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
+                    <span>
+                        <i class="fa fa-star {% if average_rating >= 1 %}review{% endif %}"></i>
+                        <i class="fa fa-star {% if average_rating >= 2 %}review{% endif %}"></i>
+                        <i class="fa fa-star {% if average_rating >= 3 %}review{% endif %}"></i>
+                        <i class="fa fa-star {% if average_rating >= 4 %}review{% endif %}"></i>
+                        <i class="fa fa-star {% if average_rating >= 5 %}review{% endif %}"></i>
+                    </span>
                 </div>
 
 
@@ -311,7 +401,7 @@
 
 
             <!-- Save Button -->
-            <div class="col-6">
+            <div class="col-lg-8">
                 <div class="row">
                     <div class="col-6">
                         {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
@@ -579,10 +669,10 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-right: 0;">
 
-        <div class="col-md-12">
-            <div class="p-5 bg-white rounded shadow mb-5 ">
+        <div class="col-md-12 col-sm-12">
+            <div class="p-lg-5 p-sm-2 bg-white rounded shadow mb-5 ">
                 <!-- Bordered tabs-->
                 <ul id="myTab1" role="tablist"
                     class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center ">
@@ -603,8 +693,7 @@
                     </li>
                 </ul>
                 <div id="myTab1Content" class="tab-content">
-                    <div id="home1" role="tabpanel" aria-labelledby="home-tab"
-                        class="tab-pane fade px-4 py-5 show active">
+                    <div id="home1" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade py-5 show active ">
                         <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                             eiusmod tempor
                             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -627,86 +716,213 @@
                     <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
                         <div class="mx-auto" id="itemmap" style="height: 400px; width: 100%; "></div>
                     </div>
-                    <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade px-4 py-5">
+                    <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade py-5">
+                        <h2>Add Rating and Review</h2>
+                        {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
 
-                        <h2>Add Review</h2>
-
-                        <form class="rate-form" action="{% url 'explore:add-rate' item.id %}" method="POST">
+                        <hr>
+                        <form class="rate-form text-center " action="{% url 'explore:add-rate' item.id %}"
+                            method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="id" value="{{ item.id }}">
                             <input type="hidden" name="val" value="">
-                            <button type="button" class="fa fa-star my-btn" data-value="1"></button>
-                            <button type="button" class="fa fa-star my-btn" data-value="2"></button>
-                            <button type="button" class="fa fa-star my-btn" data-value="3"></button>
-                            <button type="button" class="fa fa-star my-btn" data-value="4"></button>
-                            <button type="button" class="fa fa-star my-btn" data-value="5"></button>
-                            <textarea name="comment" placeholder="Enter your review" class="form-control mt-3"
-                                style="height:100px; width: 75%;"></textarea>
-                            <button type="button" class="mt-3 btn btn-outline-danger" id="add-review-btn">Add</button>
+                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="1"></button>
+                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="2"></button>
+                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="3"></button>
+                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="4"></button>
+                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="5"></button>
+                            <textarea name="comment" placeholder="Enter your comment"
+                                class="form-control mt-3 comments"></textarea>
+                            <span><button type="button" class="mt-3 btn btn-danger"
+                                    id="add-review-btn">Post</button></span>
                         </form>
 
-                    </div>
-                </div>
-            </div>
-            <!-- End bordered tabs -->
+                        <hr>
 
-        </div>
-    </div>
+                        {% for review in reviews %}
+                        <div class="row">
 
 
+                            <div class="col-lg-2 col-md-6">
+                                <div class="user-image">
+                                    <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
+                                        style="border-radius: 50%;">
+                                </div>
+                                <div id="reviews">
+
+                                    <ul class="reviews">
+                                        <li style="list-style: none;">
 
 
+                                            <div class="review-heading">
+                                                <p class="name">{{review.user.get_full_name}}</p>
+                                                <p class="date">27 DEC 2018, 8:0 PM</p>
+                                                <div class="review-rating">
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
+                                                </div>
+                                            </div>
 
+                                        </li>
 
+                                    </ul>
 
-
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h5 class="modal-title " id="exampleModalLongTitle">Check
-                        Availability</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-
-                    </h5>
-                    <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
-                        enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-row">
-
-                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
-
-
-                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date"
-                                required>
-
-                            <hr>
-                            <div class="modal-body">
-
-
-                                <input type="submit" class="btn btn-primary" value="Check Availability" />
-                                <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-6">
+                                <div class="review-body">
+                                    <p align="justify">{{ review.comment }}</p>
+                                </div>
 
                             </div>
                         </div>
-                    </form>
+
+
+
+                        <hr>
+                        {% empty %}
+                        <p>No reviews yet.</p>
+                        {% endfor %}
+
+
+                        {%else %}
+                        <span class="avg_star mb-3">
+                            <i class="fa fa-star fa-2x {% if average_rating >= 1 %}review{% endif %}"></i>
+                            <i class="fa fa-star fa-2x {% if average_rating >= 2 %}review{% endif %}"></i>
+                            <i class="fa fa-star fa-2x {% if average_rating >= 3 %}review{% endif %}"></i>
+                            <i class="fa fa-star fa-2x {% if average_rating >= 4 %}review{% endif %}"></i>
+                            <i class="fa fa-star fa-2x {% if average_rating >= 5 %}review{% endif %}"></i>
+                        </span>
+                        <hr>
+
+                        {% for review in reviews %}
+                        <div class="row">
+
+
+                            <div class="col-lg-2 col-md-6">
+                                <div class="user-image">
+                                    <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
+                                        style="border-radius: 50%;">
+                                </div>
+                                <div id="reviews">
+
+                                    <ul class="reviews">
+                                        <li style="list-style: none;">
+
+
+                                            <div class="review-heading">
+                                                <p class="name">{{review.user.get_full_name}}</p>
+                                                <p class="date">27 DEC 2018, 8:0 PM</p>
+                                                <div class="review-rating">
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
+                                                    <i
+                                                        class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-6">
+                                <div class="review-body">
+                                    <p align="justify">{{ review.comment }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <hr>
+                        {% empty %}
+                        <p>No reviews yet.</p>
+                        {% endfor %}
+
+
+
+                        {% endif %}
+                    </div>
+
 
                 </div>
-
             </div>
         </div>
+        <!-- End bordered tabs -->
+
     </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title " id="exampleModalLongTitle">Check
+                    Availability</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                </h5>
+                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+
+                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                            name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
+
+
+                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                            name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date" required>
+
+                        <hr>
+                        <div class="modal-body">
+
+
+                            <input type="submit" class="btn btn-primary" value="Check Availability" />
+                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 </div>

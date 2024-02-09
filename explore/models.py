@@ -6,11 +6,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 # User = get_user_model()
 
-item_type = (
-    ('1', "Solo"),
-    ('2', "Package"),
-    ('3', "Sound Accessories"),
-)    
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
@@ -20,7 +16,11 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
-
+item_type = (
+    ('1', "Solo"),
+    ('2', "Package"),
+    ('3', "Sound Accessories"),
+)    
 class Item(models.Model):
     
     name = models.CharField(max_length=255)

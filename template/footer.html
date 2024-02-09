@@ -1,6 +1,19 @@
+<style>
+    @media (max-width: 576px) {
+        .mb-2 .link-follow {
+             
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+        
+    }
+</style>
 <footer class="text-center text-lg-start bg-light text-muted mt-4 ">
     <!-- Section: Social media -->
-    <section class="d-flex justify-content-center justify-content-between p-4 border-bottom">
+    <section class="d-lg-flex justify-content-center justify-content-between p-4 border-bottom">
         <!-- Left -->
         <div class="me-5 d-none d-lg-block">
             <span>Get connected with us on social networks:</span>
@@ -43,14 +56,15 @@
                         <i class="fas fa-gem me-3 me-sm-2"></i>Musical instrument
                     </h6>
                     <p>
-                        Build a diverse, well-maintained inventory and develop a user-friendly website with a secure payment system. Implement a
-                        booking system, consider delivery options, and offer insurance for rented items. 
+                        Build a diverse, well-maintained inventory and develop a user-friendly website with a secure
+                        payment system. Implement a
+                        booking system, consider delivery options, and offer insurance for rented items.
                     </p>
                 </div>
                 <!-- Grid column -->
 
                 <!-- Grid column -->
-                <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-2">
+                <div class="col-md-4 col-lg-2 col-xl-2  mb-2">
                     <!-- Links -->
                     <h6 class="text-uppercase fw-bold mb-4">
                         Products
@@ -64,7 +78,7 @@
                         <li class="li"><a class="single-link" href="{% url 'accounts:login' %}">Account</a></li>
                     </ul>
                 </div>
-                
+
 
                 <!-- Grid column -->
                 <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mb-2">
@@ -81,7 +95,7 @@
                         <li class="li"><a class="single-link" href="{% url 'accounts:login' %}">Account</a></li>
                     </ul>
                 </div>
-                
+
 
                 <!-- Grid column -->
                 <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-2">
@@ -107,7 +121,8 @@
                     <p class="copy-text text-center"> ©
                         <script type="text/JavaScript">
                             document.write(new Date().getFullYear());</script>
-                        <strong>MuseRental Hub</strong> Made By <a href="" style="text-decoration: none; color:#D10024 ;">
+                        <strong>MuseRental Hub</strong> Made By <a href=""
+                            style="text-decoration: none; color:#D10024 ;">
                             <strong> Samir Chaulagain </strong></a>.
                     </p>
                 </div>

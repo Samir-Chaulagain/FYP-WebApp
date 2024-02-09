@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from .models import Item
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from accounts.models import User
@@ -41,24 +41,24 @@ from .models import Item, Category
 def items(request):
     query = request.GET.get('query', '')
     category_id = request.GET.get('category', 0)
+    item_type = request.GET.get('item_type', '')  # Get the item type from the query parameters
 
-    # Use filter instead of get_object_or_404
     categories = Category.objects.all()
-
     item_list = Item.objects.filter(is_published=True, is_sold=False).order_by('-created_at')
 
     # Apply category filter
     if category_id:
-        items = item_list.filter(category_id=category_id)
-    else:
-        items = item_list
+        item_list = item_list.filter(category_id=category_id)
 
     # Apply query filter
     if query:
-        items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
+        item_list = item_list.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
-    # Create a paginator for the filtered items
-    paginator = Paginator(items, 6)
+    # Apply item type filter
+    if item_type:
+        item_list = item_list.filter(item_type=item_type)
+
+    paginator = Paginator(item_list, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -67,17 +67,18 @@ def items(request):
         'categories': categories,
         'category_id': int(category_id),
         'page_obj': page_obj,
-        'items': items,
+        'items': page_obj,  # Pass paginated items instead of the whole item_list
     })
 
 
 # View instrument details
 def showdetails(request,id):
     item = get_object_or_404(Item, id=id)
-   
+    reviews = Review.objects.filter(item=item) 
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
 
     return render(request, 'explore/details.html', {
-        'item': item})
+        'item': item,'reviews': reviews,'average_rating': average_rating})
 
 
 

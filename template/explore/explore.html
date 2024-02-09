@@ -10,7 +10,33 @@
 
 <!-- explore page -->
 {% load static %}
+<style>
+    .category {
+        margin-left: 40px;
+    }
 
+
+    .explore-card {
+        transition: transform 0.2s ease-in-out;
+
+    }
+
+    .explore-card:hover {
+        transform: scale(101.9%);
+        /* Adjust the scale factor as needed */
+
+    }
+
+    @media (max-width: 576px) {
+        .category {
+            margin-left: 0px;
+        }
+        .explore-card{
+            transform: none;
+        }
+
+    }
+</style>
 
 <div class="text-center bg-image" data-aos="zoom-in-up"
     style="
@@ -37,7 +63,7 @@
     <!-- row -->
     <div class="row">
         <!-- shop -->
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-4 col-sm-6" data-aos="zoom-in-down">
             <div class="shop">
                 <div class="shop-img">
                     <img src="{%static 'img/inst3.jpg'%}" alt="" height="210px">
@@ -52,7 +78,7 @@
         <!-- /shop -->
 
         <!-- shop -->
-        <div class="col-md-4 col-xs-6" data-aos="zoom-in-down">
+        <div class="col-md-4 col-sm-6" data-aos="zoom-in-down">
             <div class="shop">
                 <div class="shop-img">
                     <img src="{%static 'img/inst4.jpg'%}" alt="" height="210px">
@@ -67,7 +93,7 @@
         <!-- /shop -->
 
         <!-- shop -->
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-4 col-sm-6" data-aos="zoom-in-down">
             <div class="shop">
                 <div class="shop-img">
                     <img src="{%static 'img/inst3.jpg'%}" alt="" height="210px">
@@ -88,9 +114,21 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-8">
-            <div class="dropdown">
+    <div class="row justify-content-between">
+        <div class="col-lg-3 col-sm-12">
+            <form method="get" action="{% url 'explore:items' %}">
+                <label class="sr-only" for="searchInput">Search</label>
+                <div class="input-group mb-2">
+                    <input type="search" class="form-control" id="searchInput" name="query" placeholder="Search"
+                        value="{{ query }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-2 col-sm-12">
+            <div class="dropdown category">
                 <button class="btn btn-dark dropdown-toggle " type="button" id="categoryDropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Select Category
@@ -106,18 +144,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
-            <form method="get" action="{% url 'explore:items' %}">
-                <label class="sr-only" for="searchInput">Search</label>
-                <div class="input-group mb-2">
-                    <input type="search" class="form-control" id="searchInput" name="query" placeholder="Search"
-                        value="{{ query }}">
-                    <div class="input-group-append">
-                        <button class="btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
+
 
 
     </div>
@@ -128,8 +155,8 @@
 
 
         {% for item in page_obj %}
-        <div class="col-lg-4 col-md-4 col-sm-6 my-3 " data-aos="zoom-in-up">
-            <div class="card shadow mb-5 h-80 " style="width: Auto">
+        <div class="col-lg-4 col-md-4 col-sm-6 my-3  " data-aos="zoom-in-up">
+            <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
                 <div id="instrument_{{item.id}}" class="carousel slide" data-bs-interval="false">
                     <div class="carousel-indicators">
                         {% for image in item.image_set.all %}
@@ -163,16 +190,17 @@
 
 
                     <div class="product-body justify-content-center">
-                        <span class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name }}</span>
+                        <span
+                            class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
                         <p class="product-category">{{item.category}}</p>
                         <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
                                 {{ item.name}}</a></h3>
                         <h4 class="product-price">रु {{ item.price }} <del class="product-old-price">रु
                                 {{item.price }}</del></h4>
-                        
 
 
-                        
+
+
 
 
                         <div class="product-btns justify-content-center" style="background-color: rgba(0, 0, 0, 0);  ">

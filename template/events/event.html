@@ -1,6 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+
+<style>
+     .evnt-card {
+        transition: transform 0.2s ease-in-out;
+
+    }
+
+    .evnt-card:hover {
+        transform: scale(101.9%);
+        /* Adjust the scale factor as needed */
+
+    }
+
+    @media (max-width: 576px) {
+        
+        .evnt-card{
+            transform: none;
+        }
+
+    }
+</style>
 <div class="text-center bg-image" data-aos="zoom-in-up"
     style="
       background-image: url('{% static 'img/about/aboutus2.jpg' %}'); height: 600px; background-repeat: no-repeat; background-size:cover; margin-top:-100px; opacity:96% ;">
@@ -42,14 +63,14 @@
     </div>
 </div>
 <section class="py-md-5">
-    <div class="container overflow-hidden  align-items-center">
+    <div class="container overflow-hidden align-items-center">
         <div class="row gy-4 gy-lg-0 justify-content-center">
 
             {% for event in page_obj %}
             
             <div class="col-lg-4 col-md-6 col-sm-6 my-3">
 
-                <div class="card border-0 shadow mb-5 ">
+                <div class="card border-0 shadow mb-5 evnt-card ">
                     <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
                         <a href="{% url 'event:event-details' event.id %}">
                             <img class="bsb-scale bsb-hover-scale-up" 
