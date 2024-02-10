@@ -38,6 +38,7 @@ class Item(models.Model):
     is_sold = models.BooleanField(default=False)   
     user = models.ForeignKey(User, related_name='User', on_delete=models.CASCADE,default=False)
     
+    
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

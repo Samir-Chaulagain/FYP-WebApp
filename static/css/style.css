@@ -31,6 +31,15 @@
   color: rgb(0, 0, 0);
 }
 
+@media (max-width:576px){
+  .mynav:hover::after {
+  
+   width: 0;;
+  color: rgb(0, 0, 0);
+}
+
+
+}
 .carousel-item {
   height: 100vh;
   background-color: #2a2929;
@@ -76,7 +85,7 @@
 }
 
 .dropdown-menu li a:hover {
-  background-color: rgb(175, 166, 211);
+  background-color: rgb(224, 182, 184);
 }
 .dropdown-menu li a {
   color: rgb(17, 14, 25);

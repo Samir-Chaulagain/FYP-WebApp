@@ -148,7 +148,7 @@
     }
 
     .booked {
-        border: 2px solid transparent;
+        border: 2px solid black;
         height: 40px;
         padding: 0 30px;
         text-transform: uppercase;
@@ -498,7 +498,8 @@
 
 
 
-                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
+                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and
+                        user.is_verified %}
 
 
 
@@ -608,9 +609,9 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bookingModalLabel">Book items</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header bg-dark">
+                    <h5 class="modal-title text-light" id="bookingModalLabel">Book Items</h5>
+                    <button type="button" class="close btn btn-outline-light" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -618,36 +619,39 @@
                     <form id="rentForm" action="{% url 'explore:rent-item' item.id %}" method="post">
                         {% csrf_token %}
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-6 mb-2">
                                 <label for="pickupdate"><b>Pickup Date</b></label>
-                                <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
+                                <input type="text" class="form-control " id="pickupdate" name="Rentitem_Date_of_Booking"
                                     value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-6 mb-2">
                                 <label for="returndate"><b>Return Date</b></label>
                                 <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
                                     value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-2">
                                 <label for="totaldays"><b>Total days</b></label>
                                 <input type="text" class="form-control" id="totaldays" name="Total_days"
                                     value="{{rent_data.days}}" readonly>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-2">
                                 <label for="totalamount"><b>Total Amount</b></label>
                                 <input type="text" class="form-control" id="totalamount" name="Rentitem_Total_amount"
                                     value="{{rent_data.total}}" readonly>
                             </div>
                             <!-- Button to open the map for location selection -->
-                            <button type="button" onclick="openMap()">Select Location</button>
-                            <button type="button" onclick="useMyLocation()">Use My Location</button>
+                            <button type="button" class="btn btn-danger my-3 me-2" onclick="openMap()">Select
+                                Location</button>
+                            <button type="button" class="btn btn-danger my-3" onclick="useMyLocation()">Use My
+                                Location</button>
+
 
                             <!-- Map container -->
                             <div id="map" style="height: 400px;"></div>
 
                             <!-- Add fields for capturing user location -->
-                            <input type="" name="latitude" id="latitude" value="">
-                            <input type="" name="longitude" id="longitude" value="">
+                            <input type="hidden" name="latitude" id="latitude" value="">
+                            <input type="hidden" name="longitude" id="longitude" value="">
 
                             {% is_item_already_rented item request.user as is_rented %}
                             {% if is_rented %}
@@ -655,12 +659,12 @@
                                 Already Rented
                             </button>
                             {% else %}
-                            <button onclick="Pay_Khalti(event)" class="btn btn-secondary"
+                            <button onclick="Pay_Khalti(event)" class="btn btn-secondary btn-md"
                                 style="background-color: rgb(107, 8, 168); color: white; margin-top: 15px;">
                                 Pay with Khalti
                             </button>
                             {% endif %}
-                            xx
+
                         </div>
                     </form>
                     {%endif%}
@@ -679,7 +683,8 @@
                     <li class="nav-item flex-sm-fill mx-2">
                         <a id="home1-tab" data-toggle="tab" href="#home1" role="tab" aria-controls="home1"
                             aria-selected="true"
-                            class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Description</a>
+                            class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Related
+                            Items</a>
                     </li>
                     <li class="nav-item flex-sm-fill mx-2">
                         <a id="profile1-tab" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1"
@@ -694,173 +699,239 @@
                 </ul>
                 <div id="myTab1Content" class="tab-content">
                     <div id="home1" role="tabpanel" aria-labelledby="home-tab" class="tab-pane fade py-5 show active ">
-                        <p class="leade font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                            eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                            laborum.</p>
-                        <p class="leade font-italic mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                            do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitation
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                            Excepteur
-                            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                            laborum.</p>
+                        <div class="container">
+                            <div class="row">
+                                {% for item in page_obj %}
+                                <div class="col-lg-4 col-md-4 col-sm-6 my-3  " data-aos="zoom-in-up">
+                                    <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
+                                        <div id="instrument_{{item.id}}" class="carousel slide"
+                                            data-bs-interval="false">
+                                            <div class="carousel-indicators">
+                                                {% for image in item.image_set.all %}
+                                                <button type="button" data-bs-target="#instrument_{{ item.id }}"
+                                                    data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first
+                                                    %}class="active" {% endif %
+                                                    aria-label="Slide {{ forloop.counter }}">
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="carousel-inner">
+                                                {% for image in item.image_set.all %}
+                                                <div class="carousel-item {% if forloop.first %}active{% endif %}"
+                                                    style="height: 200px;">
+                                                    <img class="card-img-top" src="{{ image.image.url }}"
+                                                        alt="Slide {{ forloop.counter }}">
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+
+                                            <button class="carousel-control-prev" type="button"
+                                                data-bs-target="#instrument_{{ item.id }}" data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button"
+                                                data-bs-target="#instrument_{{ item.id }}" data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+
+                                        <div class="card-body">
+
+
+                                            <div class="product-body justify-content-center">
+                                                <span
+                                                    class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
+                                                <p class="product-category">{{item.category}}</p>
+                                                <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
+                                                        {{ item.name}}</a></h3>
+                                                <h4 class="product-price">रु {{ item.price }} <del
+                                                        class="product-old-price">रु
+                                                        {{item.price }}</del></h4>
+
+
+
+
+
+
+                                                <div class="product-btns justify-content-center"
+                                                    style="background-color: rgba(0, 0, 0, 0);  ">
+
+                                                    <a class="add-to-wishlist" href="" style="margin-right: 15px;"><i
+                                                            class="fa fa-heart-o fa-lg"></i><span class="tooltipp">Save
+                                                            Item</span></a>
+
+                                                    <a href="{% url 'explore:details' item.id  %}" class="quick-view"><i
+                                                            class="fa fa-eye fa-lg"></i><span class="tooltipp">
+                                                            view details</span></a>
+                                                </div>
+
+
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% include 'paginator.html' %}
                     </div>
+
                     <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
                         <div class="mx-auto" id="itemmap" style="height: 400px; width: 100%; "></div>
                     </div>
                     <div id="contact1" role="tabpanel" aria-labelledby="contact-tab" class="tab-pane fade py-5">
-                        <h2>Add Rating and Review</h2>
-                        {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
+                        <div class="container" style="margin-right: 0;">
 
-                        <hr>
-                        <form class="rate-form text-center " action="{% url 'explore:add-rate' item.id %}"
-                            method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{ item.id }}">
-                            <input type="hidden" name="val" value="">
-                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="1"></button>
-                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="2"></button>
-                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="3"></button>
-                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="4"></button>
-                            <button type="button" class="fa fa-star fa-2x my-btn" data-value="5"></button>
-                            <textarea name="comment" placeholder="Enter your comment"
-                                class="form-control mt-3 comments"></textarea>
-                            <span><button type="button" class="mt-3 btn btn-danger"
-                                    id="add-review-btn">Post</button></span>
-                        </form>
+                            <h2>Add Rating and Review</h2>
+                            {% if user.is_authenticated and user.role == 'customer' and user.is_verified %}
 
-                        <hr>
+                            <hr>
+                            <form class="rate-form text-center " action="{% url 'explore:add-rate' item.id %}"
+                                method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ item.id }}">
+                                <input type="hidden" name="val" value="">
+                                <button type="button" class="fa fa-star fa-2x my-btn" data-value="1"></button>
+                                <button type="button" class="fa fa-star fa-2x my-btn" data-value="2"></button>
+                                <button type="button" class="fa fa-star fa-2x my-btn" data-value="3"></button>
+                                <button type="button" class="fa fa-star fa-2x my-btn" data-value="4"></button>
+                                <button type="button" class="fa fa-star fa-2x my-btn" data-value="5"></button>
+                                <textarea name="comment" placeholder="Enter your comment"
+                                    class="form-control mt-3 comments"></textarea>
+                                <span><button type="button" class="mt-3 btn btn-danger"
+                                        id="add-review-btn">Post</button></span>
+                            </form>
 
-                        {% for review in reviews %}
-                        <div class="row">
+                            <hr>
 
-
-                            <div class="col-lg-2 col-md-6">
-                                <div class="user-image">
-                                    <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
-                                        style="border-radius: 50%;">
-                                </div>
-                                <div id="reviews">
-
-                                    <ul class="reviews">
-                                        <li style="list-style: none;">
+                            {% for review in reviews %}
+                            <div class="row">
 
 
-                                            <div class="review-heading">
-                                                <p class="name">{{review.user.get_full_name}}</p>
-                                                <p class="date">27 DEC 2018, 8:0 PM</p>
-                                                <div class="review-rating">
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
+                                <div class="col-lg-2 col-md-6">
+                                    <div class="user-image">
+                                        <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
+                                            style="border-radius: 50%;">
+                                    </div>
+                                    <div id="reviews">
+
+                                        <ul class="reviews">
+                                            <li style="list-style: none;">
+
+
+                                                <div class="review-heading">
+                                                    <p class="name">{{review.user.get_full_name}}</p>
+                                                    <p class="date">27 DEC 2018, 8:0 PM</p>
+                                                    <div class="review-rating">
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </li>
+                                            </li>
 
-                                    </ul>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-6">
+                                    <div class="review-body">
+                                        <p align="justify" style="word-break:break-all;">{{ review.comment }}</p>
+                                    </div>
 
                                 </div>
                             </div>
-                            <div class="col-lg-9 col-md-6">
-                                <div class="review-body">
-                                    <p align="justify">{{ review.comment }}</p>
-                                </div>
 
+
+
+                            <hr>
+                            {% empty %}
+                            <p>No reviews yet.</p>
+                            {% endfor %}
+
+
+                            {%else %}
+                            <span class="avg_star mb-3">
+                                <i class="fa fa-star fa-2x {% if average_rating >= 1 %}review{% endif %}"></i>
+                                <i class="fa fa-star fa-2x {% if average_rating >= 2 %}review{% endif %}"></i>
+                                <i class="fa fa-star fa-2x {% if average_rating >= 3 %}review{% endif %}"></i>
+                                <i class="fa fa-star fa-2x {% if average_rating >= 4 %}review{% endif %}"></i>
+                                <i class="fa fa-star fa-2x {% if average_rating >= 5 %}review{% endif %}"></i>
+                            </span>
+                            <hr>
+
+                            {% for review in reviews %}
+                            <div class="row">
+
+
+                                <div class="col-lg-2 col-md-6">
+                                    <div class="user-image">
+                                        <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
+                                            style="border-radius: 50%;">
+                                    </div>
+                                    <div id="reviews">
+
+                                        <ul class="reviews">
+                                            <li style="list-style: none;">
+
+
+                                                <div class="review-heading">
+                                                    <p class="name">{{review.user.get_full_name}}</p>
+                                                    <p class="date">27 DEC 2018, 8:0 PM</p>
+                                                    <div class="review-rating">
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
+                                                        <i
+                                                            class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
+                                                    </div>
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-6">
+                                    <div class="review-body">
+                                        <p align="justify" style="word-break:break-all;">{{ review.comment }}</p>
+                                    </div>
+
+                                </div>
                             </div>
+
+
+
+                            <hr>
+                            {% empty %}
+                            <p>No reviews yet.</p>
+                            {% endfor %}
+
+
+
+                            {% endif %}
                         </div>
 
-
-
-                        <hr>
-                        {% empty %}
-                        <p>No reviews yet.</p>
-                        {% endfor %}
-
-
-                        {%else %}
-                        <span class="avg_star mb-3">
-                            <i class="fa fa-star fa-2x {% if average_rating >= 1 %}review{% endif %}"></i>
-                            <i class="fa fa-star fa-2x {% if average_rating >= 2 %}review{% endif %}"></i>
-                            <i class="fa fa-star fa-2x {% if average_rating >= 3 %}review{% endif %}"></i>
-                            <i class="fa fa-star fa-2x {% if average_rating >= 4 %}review{% endif %}"></i>
-                            <i class="fa fa-star fa-2x {% if average_rating >= 5 %}review{% endif %}"></i>
-                        </span>
-                        <hr>
-
-                        {% for review in reviews %}
-                        <div class="row">
-
-
-                            <div class="col-lg-2 col-md-6">
-                                <div class="user-image">
-                                    <img src="{{review.user.photo.url}}" alt="" height="50px" width="50px"
-                                        style="border-radius: 50%;">
-                                </div>
-                                <div id="reviews">
-
-                                    <ul class="reviews">
-                                        <li style="list-style: none;">
-
-
-                                            <div class="review-heading">
-                                                <p class="name">{{review.user.get_full_name}}</p>
-                                                <p class="date">27 DEC 2018, 8:0 PM</p>
-                                                <div class="review-rating">
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 1 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 2 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 3 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 4 %}review{% endif %}"></i>
-                                                    <i
-                                                        class="fa fa-star {% if review.rating >= 5 %}review{% endif %}"></i>
-                                                </div>
-                                            </div>
-
-                                        </li>
-
-                                    </ul>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-9 col-md-6">
-                                <div class="review-body">
-                                    <p align="justify">{{ review.comment }}</p>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                        <hr>
-                        {% empty %}
-                        <p>No reviews yet.</p>
-                        {% endfor %}
-
-
-
-                        {% endif %}
                     </div>
-
 
                 </div>
             </div>
@@ -884,10 +955,10 @@
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <div class="modal-header text-center">
-                <h5 class="modal-title " id="exampleModalLongTitle">Check
+            <div class="modal-header text-center bg-dark">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Check
                     Availability</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close btn btn-light" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -895,26 +966,29 @@
 
 
                 </h5>
-                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3" method="post"
+                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3 bg-light " method="post"
                     enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="form-row">
+                    <div class="form-row bg-light">
 
-                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                            name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
-
-
-                        <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                            name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date" required>
-
-                        <hr>
-                        <div class="modal-body">
+                        <div class="modal-body bg-light">
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
 
 
-                            <input type="submit" class="btn btn-primary" value="Check Availability" />
-                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date"
+                                required>
 
                         </div>
+
+
+                        <div class="modal-footer text-center justify-content-center bg-light ">
+
+                            <input type="submit" class="btn btn-outline-dark" value="Check Availability" />
+                            <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+
                     </div>
                 </form>
 

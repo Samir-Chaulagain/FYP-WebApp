@@ -72,13 +72,34 @@ def items(request):
 
 
 # View instrument details
-def showdetails(request,id):
+def showdetails(request, id):
     item = get_object_or_404(Item, id=id)
-    reviews = Review.objects.filter(item=item) 
-    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+    
+    # Manually create tags based on the category field of the item
+  
+    
+    # Get related items based on the created tags
+    related_item_list = Item.objects.filter(category=item.category).exclude(id=item.id)
+    # Paginate related items
+    paginator = Paginator(related_item_list, 3)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'explore/details.html', {
-        'item': item,'reviews': reviews,'average_rating': average_rating})
+    # Get reviews for the item
+    reviews = Review.objects.filter(item=item) 
+    # Calculate average rating for the item
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+    
+    context = {
+        'item': item,
+        'page_obj': page_obj,
+        'total': len(related_item_list),
+        'reviews': reviews,
+        'average_rating': average_rating
+    }
+    return render(request, 'explore/details.html', context)
+
+    return render(request, 'explore/details.html', context)
 
 
 

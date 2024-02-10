@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <style>
-  
+
 </style>
 
 <!-- edit profile page  -->
@@ -16,19 +16,18 @@
 </div>
 <!-- FORm -->
 
-<div class="login-container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-white rounded mt-4 mx-auto " style="background: rgb(223,15,15);
-background: linear-gradient(180deg, rgb(221, 212, 212)0%, rgb(246, 192, 192)  43%, rgba(255,255,255,1) 100%);">
-  <h2 class="text-uppercase text-center" >Login</h2>
+<div class="login-container d-grid gap-3 col-md-4 shadow-lg p-4 mb-4 bg-light rounded mt-4 mx-auto" >
+  <h2 class="text-uppercase text-center">Login</h2>
   <i class="fa-solid fa-user-circle fa-5x mx-auto  "></i>
   <form method="POST" action="">
     {% include 'messages.html' %}
     {% csrf_token %}
     <div class="mb-4">
-      <input type="email" class="form-control bg-light" placeholder="Enter email" name="email" required>
+      <input type="email" class="form-control bg-light focus-ring focus-ring-danger" placeholder="Enter email" name="email" required>
     </div>
     <div class="mb-1">
 
-      <input type="password" class="form-control bg-light" placeholder="Enter password" name="password" id="id_password"
+      <input type="password" class="form-control bg-light focus-ring-danger" placeholder="Enter password" name="password" id="id_password"
         required>
       <i class="far fa-eye" id="togglePassword" style="cursor: pointer;  margin-left: 95%; "></i>
 
