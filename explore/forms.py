@@ -10,6 +10,9 @@ class additemForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         forms.ModelForm.__init__(self, *args, **kwargs)
+        self.fields['instrument_brand'].required = False
+        self.fields['instrument_model'].required = False
+        
         self.fields['name'].label = "Item Name :"
         self.fields['instrument_brand'].label = "Instrument Brand :"
         self.fields['instrument_model'].label = "Instrument Model :"
@@ -108,6 +111,8 @@ class edititemForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['instrument_brand'].required = False
+        self.fields['instrument_model'].required = False
         self.fields['name'].label = "Item Name:"
         self.fields['instrument_brand'].label = "Instrument Brand:"
         self.fields['instrument_model'].label = "Instrument Model:"

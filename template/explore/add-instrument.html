@@ -33,8 +33,8 @@
           {% for field in form %}
 
           {% if field.name == 'item_type' %}
-          <div class="form-group mt-3" >
-            <label for="item-type">Item Type</label>
+          <div class="form-group mt-3">
+            <label for="item-type">Item Type <span class="text-danger">*</span></label>
             <select name="item_type" class="selectpicker border rounded" id="item-type" data-style="btn-black"
               data-width="100%" data-live-search="true" title="Select item Type" required>
               <option value="1">Solo</option>
@@ -46,7 +46,7 @@
 
           {% elif field.name == 'category' %}
           <div class="form-group mb-2">
-            <label for="item-type">Category</label>
+            <label for="item-type">Category <span class="text-danger">*</span></label>
             <select name="category" class="selectpicker border rounded" id="item-type" data-style="btn-black"
               data-width="100%" data-live-search="true" title="Select item Type">
 
@@ -60,7 +60,7 @@
 
           {% elif field.name == 'description' %}
           <div class="form-group mt-2">
-            <label for="item-type">Description</label>
+            <label for="item-type">Description <span class="text-danger">*</span></label>
             <div class="">
               {{ form.media }}
               {{ form.description }}
@@ -72,12 +72,14 @@
           {% else %}
 
           <div class="form-group mt-3">
-            <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+            <label class="text-black" for="id_{{ field.name }}">{{ field.label }} {% if field.field.required %}<span
+                class="text-danger">*</span>{% endif %}</label>
             <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
               id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
           </div>
           {% endif %}
           {% endfor %}
+
 
           <!-- <div class="form-group mt-2 dropzone dz"id="my-dropzone">
             <div class="fallback">
@@ -86,10 +88,11 @@
           </div> -->
 
           <div class="input-group my-3">
-            <input type="file" class="form-control" id="fileInput" multiple required>
+            <Label for="file">Photos: <span class="text-danger">*</span></Label>
+            <input type="file" class="form-control" id="fileInput" name="file" multiple required>
 
           </div>
-
+          <P>Location:<span class="text-danger">*</span> </P>
           <!-- Button to open the map for location selection -->
           <button type="button" class="btn btn-danger" onclick="openMap()">Select Location</button>
           <button type="button" class="btn btn-danger" onclick="useMyLocation()">Use My Location</button>
