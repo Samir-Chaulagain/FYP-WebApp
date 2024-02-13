@@ -19,14 +19,17 @@ class CustomerRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomerRegistrationForm, self).__init__(*args, **kwargs)
+       
         self.fields['gender'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
         self.fields['password1'].label = "Password :"
         self.fields['password2'].label = "Confirm Password :"
         self.fields['email'].label = "Email :"
         self.fields['phone_number'].label = "Phone Number :"
-        self.fields['gender'].label = "Gender :"
+        self.fields['gender'].label = "Gender: "
         self.fields['document_type'].label = "Document Type :"
         self.fields['document_photo'].label = "Document Photo :"
 
@@ -38,12 +41,14 @@ class CustomerRegistrationForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'placeholder': 'Confirm Password'})
         self.fields['phone_number'].widget.attrs.update({'placeholder': 'Enter Phone Number'})
 
-    def clean_gender(self):
-        gender = self.cleaned_data.get('gender')
-        if not gender:
-            raise forms.ValidationError("Gender is required")
-        return gender
+    # Custom save method to assign role and handle file validation
+    def save(self, commit=True):
+        user = super(CustomerRegistrationForm, self).save(commit=False)
+        user.role = "customer"  # Assign 'employee' role to the user
 
+        if commit:
+            user.save()
+        return user
     
 class LessorRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(max_length=10, required=True, label='Phone Number',
@@ -55,6 +60,8 @@ class LessorRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(LessorRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['gender'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True       
         self.fields['first_name'].label = "First Name :"
         self.fields['last_name'].label = "Last Name :"
         self.fields['password1'].label = "Password :"
@@ -103,12 +110,15 @@ class LessorRegistrationForm(UserCreationForm):
         model = User
         fields = ['first_name', 'last_name', 'email', 'phone_number',  'password1', 'password2', 'gender','photo','document_type','document_photo']
 
-    def clean_gender(self):
-        gender = self.cleaned_data.get('gender')
-        if not gender:
-            raise forms.ValidationError("Gender is required")
-        return gender
+    # Custom save method to assign role
+    # Custom save method to assign role and handle file validation
+    def save(self, commit=True):
+        user = super(LessorRegistrationForm, self).save(commit=False)
+        user.role = "lessor"  # Assign 'employee' role to the user
 
+        if commit:
+            user.save()
+        return user
     
 
 class CustomerProfileEditForm(forms.ModelForm):
@@ -119,6 +129,9 @@ class CustomerProfileEditForm(forms.ModelForm):
     document_photo = forms.ImageField(label='Upload a document', required=False)
     def __init__(self, *args, **kwargs):
         super(CustomerProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['gender'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['first_name'].widget.attrs.update(
             {
                 'placeholder': 'Enter First Name',

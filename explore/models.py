@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from accounts.models import User
 from ckeditor.fields import RichTextField
@@ -66,6 +67,7 @@ class Customer(models.Model):
     Rentitem_Total_amount = models.IntegerField(blank=True,null=True)
     isAvailable = models.BooleanField(default=True)    
     created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    time= models.TimeField(default=datetime.time(hour=0, minute=0))
     
     request_status = models.CharField(max_length=30,default="Pending")
     latitude = models.FloatField(blank=True, null=True)

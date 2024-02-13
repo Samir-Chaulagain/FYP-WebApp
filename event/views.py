@@ -1,20 +1,22 @@
-import logging
+
 import uuid
 
 from django.db.models import Q
-import json
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 
 from event.models import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from event.forms import EventBooked, EventEditForm,EventSavedForm
+from event.forms import EventSavedForm
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
 
 # Create your views here.
 def event(request):
@@ -111,7 +113,7 @@ def event_saved_view(request, pk):
     return redirect(reverse("event:event-details", kwargs={'pk': pk}))
 
 @login_required(login_url=reverse_lazy('accounts:login'))
-def delete_savedevent_view(request, pk):
+def delete_savedevent_d(request, pk):
     try:
         event = saved_event.objects.filter(event=pk, user=request.user).first()
 
@@ -129,30 +131,40 @@ def delete_savedevent_view(request, pk):
         messages.error(request, 'Saved item not found or you do not have permission to delete it.')
 
     # Assuming 'event-details' is a valid URL pattern, redirect to it after deletion
-    return redirect('event:event-details', pk=pk)
+    return redirect('explore:dashboard')
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+
+
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 def mark_paid_view(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, user=request.user.id)
+    booking = get_object_or_404(Booking, pk=pk, user=request.user)
+    
     if booking:
         booking.is_paid = True
         booking.save()
-    
-    # Send email to the user
-    subject = 'Payment Confirmation'
-    html_message = render_to_string('events/booking_confirmation.html', {'booking': booking})
-    plain_message = strip_tags(html_message)
-    from_email = 'muserentalhub@gmail.com'
-    to_email = request.user.email  # Assuming the user is associated with the event
-    send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+        
+        try:
+            # Send email to the user
+            subject = 'Payment Confirmation'
+            html_message = render_to_string('events/booking_confirmation.html', {'booking': booking})
+            plain_message = strip_tags(html_message)
+            from_email = 'muserentalhub@gmail.com'
+            to_email = request.user.email  # Assuming the user is associated with the event
+            
+            if to_email:
+                send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+                print("Email sent successfully to:", to_email)
+            else:
+                print("User email not found.")
+        except Exception as e:
+            print("An error occurred while sending email:", str(e))
+            # Log the error or handle it as necessary
     
     return redirect('explore:dashboard')
 
 
+  
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 def event_view(request, pk):
@@ -188,10 +200,31 @@ def event_view(request, pk):
     return render(request, 'events/event-details.html', {'event': event})
 
 
+@login_required(login_url=reverse_lazy('accounts:login'))
+def delete_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+
+    if request.method == 'POST':
+        # Delete the booking
+        booking.delete()
+        messages.success(request, 'Booking deleted successfully.')
+        return redirect('explore:dashboard')
+    return render(request, 'explore/dashboard.html', {'booking': booking})
 
 
+@login_required(login_url=reverse_lazy('accounts:login'))
+def edit_booking(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
 
+    if request.method == 'POST':
+        num_tickets = request.POST.get('no_of_tickets')
+        if num_tickets:
+            booking.num_tickets = num_tickets
+            booking.save()
+            messages.success(request, 'Booking updated successfully.')
+            return redirect('explore:dashboard')
 
+    return redirect('explore:dashboard')  # Redirect back to dashboard if GET request
 
 
 

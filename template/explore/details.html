@@ -7,6 +7,10 @@
 {% load static %}
 
 <style>
+    .carousel-item {
+        height: 375px;
+    }
+
     .with-arrow .nav-link {
         background-color: white;
         border-radius: 40px;
@@ -49,9 +53,10 @@
 
             position: none;
             display: none;
+        }
 
-
-
+        .carousel-item {
+            height: 250px;
         }
 
     }
@@ -59,7 +64,7 @@
 
     .product-details .product-name {
         text-transform: uppercase;
-        font-size: 18px;
+        font-size: 22px;
     }
 
     .product-details .product-rating {
@@ -99,22 +104,13 @@
         color: #D10024;
     }
 
-    .product-details .product-options {
+    .product-details {
         margin-top: 30px;
         margin-bottom: 30px;
     }
 
-    .product-details .product-options label {
-        font-weight: 500;
-        font-size: 12px;
-        text-transform: uppercase;
-        margin-right: 15px;
-        margin-bottom: 0px;
-    }
 
-    .product-details .product-options .input-select {
-        width: 90px;
-    }
+
 
     .product-details .save {
         margin-bottom: 30px;
@@ -305,13 +301,13 @@
     </div>
 
 </div>
-
 <div class="container my-5 py-2 ">
+    {% include 'messages.html' %}
     <div class="row" height="100vh">
         <!-- carousel Image -->
         <div class="col-md-6 col-md-push-2">
 
-            <div id="instrument_{{item.name}}" class="carousel slide" data-interval="false">
+            <div id="instrument_{{item.name}}" class="carousel slide bg-light" data-interval="false">
                 <div class="carousel-indicators">
                     {% for image in item.image_set.all %}
                     <button type="button" data-bs-target="#instrument_{{ item.id }}"
@@ -320,10 +316,11 @@
                     </button>
                     {% endfor %}
                 </div>
-                <div class="carousel-inner" style="height: 450px; object-fit: cover;">
+                <div class="carousel-inner">
                     {% for image in item.image_set.all %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img class="card-img-top" src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}" style="background-color: #FFF;">
+                        <img class="card-img-top img-fluid" src="{{ image.image.url }}"
+                            alt="Slide {{ forloop.counter }}" style="max-height: 100%; max-width: 100%;">
                     </div>
                     {% endfor %}
                 </div>
@@ -344,10 +341,10 @@
 
         <!-- Item Information -->
 
-        <div class="col-md-6 ">
+        <div class="col-md-6 ps-3 ">
 
-            <div class="product-details">
-                <h2 class="product-name">{{item.name}}</h2>
+            <div class="product-details ">
+                <h1 class="product-name">{{item.name}}</h1>
 
                 <div class="product-rating">
                     <span>
@@ -361,41 +358,18 @@
 
 
                 <div>
-                    <h3 class="product-price"> <del class="product-old-price">रु {{ item.price }}</del></h3>
-                    <span class="product-available">रु {{ item.price }}</span>
+                    <h3 class="product-price">रु {{ item.price }} </h3>
+
                 </div>
-                <p>{{ item.description | safe}}
-                </p>
                 <ul class="product-links">
                     <li>Category:</li>
-                    <li><a href="#"
+                    <li class="px-2"><a href="#"
                             style="text-decoration: none; color:#D10024;">{{item.get_item_type_display_name}}</a></li>
                     <li><a href="#" style="text-decoration: none; color:#D10024;">{{item.category}}</a></li>
                 </ul>
-                <ul class="product-links">
-                    <li>Share:</li>
-                    <div>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="" class="me-4 text-reset">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
+                <p>{{ item.description | safe}}
+                </p>
 
-                </ul>
 
             </div>
 
@@ -498,8 +472,7 @@
 
 
 
-                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and
-                        user.is_verified %}
+                        {% elif user.is_authenticated and request.user.id == item.user.id and user.role == 'lessor' and user.is_verified %}
 
 
 
@@ -569,8 +542,8 @@
             <p>
                 {{Message}}
             </p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+
             </button>
         </div>
     </div>
@@ -580,8 +553,8 @@
     <div class="container">
         <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
             <strong>{{Incorrect_dates}}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+
             </button>
         </div>
     </div>
@@ -597,11 +570,13 @@
                 {{Message}}.
             </p>
             {%endif%}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+            <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+
             </button>
         </div>
     </div>
+
+
 
 
     <!-- Modal -->
@@ -628,6 +603,10 @@
                                 <label for="returndate"><b>Return Date</b></label>
                                 <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
                                     value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
+                            </div>
+                            <div class="form-group col-6 mb-2">
+                                <label for="time"><b>Time:</b></label>
+                                <input type="time" id="time" name="time">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="totaldays"><b>Total days</b></label>
@@ -746,9 +725,7 @@
                                                 <p class="product-category">{{item.category}}</p>
                                                 <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
                                                         {{ item.name}}</a></h3>
-                                                <h4 class="product-price">रु {{ item.price }} <del
-                                                        class="product-old-price">रु
-                                                        {{item.price }}</del></h4>
+                                                <h4 class="product-price">रु {{ item.price }} </h4>
 
 
 
@@ -1042,13 +1019,15 @@
 
     }
 
+
     // Set latitude and longitude for testing
     var latitude = {{ item.latitude }}; // Example latitude
     var longitude = {{ item.longitude }}; // Example longitude
-
+    console.log(latitude)
     setTimeout(function () {
         initMap(latitude, longitude);
     }, 3500); 
+    
 </script>
 
 <!-- for popover -->

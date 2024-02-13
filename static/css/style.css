@@ -12,9 +12,7 @@
   font-size: 15px;
   text-transform: uppercase;
 }
-.nav-item a:hover {
-  color: rgb(5, 5, 5);
-}
+
 
 .mynav::after {
   content: "";
@@ -31,14 +29,8 @@
   color: rgb(0, 0, 0);
 }
 
-@media (max-width:576px){
-  .mynav:hover::after {
-  
-   width: 0;;
-  color: rgb(0, 0, 0);
-} 
 
-}
+
 .carousel-item {
   height: 100vh;
   background-color: #2a2929;

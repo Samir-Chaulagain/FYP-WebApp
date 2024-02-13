@@ -27,9 +27,12 @@
     </div>
     <div class="mb-1">
 
-      <input type="password" class="form-control bg-light focus-ring-danger" placeholder="Enter password" name="password" id="id_password"
+      <input type="password" class="form-control bg-light focus-ring focus-ring-danger" placeholder="Enter password" name="password" id="id_password"
         required>
-      <i class="far fa-eye" id="togglePassword" style="cursor: pointer;  margin-left: 95%; "></i>
+        <span>
+
+          <i class="far fa-eye" id="togglePassword" style="cursor: pointer;  margin-left: 95%; "></i>
+        </span>
 
     </div>
     <input type="checkbox" name="remember_me" class="mt-3" {% if request.POST.remember_me %}checked{% endif %}> Remember

@@ -83,7 +83,7 @@
                         <div class="entry-header mb-3">
 
                             <h2 class="card-title entry-title h4 mb-0">
-                                <a class="link-dark text-decoration-none" href="{% url 'event:book-event' event.id %}">{{event.name|truncatechars:25}}</a>
+                                <a class="link-dark text-decoration-none" href="{% url 'event:book-event' event.id %}">{{event.name|truncatechars:20}}</a>
                             </h2>
                         </div>
                         {% if event.is_active %}

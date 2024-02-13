@@ -47,16 +47,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
-    
     'crispy_forms',
-    
-
-    
-    
-
+    'leaflet_point',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
+LEAFLET_POINT_CONFIG = {
+    'map_height': 500,
+    'tile_layer': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    'attribution': '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    'initial_lat': 	27.700769,
+    'initial_lng': 85.300140,
+    'initial_zoom': 10,
+    'geocoder':True,
+    'style': 'width: 500px;'
+}
 
 # CKeditor Config
 CKEDITOR_CONFIGS = {
@@ -199,6 +204,8 @@ JAZZMIN_SETTINGS = {
     "site_logo": "/img/Main/logo.png",
       # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
+    "custom_css": "/jazzmin/admin.css",
+    "custom_js": None,
 
     # Welcome text on the login screen
     "welcome_sign": "Welcome to the Muserental Hub",
@@ -251,7 +258,7 @@ JAZZMIN_SETTINGS = {
     # Whether to show the UI customizer on the sidebar
     "show_ui_builder": True,
     "changeform_format": "horizontal_tabs",
-
+    
     
     }
 
@@ -286,3 +293,4 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success"
     }
 }
+

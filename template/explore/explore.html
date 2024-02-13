@@ -31,7 +31,8 @@
         .category {
             margin-left: 0px;
         }
-        .explore-card{
+
+        .explore-card {
             transform: none;
         }
 
@@ -155,71 +156,77 @@
 
 
         {% for item in page_obj %}
+
         <div class="col-lg-4 col-md-4 col-sm-6 my-3  " data-aos="zoom-in-up">
-            <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
-                <div id="instrument_{{item.id}}" class="carousel slide" data-bs-interval="false">
-                    <div class="carousel-indicators">
-                        {% for image in item.image_set.all %}
-                        <button type="button" data-bs-target="#instrument_{{ item.id }}"
-                            data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {% endif %}
-                            aria-label="Slide {{ forloop.counter }}">
+            <a href="{% url 'explore:details' item.id %}" class="card-link" style="text-decoration:none;">
+
+
+
+                <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
+                    <div id="instrument_{{item.id}}" class="carousel slide" data-bs-interval="false">
+                        <div class="carousel-indicators">
+                            {% for image in item.image_set.all %}
+                            <button type="button" data-bs-target="#instrument_{{ item.id }}"
+                                data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" {%endif%}
+                                aria-label="Slide {{ forloop.counter }}">
+                            </button>
+                            {% endfor %}
+                        </div>
+                        <div class="carousel-inner">
+                            {% for image in item.image_set.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 200px;">
+                                <img class="card-img-top img-fluid carousel-image" src="{{ image.image.url }}"
+                                    alt="Slide {{ forloop.counter }}" style="max-height: 100%; max-width: 100%;">
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#instrument_{{ item.id }}"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
                         </button>
-                        {% endfor %}
-                    </div>
-                    <div class="carousel-inner">
-                        {% for image in item.image_set.all %}
-                        <div class="carousel-item {% if forloop.first %}active{% endif %}" style="height: 200px;">
-                            <img class="card-img-top" src="{{ image.image.url }}" alt="Slide {{ forloop.counter }}">
-                        </div>
-                        {% endfor %}
+                        <button class="carousel-control-next" type="button" data-bs-target="#instrument_{{ item.id }}"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#instrument_{{ item.id }}"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#instrument_{{ item.id }}"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-
-                <div class="card-body">
+                    <div class="card-body">
 
 
-                    <div class="product-body justify-content-center">
-                        <span
-                            class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
-                        <p class="product-category">{{item.category}}</p>
-                        <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
-                                {{ item.name}}</a></h3>
-                        <h4 class="product-price">रु {{ item.price }} <del class="product-old-price">रु
-                                {{item.price }}</del></h4>
+                        <div class="product-body justify-content-center">
+                            <span
+                                class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
+                            <p class="product-category">{{item.category}}</p>
+                            <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
+                                    {{ item.name}}</a></h3>
+                            <h4 class="product-price">रु {{ item.price }} </h4>
 
 
 
 
 
 
-                        <div class="product-btns justify-content-center" style="background-color: rgba(0, 0, 0, 0);  ">
+                            <div class="product-btns justify-content-center"
+                                style="background-color: rgba(0, 0, 0, 0);  ">
 
-                            <a class="add-to-wishlist" href="" style="margin-right: 15px;"><i
-                                    class="fa fa-heart-o fa-lg"></i><span class="tooltipp">Save Item</span></a>
 
-                            <a href="{% url 'explore:details' item.id  %}" class="quick-view"><i
-                                    class="fa fa-eye fa-lg"></i><span class="tooltipp">
-                                    view details</span></a>
+
+                                <a href="{% url 'explore:details' item.id  %}" class="quick-view"><i
+                                        class="fa fa-eye fa-lg"></i><span class="tooltipp">
+                                        view details</span></a>
+                            </div>
+
+
                         </div>
 
 
+
                     </div>
-
-
-
                 </div>
-            </div>
+            </a>
         </div>
         {% endfor %}
     </div>

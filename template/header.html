@@ -1,44 +1,58 @@
-
 {%load static %}
 
 <style>
-.profile-picture-container {
-    position: relative;
-    display: inline-block;
-}
-
-.profile-picture {
-    border-radius: 50%;
-    margin-top: -10px;
-    height: 38px;
-    width: 38px;
-}
-
-.exclamation-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px; /* Set the width of the icon */
-    height: 20px; /* Set the height of the icon */
-}
-@media (max-width: 576px) {
-    .navbar-nav .nav-item {
-        text-align: center;
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
     }
-}
-@media (max-width: 768px) {
-    
-    .navbar-nav .nav-item { 
-        text-align: center;
-    }
-}
 
+    .profile-picture {
+        border-radius: 50%;
+        margin-top: -10px;
+        height: 38px;
+        width: 38px;
+    }
+
+    .exclamation-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        /* Set the width of the icon */
+        height: 20px;
+        /* Set the height of the icon */
+    }
+
+    @media screen and (max-width: 576px) {
+        .mynav::after {
+            content: '';
+            /* Add an empty content */
+            display: block;
+            /* Make it a block-level element */
+            width: 0;
+            /* Initial width is 0 */
+            height: 2px;
+            /* Set the height as needed */
+            background-color: white;
+            /* Set the background color */
+            transition: width 0.3s;
+            /* Add the transition property */
+        }
+
+        .mynav:hover::after {
+            width: 0;
+            /* Expand the width on hover */
+        }
+
+        .navbar-nav .nav-item {
+            text-align: center;
+        }
+    }
 </style>
 
 
 
-<nav class="navbar navbar-expand-lg  border-secondary shadow mb-5 bg-light" 
-    style="z-index: 99; position: sticky; top: 0; " >
+<nav class="navbar navbar-expand-lg sticky-top border-secondary shadow mb-5 bg-light" style="z-index: 99;">
 
 
     <div class="logo">
@@ -74,15 +88,15 @@
             </li>
 
             {% if user.is_authenticated and user.role == 'lessor' and user.is_verified %}
-            
+
             <li class="nav-item mt-0">
                 <a class="nav-link mynav" href="{% url 'explore:add_item' %}">
                     Add item</a>
-                    
-                </li>
-                <li class="dropdown nav-item  ">
-                    
-                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
+
+            </li>
+            <li class="dropdown nav-item  ">
+
+                <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="profile-picture-container">
                         <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
@@ -91,93 +105,95 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
-                style=" background-color: white;">
-                <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
-                <li><a class="dropdown-item text-black"
-                    href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
+                    style=" background-color: white;">
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                    <li><a class="dropdown-item text-black"
+                            href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
                     <!-- -->
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
-                    
+
                 </ul>
             </li>
-            
-            
+
+
             {% elif user.is_authenticated and user.role == 'lessor' and not user.is_verified %}
-                <li class="nav-item mt-0">
-                    <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true" hidden>
-                        Add item</a>
-                
-                </li>
-                <li class="dropdown nav-item  ">
-                
-                    <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+            <li class="nav-item mt-0">
+                <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true" hidden>
+                    Add item</a>
 
-                        <div class="profile-picture-container">
-                            <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                                alt="Profile Picture" class="profile-picture">
-                            <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon"  class="exclamation-icon">
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
-                        style=" background-color: white;">
-                        <li><a class="dropdown-item text-black"
-                                href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
-                        <!-- -->
-                        <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
-                
-                    </ul>
-                </li>
+            </li>
+            <li class="dropdown nav-item  ">
 
-                
+                <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
 
-            
+                    <div class="profile-picture-container">
+                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                            alt="Profile Picture" class="profile-picture">
+                        <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon"
+                            class="exclamation-icon">
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
+                    style=" background-color: white;">
+                    <li><a class="dropdown-item text-black"
+                            href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
+                    <!-- -->
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+
+                </ul>
+            </li>
+
+
+
+
             {% elif user.is_authenticated and user.role == 'customer' and user.is_verified%}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" role=""
-                data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="profile-picture-container">
-                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                        alt="Profile Picture" class="profile-picture">
-                    <img src="{% static 'img/Main/approved.png' %}" alt="Exclamation Icon" class="exclamation-icon">
-                </div>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
-            style=" background-color: white;">
-            <li><a class="dropdown-item text-black"
-                href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-                <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
-                
-                <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
-                
-            </ul>
-        </li>
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-picture-container">
+                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                            alt="Profile Picture" class="profile-picture">
+                        <img src="{% static 'img/Main/approved.png' %}" alt="Exclamation Icon" class="exclamation-icon">
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
+                    style=" background-color: white;">
+                    <li><a class="dropdown-item text-black"
+                            href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
 
-        
-        {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified%}
-        
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <div class="profile-picture-container">
-                    <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
-                        alt="Profile Picture" class="profile-picture">
-                    <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon" class="exclamation-icon" style="margin-left: 5px;">
-                </div>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
-                style=" background-color: white;">
-                <li><a class="dropdown-item text-black"
-                        href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-        
-                <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
-        
-            </ul>
-        </li>
-        
-        
-        {% else %}
-        <li class="nav-item">
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+
+                </ul>
+            </li>
+
+
+            {% elif user.is_authenticated and user.role == 'customer' and not user.is_verified%}
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role=""
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="profile-picture-container">
+                        <img src="{% if user.photo %}{{ user.photo.url }}{% else %}path/to/default/profile-pic.jpg{% endif %}"
+                            alt="Profile Picture" class="profile-picture">
+                        <img src="{% static 'img/Main/Unverified.png' %}" alt="Exclamation Icon"
+                            class="exclamation-icon" style="margin-left: 5px;">
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg-end " aria-labelledby="navbarDropdownMenuLink"
+                    style=" background-color: white;">
+                    <li><a class="dropdown-item text-black"
+                            href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
+
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+
+                </ul>
+            </li>
+
+
+            {% else %}
+            <li class="nav-item">
                 <a class="nav-link mynav" href="{% url 'accounts:login' %}">Login</a>
             </li>
             <li class="nav-item dropdown mynav" style=" background-color: white;">
@@ -190,7 +206,7 @@
                             href="{% url 'accounts:customer_registration' %}">Customer</a></li>
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a>
                     </li>
-                    
+
                 </ul>
             </li>
 

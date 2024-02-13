@@ -24,7 +24,7 @@
                     <h5 class="card-header text-center mb-5"> All Customer </h5>
                     <div class="table-responsive">
                         <table class="table text-center">
-                            <thead class="thead-dark">
+                            <thead class="thead" style="background-color: black; color: aliceblue ;">
                                 <tr>
                                     <th>Name</th>
                                     <th>Title</th>
@@ -41,7 +41,9 @@
                                 {{ customer.get_total_customer }}
 
                                 <tr>
-                                    <td class="text-center"><a href="">{{ customer.user.get_full_name }}</a></td>
+                                    <td class="text-center">
+                                        <p>{{ customer.user.get_full_name }}</p>
+                                    </td>
                                     <td>{{ customer.item.name }}</td>
                                     <td>{{ customer.Rentitem_Date_of_Booking }}</td>
                                     <td>{{ customer.Rentitem_Date_of_Return }}</td>
@@ -159,7 +161,7 @@
 
             // Add a tile layer (you can choose a different provider)
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-               
+
 
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);

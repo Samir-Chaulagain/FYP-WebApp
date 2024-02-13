@@ -247,7 +247,7 @@ def lessor_edit_profile(request, id):
         form = LessorProfileEditForm(request.POST , request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your Profile Was Successfully Updated!')
+            messages.success(request, 'Updated Profile Successfully!!')
             return redirect(reverse("accounts:lessor-edit-profile", kwargs={'id': id}))
     else:
         form = LessorProfileEditForm(instance=user)

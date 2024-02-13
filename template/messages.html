@@ -1,8 +1,8 @@
 {% if messages %}
 {% for message in messages %}
 <div class="mb-5 alert {{ message.tags }} alert-dismissible" role="alert" id="message-{{ forloop.counter }}">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+  <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close">
+    
   </button>
   {{ message }}
 </div>
@@ -14,7 +14,7 @@
     if (messageElement) {
       messageElement.style.display = 'none';
     }
-  }, 5000);
+  }, 4500);
 </script>
 
 {# Add a conditional check to apply timeout for all message types #}
@@ -25,7 +25,7 @@
     if (messageElement) {
       messageElement.style.display = 'none';
     }
-  }, 5000);
+  }, 4500);
 </script>
 {% endif %}
 {% endfor %}
@@ -35,9 +35,11 @@
 {% for error in field.errors %}
 {% with counter=forloop.parentloop.counter %}
 <div class="alert alert-danger alert-dismissable" role="alert" id="error-message-{{ counter }}">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   <strong>{{ field.label|capfirst }} {{ error|escape }}</strong>
 </div>
+
 <script>
   // Add a timeout to hide each error message after 5 seconds
   setTimeout(function () {
@@ -45,7 +47,7 @@
     if (errorMessage) {
       errorMessage.style.display = 'none';
     }
-  }, 5000);
+  }, 4500);
 </script>
 {% endwith %}
 {% endfor %}
@@ -54,7 +56,8 @@
 {% for error in form.non_field_errors %}
 {% with counter=forloop.counter %}
 <div class="alert alert-danger alert-dismissable" role="alert" id="non-field-error-message-{{ counter }}">
-  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
   <strong>{{ error|escape }}</strong>
 </div>
 <script>
@@ -64,7 +67,7 @@
     if (nonFieldErrorMessage) {
       nonFieldErrorMessage.style.display = 'none';
     }
-  }, 5000);
+  }, 4500);
 </script>
 {% endwith %}
 {% endfor %}

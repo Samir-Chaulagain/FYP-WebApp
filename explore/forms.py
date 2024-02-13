@@ -115,6 +115,7 @@ class edititemForm(forms.ModelForm):
         self.fields['description'].label = "Description:"
         self.fields['price'].label = "Price:"
 
+
         for field_name, field in self.fields.items():
             field.widget.attrs.update({'class': 'form-control'})  # Add Bootstrap form-control class
 

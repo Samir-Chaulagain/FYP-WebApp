@@ -13,27 +13,23 @@
     color: #fff;
     background: black;
   }
-
-
-  /* Add indicator arrow for the active tab */
-  @media (min-width: 992px) {
-    .nav-pills-custom .nav-link::before {
-      content: '';
-      display: block;
-      border-top: 8px solid transparent;
-      border-left: 10px solid #fff;
-      border-bottom: 8px solid transparent;
-      position: absolute;
-      top: 50%;
-      right: -10px;
-      transform: translateY(-50%);
-      opacity: 0;
-    }
-  }
-
   .nav-pills-custom .nav-link.active::before {
     opacity: 1;
   }
+  /* Small screen styles */
+
+  .profile-detail{
+    padding-left:22%; 
+    padding-right: 21%; 
+  }
+@media screen and (max-width: 576px) {
+  .profile-detail{
+    padding-left:0 ;
+    padding-right:0 ;
+  }
+  
+}
+
 </style>
 
 <div class="text-center bg-image" data-aos="zoom-in-up"
@@ -73,25 +69,16 @@
 
     <!-- Tabs nav -->
     <div class="nav nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link m-2 px-5 py-2 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+      <a class="nav-link m-2 px-3 py-2 shadow active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
         role="tab" aria-controls="v-pills-home" aria-selected="true">
         <i class="fa fa-user-circle-o mr-2"></i>
         <span class="font-weight-bold small text-uppercase">Personal Information</span></a>
 
-      <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+      <a class="nav-link m-2 px-3 py-2 shadow" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
         role="tab" aria-controls="v-pills-profile" aria-selected="false">
         <i class="fa fa-calendar-minus-o mr-2"></i>
         <span class="font-weight-bold small text-uppercase">Password</span></a>
 
-      <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages"
-        role="tab" aria-controls="v-pills-messages" aria-selected="false">
-        <i class="fa fa-star mr-2"></i>
-        <span class="font-weight-bold small text-uppercase">Reviews</span></a>
-
-      <a class="nav-link m-2 px-5 py-2 shadow" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings"
-        role="tab" aria-controls="v-pills-settings" aria-selected="false">
-        <i class="fa fa-check mr-2"></i>
-        <span class="font-weight-bold small text-uppercase">Booked event</span></a>
     </div>
 
 
@@ -99,7 +86,7 @@
 
     <!-- Tabs content -->
     <div class="tab-content" id="v-pills-tabContent">
-      <div class="tab-pane fade shadow rounded show active p-5" id="v-pills-home" role="tabpanel"
+      <div class="tab-pane fade show active p-5" id="v-pills-home" role="tabpanel"
         aria-labelledby="v-pills-home-tab">
 
 
@@ -121,20 +108,21 @@
         {% endfor %}
         {% endif %}
 
-
-
+        
+        
         {% include 'messages.html' %}
-        <form method="POST" action="" enctype="multipart/form-data" class="p-2" style="background-color: #fff;">
+        <div class="container profile-detail">
+        <form method="POST" action="" class="px-4 shadow-lg py-4" enctype="multipart/form-data" style="background-color: #fff; border-radius:13px;">
 
 
 
-
-          <div class="row">
-            <div class="col-6">
+          <div class="row mt-3">
+            
               <span class="text-primary mb-6" style="text-align: center; object-fit: cover;">
-                <img src="{{ form.instance.photo.url }}" alt="Profile Picture" style="border-radius: 50%;" width="280"
-                  height="300">
+                <img class="img-fluid" src="{{ form.instance.photo.url }}" alt="Profile Picture" style="border-radius: 50%;" width="240"
+                  height="240">
               </span>
+            
             </div>
             {% csrf_token %}
 
@@ -143,14 +131,17 @@
 
             {% for field in form %}
             {% if field.name == 'gender' %}
-            <div class="row form-group mb-4 my-2">
+            <div class="row form-group mb-4">
+              <p class="d-inline">Gender: </p>
               <div class="col-md-12 mb-3 mb-md-0">
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
+                  <input class="form-check-input" type="radio" name="gender" id="male gender" value="M"
+                    {% if field.value == 'M' %} checked {% endif %}>
                   <label class="form-check-label" for="male">Male</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="gender" id="female" value="F">
+                  <input class="form-check-input" type="radio" name="gender" id="female" value="F"
+                    {% if field.value == 'F' %} checked {% endif %}>
                   <label class="form-check-label" for="female">Female</label>
                 </div>
               </div>
@@ -158,25 +149,38 @@
             {%elif field.name == 'document_type'%}
 
             <div class="row form-group my-3">
-              <div class="col-md-12 mb-3 mb-md-0">
-                <label class="text-black" for="id_{{ field.name }}">Document Type</label>
+              <div class="col-md-12 mb-3 mb-md-0 ">
+                 {% if not user.is_verified %}
+                <label class="text-black" for="id_{{ field.name }}">Document Type: </label>
                 {{ field }}
+                 {% else %}
+                 <label class="text-black" for="id_{{ field.name }}">Document Type: </label>
+                 {{user.document_type}}
+                 {% endif %}
               </div>
             </div>
 
-            <div class="row my-3">
-              <div class="col-md-12 mb-3 mb-md-0">
+            <div class="row my-2 px-4">
+              
                 {% if form.instance.document_photo %}
-                <img src="{{ form.instance.document_photo.url }}" alt="Document Photo" width="280" height="300">
+
+                <img src="{{ form.instance.document_photo.url }}" alt="Document Photo" class="img-fluid" width="200px" height="200px">
 
                 {% else %}
                 <span class="bg-danger text-light">For Verification Please upload image</span>
 
                 {% endif %}
 
-              </div>
+              
             </div>
-
+            {%elif field.name == 'document_photo'%}
+            {% if not user.is_verified %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+            {% endif %}
+            
             {% else %}
 
 
@@ -184,7 +188,7 @@
 
 
               <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
-              <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
+              <input type="{{ field.field.widget.input_type }}" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
                 id="id_{{ field.name }}" value="{{ field.value }}"
                 placeholder="{{ field.field.widget.attrs.placeholder }}">
 
@@ -196,7 +200,11 @@
 
             {% endif %}
             {% endfor %}
-            <button type="submit" class="btn px-4 btn-dark text-white mt-5 mx-auto">Update</button>
+
+          </div>
+          <div class="row justify-content-center text-center" style="margin:0 25%" >
+
+            <button type="submit" class="btn btn-dark text-white mt-4 ">Update</button>
           </div>
 
         </form>
@@ -217,20 +225,25 @@
 
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col-md-6 mt-3">
+            <div class="col-lg-4 col-sm-6 mt-3 p-4 shadow" style="">
 
-              <form method="post">
+              <form method="post" >
                 {% csrf_token %}
                 {% for field in form1 %}
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="form-group {% if field.errors %}has-error{% endif %} focus-ring focus-ring-danger">
                   <label class="text-black" for="{{ field.id_for_label }}">{{ field.label }}</label>
                   <div class="input-group">
                     {{ field }}
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-outline-eye" onclick="togglePassword('id_{{ field.name }}')">
+                        <i class="fa-solid fa-eye " id="eyeIcon" style="color: #6a6161;"></i>
+                      </button>
+                    </div>
                   </div>
 
                 </div>
                 {% endfor %}
-                <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+                <button type="submit" class="btn btn-dark mt-3">Change Password</button>
               </form>
             </div>
           </div>
@@ -240,15 +253,7 @@
 
       </div>
 
-      <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-messages" role="tabpanel"
-        aria-labelledby="v-pills-messages-tab">
-
-      </div>
-
-      <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel"
-        aria-labelledby="v-pills-settings-tab">
-
-      </div>
+      
     </div>
   </div>
 
@@ -257,7 +262,24 @@
 
 
 
+<script>
+  function togglePassword(fieldId) {
+    var eyeIcon = document.getElementById('eyeIcon');
 
+    // Check the current color
+    var currentColor = eyeIcon.style.color;
+
+    // Toggle color
+    // if (currentColor === 'blue') {
+    //   eyeIcon.style.color = '#000000'; // Change back to black
+    // } else {
+    //   eyeIcon.style.color = 'blue'; // Change to purple
+    // }
+    const passwordField = document.getElementById(fieldId);
+    const fieldType = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = fieldType;
+  }
+</script>
 
 
 

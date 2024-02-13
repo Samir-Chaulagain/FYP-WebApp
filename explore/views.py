@@ -24,6 +24,15 @@ from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
+from datetime import datetime, date
+from .models import Customer, Item
+from django.contrib.auth.decorators import login_required
+
+
+
+from .models import Customer
 
 
 from datetime import date, datetime
@@ -175,59 +184,42 @@ def add_item(request):
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def item_edit_view(request, id=id):
-    """
-    Handle item Update
-
-    """
-
     item = get_object_or_404(Item, id=id, user=request.user.id)
     categories = Category.objects.all()
-    form = edititemForm(request.POST or None, instance=item)
+    form = edititemForm(request.POST or None,request.FILES or None, instance=item)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.save()
-        # for save tags
-        # form.save_m2m()
-        messages.success(request, 'Your item Post Was Successfully Updated!')
-        return redirect(reverse("explore:items", kwargs={
-            'id': instance.id
-        }))
-    context = {
+        
+        item.latitude = request.POST.get('latitude')
+        item.longitude = request.POST.get('longitude')
+        item.save()
+        print(item.latitude,item.longitude)
+        
+        # Retrieve the item object after saving the form
+        
+        # Delete existing images only after saving the instance
+        images = Image.objects.filter(item=instance)
+        images.delete()
+        
+        # Save the instance first to get the updated ID
+        
+        
+        # Save new images with the updated instance
+        for file in request.FILES.getlist('file'):
+            Image.objects.create(item=instance, image=file)
+        instance = form.save()
 
+        
+        messages.success(request, 'Your item Post Was Successfully Updated!')
+        return redirect(reverse("explore:edit-item", kwargs={'id': instance.id}))
+    
+    context = {
         'form': form,
-        'categories': categories
+        'categories': categories,
+        'item': item,
     }
 
     return render(request, 'explore/item-edit.html', context)
-
-
-# def search_result_view(request):
-#     """
-#         User can search item with multiple fields
-
-#     """
-
-#     item = item.objects.order_by('-timestamp')
-
-#     # Keywords
-#     if 'item_name_or_created_by' in request.GET:
-#         item_name_or_created_by = request.GET['item_name_or_created_by']
-
-#         if item_name_or_created_by:
-#             item = item.filter(title__icontains=item_name_or_created_by) | item.filter(
-#                 company_name__icontains=item_name_or_created_by)
-
-    # location
-    # item Type
-    # if 'item_type' in request.GET:
-    #     item_type = request.GET['item_type']
-    #     if item_type:
-    #         item = item.filter(item_type__iexact=item_type)
-
-    # return render(request, 'explore/result.html', item)
-
-
-
 
 
 
@@ -306,23 +298,6 @@ def delete_item(request, id):
 
     return redirect('explore:dashboard')
 
-
-#  for mmarking sold 
-# @login_required(login_url=reverse_lazy('accounts:login'))
-# @user_is_lessor
-# def make_complete_item_view(request, id):
-#     item = get_object_or_404(Item, id=id, user=request.user.id)
-
-#     if item:
-#         try:
-#             item.is_sold = True
-#             item.save()
-#             messages.success(request, 'Your item was marked closed!')
-#         except:
-#             messages.success(request, 'Something went wrong !')
-            
-#     return redirect('explore:dashboard')
-
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def item_saved_view(request, id):
@@ -338,19 +313,33 @@ def item_saved_view(request, id):
                 instance.user = user
                 instance.save()
 
-                messages.success(request, 'You have successfully saved this item!')
+                messages.success(request, 'You have successfully saved this item!! Please Check Your Dashboard')
                 return redirect(reverse("explore:details", kwargs={'id': id}))
 
         else:
             return redirect(reverse("explore:details", kwargs={'id': id}))
 
     else:
-        messages.error(request, 'You already saved this item!')
+        
         return redirect(reverse("explore:details", kwargs={'id': id}))
 
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def delete_save_view(request, id):
+
+    item = saved_item.objects.filter(item=id, user=request.user).first()
+
+
+    if item:
+        item.delete()
+        messages.success(request, 'Saved item was successfully removed!')
+
+    return redirect('explore:details', id=id)
+
+@login_required(login_url=reverse_lazy('accounts:login'))
+@user_is_customer
+def deletesaveditem(request, id):
+    
 
     item = get_object_or_404(saved_item, id=id, user=request.user.id)
 
@@ -361,11 +350,9 @@ def delete_save_view(request, id):
     return redirect('explore:dashboard')
 
 
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from datetime import datetime, date
-from .models import Customer, Item
-from django.contrib.auth.decorators import login_required
+
+
+
 # from .decorators import user_is_customer
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -422,6 +409,8 @@ def rent_item_view(request, id):
             Rentitem_Date_of_Return = request.POST.get('Rentitem_Date_of_Return', '')
             latitude = request.POST.get('latitude','')
             longitude = request.POST.get('longitude','')
+            time = request.POST.get('time','')
+            
 
             Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%b. %d, %Y').date()
             Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%b. %d, %Y').date()
@@ -438,14 +427,16 @@ def rent_item_view(request, id):
                 Total_days=total_days,
                 Rentitem_Total_amount=total_amount,
                 latitude=latitude,
-                longitude=longitude
+                longitude=longitude,
+                time=time
+
                 
                 
             )
             instance.save()
             
 
-            messages.success(request, 'You have successfully applied for this item!')
+            messages.success(request, 'You have successfully rented this item!')
             return redirect(reverse("explore:details", kwargs={'id': id}))
 
     else:
@@ -497,11 +488,6 @@ def send_email_after_payment(request):
 
 
 
-
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
-from .models import Customer
 
 @require_POST
 @csrf_exempt  # CSRF exemption for simplicity; consider using a decorator like csrf_protect in production

@@ -27,23 +27,58 @@
         border: 13px solid;
     }
 
-    .with-arrow .nav-link.active::after {
-        content: '';
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        border-top: 6px solid #000000;
-        position: absolute;
-        bottom: -6px;
-        left: 50%;
-        margin: 5px;
-        transform: translateX(-50%);
-        display: block;
+    .responsive-table {
+        li {
+            border-radius: 3px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px
+        }
+
+        .table-row {
+            background-color: #ffffff;
+            box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+            align-items: center;
+        }
 
 
+        @media all and (max-width: 767px) {
+            .table-header {
+                display: none;
+            }
+
+            .table-row {}
+
+            li {
+                display: block;
+            }
+
+            .col {
+
+                flex-basis: 100%;
+                width: auto;
+
+            }
+
+            .col {
+                display: flex;
+                padding: 10px 0;
+
+                &:before {
+                    color: #6C7A89;
+                    padding-right: 10px;
+                    content: attr(data-label);
+                    flex-basis: 50%;
+                    text-align: right;
+                }
+            }
+        }
     }
 </style>
 
-<!-- Include SweetAlert CSS -->
+
 
 
 <!-- Your existing script tags -->
@@ -77,9 +112,11 @@
 
 
                 {% if user.role == "lessor" %}
+
+                <!-- navtab -->
                 <ul id="myTab1" role="tablist"
                     class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center mt-4">
-                    <li class="nav-item flex-sm-fill mx-2">
+                    <li class="nav-item flex-sm-fill    -2">
                         <a id="myitems1-tab" data-toggle="tab" href="#myitems" role="tab" aria-controls="myitems"
                             aria-selected="true"
                             class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">My
@@ -96,188 +133,306 @@
                             class="nav-link text-uppercase font-weight-bold rounded-5 border">Booked Events</a>
                     </li>
                 </ul>
+
                 <div id="myTab1Content" class="tab-content">
                     <div id="myitems" role="tabpanel" aria-labelledby="home-tab"
                         class="tab-pane fade px-4 py-3 show active">
                         <!-- End bordered tabs -->
                         {% if items %}
-                        <table class="table text-center mt-3">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Item Title</th>
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
 
-                                    <th>Customers</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in items %}
-                                <tr id="row_{{ item.id }}">
-                                    <td class="text-left"><a href="{% url 'explore:details' item.id %}"
-                                            style="text-decoration: none; color: black;">{{ item.name }}</a>
-                                    </td>
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
 
+                                        <div class="col col-4">Item Title</div>
+                                        <div class="col col-3">Customer</div>
 
-                                    <td>
-
-
-                                        {% get_total_customer total_Customers item as is_customer %}
-
-                                        {% if is_customer %}
-                                        <i class="fa-solid fa-users"></i>
-                                        <a href="{% url 'explore:customers' item.id %}">
-                                            <span class="badge rounded-pill bg-dark  text-white">
-
-
-                                                {% if is_customer > 1 %}
-
-
-                                                {% get_total_customer total_Customers item %} Customers
-
-                                                {% else %}
-
-                                                {% get_total_customer total_Customers item %} Customer
-
-                                                {% endif %}
-
-                                            </span>
-
-                                        </a>
-                                        {% else %}
-                                        <span class="badge rounded-pill bg-danger text-white">None</span>
-                                        {% endif %}
-
-                                    </td>
-                                    <td>
-
-
-                                        {% if item.is_published == True %}
-
-                                        <span class="badge rounded-pill bg-success text-black">Verified</span>
-
-                                        {% else %}
-
-                                        <span class="badge rounded-pill bg-info text-black">Pending</span>
-
-                                        {% endif %}
-
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-outline-dark btn-sm"
-                                            href="{% url 'explore:edit-item' item.id %}" role="button">Edit</a>
-
-                                        <!-- SweetAlert integration for Delete -->
-                                        <button
-                                            onclick="call_sw_alert_func('{% url 'explore:delete-item' item.id %}','{{ item.id }}','This item cannot be recovered?')"
-                                            class="btn btn-outline-danger btn-sm">Delete</button>
+                                        <div class="col col-2">Status</div>
+                                        <div class="col col-3">Actions</div>
 
 
 
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                    </li>
+
+
+                                    {% for item in items %}
+
+                                    <li class="table-row" id="row_{{ item.id }}" style="border-radius:10px">
+                                        <div class="col col-4" data-label="Item Name"><a
+                                                href="{% url 'explore:details' item.id %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{item.name}}</a>
+                                        </div>
+                                        <div class="col col-3" data-label="Customers">
+                                            {% get_total_customer total_Customers item as is_customer %}
+
+                                            {% if is_customer %}
+                                            <i class="fa-solid fa-users"></i>
+                                            <a href="{% url 'explore:customers' item.id %}">
+                                                <span class="badge rounded-pill bg-dark  text-white">
+
+
+                                                    {% if is_customer > 1 %}
+
+
+                                                    {% get_total_customer total_Customers item %} Customers
+
+                                                    {% else %}
+
+                                                    {% get_total_customer total_Customers item %} Customer
+
+                                                    {% endif %}
+
+                                                </span>
+
+                                            </a>
+                                            {% else %}
+                                            <span class="badge rounded-pill bg-danger text-white">None</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col col-2" data-label="Verification status">
+                                            {% if item.is_published == True %}
+
+                                            <span class="badge rounded-pill bg-success text-black">Verified</span>
+
+                                            {% else %}
+
+                                            <span class="badge rounded-pill bg-info text-black">Pending</span>
+
+                                            {% endif %}
+                                        </div>
+
+
+                                        <div class="col col-3 end-0" data-label="Action">
+                                            <a class="btn btn-outline-dark btn-sm"
+                                                href="{% url 'explore:edit-item' item.id %}" role="button">Edit</a>
+
+                                            <!-- SweetAlert integration for Delete -->
+                                            <button
+                                                onclick="call_sw_alert_func('{% url 'explore:delete-item' item.id %}','{{ item.id }}','This item cannot be recovered?')"
+                                                class="btn btn-outline-danger btn-sm">Delete</button>
+                                        </div>
+                                    </li>
+
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
                         {% else %}
                         <p class="m-5">You have not any item yet !! <a href="{% url 'explore:add_item' %}">Create a new
                                 one.</a></p>
                         {% endif %}
                     </div>
+
+
+
+
+
+
+                    {% if user.is_authenticated and user.is_verified %}
                     <div id="saved-event" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-3">
-                        {% if user.is_authenticated and user.is_verified %}
 
                         {% if savedevent %}
-                        <table class="table text-center mt-3">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Event Photo</th>
-                                    <th>Event Title</th>
-                                    <th>Ticket Price</th>
-                                    <th>Event On</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for event in savedevent %}
-                                <tr id="row_{{ event.pk }}">
-                                    <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                    </td>
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
 
-                                    <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                            style="text-decoration: none; color:black;">{{event.event.name}}</a>
-                                    </td>
-                                    <td>{{event.event.ticket_price}}</td>
-                                    <td>{{ event.event.date | date:'M d, Y' }}</td>
-                                    <td>
-                                        <button
-                                            onclick="call_sw_alert_func('{% url 'event:delete-saved-event' event.pk %}','{{ event.pk }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
-                                            class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+                                        <div class="col col-2">Event Photo</div>
+                                        <div class="col col-4">Event Title</div>
+                                        <div class="col col-2">Ticket Price</div>
+                                        <div class="col col-2">Date Expiring</div>
+                                        <div class="col col-2">Actions</div>
+
+                                    </li>
+                                    {% for event in savedevent %}
+
+                                    <li class="table-row" id="row_{{ event.pk }}" style="border-radius:10px">
+                                        <div class="col col-2" data-label="Event Photo"><img
+                                                src="{{event.event.image.url }}" alt="" height="45px" width="55px"
+                                                style="border-radius:50%; border:2px solid black"></div>
+                                        <div class="col col-4" data-label="Event Name"><a
+                                                href="{% url 'event:event-details' event.event.pk %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{event.event.name}}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Ticket Price">{{event.event.ticket_price}}
+                                        </div>
+                                        <div class="col col-2" data-label="Expires at">{{ event.event.date| date:'M d,Y'}}</div>
+                                        <div class="col col-2" data-label="Actions">
+                                            <form method="post" action="{% url 'event:deletesavedevent_d' event.pk %}"
+                                                id="">
+                                                {%csrf_token%}
+                                                <button type="submit"> Delete</button>
+                                            </form>
+                                        </div>
+                                    </li>
+
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
                         {% else %}
                         <p class="m-5">You have not any save item yet !! </p>
                         {% endif %}
 
                     </div>
-                    <div id="booked-event" role="tabpanel" aria-labelledby="contact-tab"
+                    <div id="booked-event" role="tabpanel" aria-labelledby="booked-event-tab"
                         class="tab-pane fade px-4 py-3">
-
+                        <!-- Content for Booked Events tab goes here -->
 
                         {% if appliedevent %}
-                        <table class="table text-center mt-3">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Event Photo</th>
-                                    <th>Event Title</th>
-                                    <th>Booking Date</th>
-                                    <th>Tickets</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
+
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
+
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+                                        <div class="col col-1">Event Photo</div>
+                                        <div class="col col-4">Event Title</div>
+                                        <div class="col col-2">Booking Date</div>
+                                        <div class="col col">Tickets</div>
+                                        <div class="col col-2">Total Price</div>
+                                        <div class="col col-1">Action</div>
+
+                                    </li>
+
+                                    {% for event in appliedevent %}
+                                    <li class="table-row" id="row_{{ event.pk }}" style="border-radius:10px">
+                                        <div class="col col-1" data-label="Event Photo">
+                                            <img src="{{ event.event.image.url }}" alt="" height="45px" width="50px"
+                                                style="border-radius:50%; border:2px solid black">
+                                        </div>
+                                        <div class="col col-4" data-label="Event Name">
+                                            <a href="{% url 'event:event-details' event.event.pk %}"
+                                                style="text-decoration: none; text-transform: uppercase; color: black;">
+                                                {{event.event.name }}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Booked at">
+                                            {{ event.booked_at | date:'M d,Y'}}</div>
+                                        <div class="col col" data-label="Number of tickets">{{ event.num_tickets }}
+                                        </div>
+                                        <div class="col col-2" data-label="Total">{{ event.total_price }}</div>
+                                        <div class="col col-1" data-label="Actions">
+                                            {% if not event.is_paid %}
+                                            <form method="post" action="{% url 'event:mark-paid' event.pk %}"
+                                                id="applyForm_{{ event.pk }}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn text-light enrollButton mb-1"
+                                                    style="background-color: rgb(107, 8, 168); color: white;">
+                                                    Pay
+                                                </button>
+                                            </form>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-block btn-info mb-1" data-bs-toggle="modal"
+                                                data-bs-target="#myModal">
+                                                Edit
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-dark">
+                                                            <h5 class="modal-title text-light" id="exampleModalLabel">
+                                                                Edit Booking</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form id="editForm"
+                                                            action="{% url 'event:edit-booking' event.pk %}"
+                                                            method="POST">
+                                                            {% csrf_token %}
+                                                            <div class="modal-body">
+                                                                Number of Tickets:
+                                                                <input type="number" name="no_of_tickets"
+                                                                    id="no_of_tickets" class="col-md-3"
+                                                                    value="{{ booking.num_tickets }}">
+                                                                <input type="hidden" name="event"
+                                                                    value="{{ booking.event.id }}">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <input type="submit"
+                                                                    class="btn btn-block btn-outline-dark"
+                                                                    value="Save Changes" />
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <form method="post" action="{% url 'event:delete-event' event.pk %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger mb-1 text-light">
+                                                    Delete
+                                                </button>
+                                            </form>
 
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for event in appliedevent %}
-                                <tr id="row_{{ event.pk }}">
-                                    <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                    </td>
 
-                                    <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                            style="text-decoration: none; color: black;">{{event.event.name}}</a>
-                                    </td>
-                                    <td>{{ event.booked_at | date:'M d, Y' }}</td>
-                                    <td>{{ event.num_tickets}}</td>
-                                    <td>{{ event.total_price}}</td>
-                                    <td>
-                                        {% if not event.is_paid %}
-                                        <form method="post" action="{% url 'event:mark-paid' event.pk %}"
-                                            class="applyForm">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn text-light enrollButton"
-                                                style="background-color: rgb(107, 8, 168); color: white;">Pay</button>
-                                        </form>
-                                        {% else %}
-                                        <button type="button" id="example" class="btn btn-danger"
-                                            data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
-                                            data-bs-content="Paid ticket for {{event.event.name}}">
-                                            Paid
-                                        </button>
-                                        {% endif %}
+                                            {% else %}
+                                            <button type="button" class="btn btn-success" id="example_{{ event.pk }}"
+                                                data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
+                                                data-bs-content="Paid ticket for {{ event.event.name }}">
+                                                Paid
+                                            </button>
+                                            {% endif %}
 
 
+                                        </div>
+                                    </li>
+                                    <script src="https://unpkg.com/khalti-checkout-web"></script>
+                                    {% if appliedevent %}
+                                    <script>
+                                        var enrollButtons = document.querySelectorAll(".enrollButton");
 
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                        enrollButtons.forEach(function (button) {
+                                            button.addEventListener("click", function (event) {
+                                                event.preventDefault();
+
+                                                var checkout = new KhaltiCheckout({
+                                                    publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
+                                                    productIdentity: 1,
+                                                    productName: "Muse rental HUb",
+                                                    productUrl: "http://127.0.0.1:8000/",
+                                                    amount: 1000,
+                                                    eventHandler: {
+                                                        onSuccess: function (payload) {
+                                                            console.log(payload);
+                                                            // Form submission after successful payment
+                                                            document.getElementById('applyForm_{{ event.pk }}').submit();
+                                                            console.log("Payment success");
+                                                            Swal.fire('Transaction completed for {{ event.num_tickets }} tickets for the event {{ event.event }}');
+                                                        },
+                                                        onError: function (error) {
+                                                            console.error(error);
+                                                            Swal.fire('Payment failed. Please try again later.');
+                                                        }
+                                                    }
+                                                });
+                                                checkout.show({});
+                                            });
+                                        });
+                                    </script>
+                                    {% endif %}
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
+
                         {% else %}
-                        <p class="m-5">You have not any brought tickets to any event yet !! </p>
+                        <p class="m-5">You have not any Applied To any events yet !! </p>
                         {% endif %}
 
                     </div>
@@ -301,25 +456,25 @@
 
                 <ul id="myTab1" role="tablist"
                     class="nav nav-tabs nav-pills with-arrow flex-column flex-sm-row text-center mt-4">
-                    <li class="nav-item flex-sm-fill mx-2">
+                    <li class="nav-item col-lg-3 col-md-3">
                         <a id="saveditem-tab" data-toggle="tab" href="#saveditem" role="tab" aria-controls="saveditem"
                             aria-selected="true"
                             class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border active">Saved
                             Items</a>
                     </li>
-                    <li class="nav-item flex-sm-fill mx-2">
+                    <li class="nav-item col-lg-3 col-md-3">
                         <a id="renteditem-tab" data-toggle="tab" href="#renteditem" role="tab"
                             aria-controls="renteditem" aria-selected="true"
                             class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Rented
                             Items</a>
                     </li>
-                    <li class="nav-item flex-sm-fill mx-2">
+                    <li class="nav-item col-lg-3 col-md-3">
                         <a id="saved-event-tab" data-toggle="tab" href="#saved-event" role="tab"
                             aria-controls="saved-event" aria-selected="false"
                             class="nav-link text-uppercase font-weight-bold mr-sm-3 rounded-5 border">Saved
                             Events</a>
                     </li>
-                    <li class="nav-item flex-sm-fill mx-2">
+                    <li class="nav-item col-lg-3 col-md-3">
                         <a id="booked-event-tab" data-toggle="tab" href="#booked-event" role="tab"
                             aria-controls="booked-event" aria-selected="false"
                             class="nav-link text-uppercase font-weight-bold rounded-5 border">Booked Events</a>
@@ -328,45 +483,52 @@
 
                 <div id="myTab1Content" class="tab-content">
                     <div id="saveditem" role="tabpanel" aria-labelledby="saveditem-tab"
-                        class="tab-pane fade px-4 py-3 show active">
+                        class="tab-pane fade py-3 show active">
                         <!-- Content for Saved Items tab goes here -->
 
                         {% if saveditems %}
-                        <table class="table text-center mt-5">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Item Photo</th>
-                                    <th>Item Title</th>
-                                    <th>Posted Date</th>
-                                    <th>Date expiring</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in saveditems %}
-                                <tr id="row_{{ item.id }}">
-                                    <td>
-                                        <p>{{ item.item.image.url }}</p>
-                                    </td>
 
-                                    <td><a href="{% url 'explore:details' item.item.id %}"
-                                            style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name
-                                            }}</a>
-                                    </td>
-                                    <td>{{ item.created_at | date:'M d, Y' }}</td>
-                                    <td>{{ item.item.last_date | date:'M d, Y' }}</td>
-                                    <td>
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
 
-                                        <button
-                                            onclick="call_sw_alert_func('{% url 'explore:delete-saved' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
-                                            class="btn btn-danger btn-sm">Delete</button>
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+                                        <div class="col col-2">Item Photo</div>
+                                        <div class="col col-3">Item Title</div>
+                                        <div class="col col-3">Posted Date</div>
+                                        <div class="col col-3">Actions</div>
+                                    </li>
+
+                                    {% for item in saveditems %}
+                                    <li class="table-row" id="row_{{ item.id }}" style="border-radius:10px">
+                                        <div class="col col-2" data-label="Item Photo"><img
+                                                src="{{ item.item.image_set.first.image.url }}" alt="" height="45px"
+                                                width="55px" style="border-radius:50%; border:2px solid black"></div>
+                                        <div class="col col-3" data-label="Item Name"><a
+                                                href="{% url 'explore:details' item.item.id %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name}}</a>
+                                        </div>
+                                        <div class="col col-3" data-label="Saved at">{{ item.created_at | date:'M d,Y'}}</div>
+                                        <div class="col col-3" data-label="Actions">
+                                            <button
+                                                onclick="call_sw_alert_func('{% url 'explore:deletesaveditem_d' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
+                                                class="btn btn-danger">Delete</button>
+
+                                        </div>
+                                    </li>
 
 
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
+
+
+
+
+
                         {% else %}
                         <p class="m-5">You have not any save item yet !! </p>
                         {% endif %}
@@ -378,63 +540,73 @@
                         <!-- Content for Rented Items tab goes here -->
 
                         {% if applieditems %}
-                        <table class="table text-center mt-5">
-                            <thead class="thead-dark">
-                                <tr>
-
-                                    <th>Item Title</th>
-                                    <th>Pick Date</th>
-                                    <th>Return Date</th>
-                                    <th>Total Days</th>
-                                    <th>Shipping Status</th>
-                                    <th>Action</th>
 
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in applieditems %}
-                                <tr id="row_{{ item.id }}">
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
+
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+
+                                        <div class="col col-4">Item Title</div>
+                                        <div class="col col-2">Pick Date</div>
+                                        <div class="col col-2">Return Date</div>
+                                        <div class="col col-1">Total Days</div>
+                                        <div class="col col-2">Shipping Status</div>
+                                        <div class="col col-1 end-0">Actions</div>
+
+                                    </li>
+
+                                    {% for item in applieditems %}
+
+                                    <li class="table-row" id="row_{{ item.id }}" style="border-radius:10px">
+                                        <div class="col col-4" data-label="Item Name"><a
+                                                href="{% url 'explore:details' item.item.id %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name}}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Booked For:"><a
+                                                href="{% url 'explore:details' item.item.id %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">
+                                                {{item.Rentitem_Date_of_Booking | date:'M d, Y' }}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Return Date">
+                                            {{ item.Rentitem_Date_of_Return| date:'M d, Y' }}</div>
+                                        <div class="col col-1" data-label="Total days">{{ item.Total_days}}</div>
+                                        <div class="col col-2" data-label="Shiping status">
+                                            {% if item.request_status == "Pending" %}
 
 
-                                    <td><a href="{% url 'explore:details' item.item.id %}"
-                                            style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name
-                                            }}</a>
-                                    </td>
+
+                                            <span class="badge rounded-pill bg-info text-white">Pending</span>
 
 
-                                    <td>{{ item.Rentitem_Date_of_Booking | date:'M d, Y' }}</td>
-                                    <td>{{ item.Rentitem_Date_of_Return | date:'M d, Y' }}</td>
-                                    <td>{{ item.Total_days}}</td>
-                                    {% if item.request_status == "Pending" %}
 
-                                    <td>
-
-                                        <span class="badge rounded-pill bg-info text-white">Pending</span>
-                                    </td>
+                                            {% elif item.request_status == "Completed" %}
 
 
-                                    {% elif item.request_status == "Completed" %}
-                                    <td>
+                                            <span class="badge rounded-pill bg-success text-white">Completed</span>
 
-                                        <span class="badge rounded-pill bg-success text-white">Completed</span>
-                                    </td>
 
-                                    {% else %}
-                                    <td>
+                                            {% else %}
 
-                                        <span class="badge rounded-pill bg-dark text-white">Shipping</span>
-                                    </td>
 
-                                    {% endif %}
-                                    <td>
-                                        <button class="btn btn-secondary"
-                                            style="background-color: rgb(8, 168, 90); color: white;" disabled>
-                                            Paid</button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                            <span class="badge rounded-pill bg-dark text-white">Shipping</span>
+
+
+                                            {% endif %}
+                                        </div>
+                                        <div class="col col-1 end-0" data-label="Action"> <button
+                                                class="btn btn-secondary"
+                                                style="background-color: rgb(8, 168, 90); color: white;" disabled>
+                                                Paid</button></div>
+                                    </li>
+
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
                         {% else %}
                         <p class="m-5">You have not any applied item yet !! </p>
@@ -446,38 +618,48 @@
                     <div id="saved-event" role="tabpanel" aria-labelledby="saved-event-tab"
                         class="tab-pane fade px-4 py-3">
                         <!-- Content for Saved Events tab goes here -->
-
                         {% if savedevent %}
-                        <table class="table text-center mt-5">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Event Photo</th>
-                                    <th>Event Title</th>
-                                    <th>Ticket Price</th>
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
 
-                                    <th>Date expiring</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for event in savedevent %}
-                                <tr id="row_{{ event.pk }}">
-                                    <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                    </td>
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+                                        <div class="col col-2">Event Photo</div>
+                                        <div class="col col-4">Event Title</div>
+                                        <div class="col col-2">Ticket Price</div>
+                                        <div class="col col-2">Date Expiring</div>
+                                        <div class="col col-2">Actions</div>
 
-                                    <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                            style="text-decoration: none; text-transform: uppercase; color:black;">{{event.event.name}}</a>
-                                    </td>
-                                    <td>{{event.event.ticket_price}}</td>
-                                    <td>{{ event.event.last_date | date:'M d, Y' }}</td>
-                                    <td>
-                                        <button
-                                            onclick="call_sw_alert_func('{% url 'event:delete-saved-event' event.pk %}','{{ event.pk }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
-                                            class="btn btn-danger btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                    </li>
+                                    {% for event in savedevent %}
+
+                                    <li class="table-row" id="row_{{ event.pk }}" style="border-radius:10px">
+                                        <div class="col col-2" data-label="Event Photo"><img
+                                                src="{{event.event.image.url }}" alt="" height="45px" width="55px"
+                                                style="border-radius:50%; border:2px solid black"></div>
+                                        <div class="col col-4" data-label="Event Name"><a
+                                                href="{% url 'event:event-details' event.event.pk %}"
+                                                style="text-decoration: none; text-transform: uppercase; color:black;">{{event.event.name}}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Ticket Price">{{event.event.ticket_price}}
+                                        </div>
+                                        <div class="col col-2" data-label="Expires at">
+                                            {{ event.event.date| date:'M d,Y'}}</div>
+                                        <div class="col col-2" data-label="Actions">
+                                            <form method="post" action="{% url 'event:deletesavedevent_d' event.pk %}"
+                                                id="">
+                                                {%csrf_token%}
+                                                <button type="submit" class="btn btn-danger"> Delete</button>
+                                            </form>
+                                        </div>
+                                    </li>
+
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
                         {% else %}
                         <p class="m-5">You have not any save item yet !! </p>
@@ -489,55 +671,150 @@
                         <!-- Content for Booked Events tab goes here -->
 
                         {% if appliedevent %}
-                        <table class="table text-center mt-5">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Event Photo</th>
-                                    <th>Event Title</th>
-                                    <th>Booking Date</th>
-                                    <th>Tickets</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
+
+                        <table
+                            style="border-collapse: collapse; width: auto; margin-top: 20px; border: 1px solid #333;">
+                            <div class="container">
+
+                                <ul class="responsive-table mt-3">
+                                    <li class="table-header bg-dark text-light text-uppercase"
+                                        style="border-radius:15px">
+                                        <div class="col col-1">Event Photo</div>
+                                        <div class="col col-4">Event Title</div>
+                                        <div class="col col-2">Booking Date</div>
+                                        <div class="col col">Tickets</div>
+                                        <div class="col col-2">Total Price</div>
+                                        <div class="col col-1">Action</div>
+
+                                    </li>
+
+                                    {% for event in appliedevent %}
+                                    <li class="table-row" id="row_{{ event.pk }}" style="border-radius:10px">
+                                        <div class="col col-1" data-label="Event Photo">
+                                            <img src="{{ event.event.image.url }}" alt="" height="45px" width="50px"
+                                                style="border-radius:50%; border:2px solid black">
+                                        </div>
+                                        <div class="col col-4" data-label="Event Name">
+                                            <a href="{% url 'event:event-details' event.event.pk %}"
+                                                style="text-decoration: none; text-transform: uppercase; color: black;">
+                                                {{event.event.name }}</a>
+                                        </div>
+                                        <div class="col col-2" data-label="Booked at">
+                                            {{ event.booked_at | date:'M d, Y'}}</div>
+                                        <div class="col col" data-label="Number of tickets">{{ event.num_tickets }}
+                                        </div>
+                                        <div class="col col-2" data-label="Total">{{ event.total_price }}</div>
+                                        <div class="col col-1" data-label="Actions">
+                                            {% if not event.is_paid %}
+                                            <form method="post" action="{% url 'event:mark-paid' event.pk %}"
+                                                id="applyForm_{{ event.pk }}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn text-light enrollButton"
+                                                    style="background-color: rgb(107, 8, 168); color: white;">
+                                                    Pay
+                                                </button>
+                                            </form>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-block btn-info" data-bs-toggle="modal"
+                                                data-bs-target="#myModal">
+                                                Edit
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-dark">
+                                                            <h5 class="modal-title text-light" id="exampleModalLabel">
+                                                                Edit Booking</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form id="editForm"
+                                                            action="{% url 'event:edit-booking' event.pk %}"
+                                                            method="POST">
+                                                            {% csrf_token %}
+                                                            <div class="modal-body">
+                                                                Number of Tickets:
+                                                                <input type="number" name="no_of_tickets"
+                                                                    id="no_of_tickets" class="col-md-3"
+                                                                    value="{{ booking.num_tickets }}">
+                                                                <input type="hidden" name="event"
+                                                                    value="{{ booking.event.id }}">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <input type="submit"
+                                                                    class="btn btn-block btn-outline-dark"
+                                                                    value="Save Changes" />
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <form method="post" action="{% url 'event:delete-event' event.pk %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger text-light">
+                                                    Delete
+                                                </button>
+                                            </form>
 
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for event in appliedevent %}
-                                <tr id="row_{{ event.pk }}">
-                                    <td><img src="{{event.event.image.url }}" alt="" height="35px" width="35px">
-                                    </td>
 
-                                    <td><a href="{% url 'event:event-details' event.event.pk %}"
-                                            style="text-decoration: none; text-transform: uppercase; color: black;">{{event.event.name}}</a>
-                                    </td>
-                                    <td>{{ event.booked_at | date:'M d, Y' }}</td>
-                                    <td>{{ event.num_tickets}}</td>
-                                    <td>{{ event.total_price}}</td>
-                                    <td>
-                                        {% if not event.is_paid %}
-
-                                        <form method="post" action="{% url 'event:mark-paid' event.pk %}"
-                                            class="applyForm">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn text-light enrollButton"
-                                                style="background-color: rgb(107, 8, 168); color: white;">Pay</button>
-                                        </form>
-                                        {% else %}
-                                        <button type="button" id="example" class="btn btn-success"
-                                            data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
-                                            data-bs-content="Paid ticket for {{event.event.name}}">
-                                            Paid
-                                        </button>
-                                        {% endif %}
+                                            {% else %}
+                                            <button type="button" class="btn btn-success" id="example_{{ event.pk }}"
+                                                data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
+                                                data-bs-content="Paid ticket for {{ event.event.name }}">
+                                                Paid
+                                            </button>
+                                            {% endif %}
 
 
+                                        </div>
+                                    </li>
+                                    <script src="https://unpkg.com/khalti-checkout-web"></script>
+                                    {% if appliedevent %}
+                                    <script>
+                                        var enrollButtons = document.querySelectorAll(".enrollButton");
 
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
+                                        enrollButtons.forEach(function (button) {
+                                            button.addEventListener("click", function (event) {
+                                                event.preventDefault();
+
+                                                var checkout = new KhaltiCheckout({
+                                                    publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
+                                                    productIdentity: 1,
+                                                    productName: "Muse rental HUb",
+                                                    productUrl: "http://127.0.0.1:8000/",
+                                                    amount: 1000,
+                                                    eventHandler: {
+                                                        onSuccess: function (payload) {
+                                                            console.log(payload);
+                                                            // Form submission after successful payment
+                                                            document.getElementById('applyForm_{{ event.pk }}').submit();
+                                                            console.log("Payment success");
+                                                            Swal.fire('Transaction completed for {{ event.num_tickets }} tickets for the event {{ event.event }}');
+                                                        },
+                                                        onError: function (error) {
+                                                            console.error(error);
+                                                            Swal.fire('Payment failed. Please try again later.');
+                                                        }
+                                                    }
+                                                });
+                                                checkout.show({});
+                                            });
+                                        });
+                                    </script>
+                                    {% endif %}
+
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </table>
+
                         {% else %}
                         <p class="m-5">You have not any Applied To any events yet !! </p>
                         {% endif %}
@@ -562,38 +839,7 @@
         });
     });
 </script>
-<script src="https://unpkg.com/khalti-checkout-web"></script>
-{% if appliedevent %}
-<script>
-    var enrollButtons = document.querySelectorAll(".enrollButton");
-
-    enrollButtons.forEach(function (button) {
-        button.addEventListener("click", function (event) {
-            event.preventDefault();
-            var form = this.parentElement;
-            var checkout = new KhaltiCheckout({
-                publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
-                productIdentity: 1,
-                productName: "Muse rental HUb",
-                productUrl: "http://127.0.0.1:8000/",
-                amount: 1000,
-                eventHandler: {
-                    onSuccess: function (payload) {
-                        console.log(payload);
-                        form.submit();
-                        Swal.fire('Transaction completed for {{ event.num_tickets }} tickets for the event {{ event.event }}');
-                    },
-                    onError: function (error) {
-                        console.error(error);
-                        Swal.fire('Payment failed. Please try again later.');
-                    }
-                }
-            });
-            checkout.show({});
-        });
-    });
-</script>
-{% endif %}
+<!-- Include Khalti Checkout Web library -->
 
 
 

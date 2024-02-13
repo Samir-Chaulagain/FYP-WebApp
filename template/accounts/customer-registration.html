@@ -21,41 +21,42 @@
     </h2>
  
     
+    {% include 'messages.html' %}
     <div class="row g-0" style="margin-top: 20px;">
       <div class="col-lg-7 col-md-6 ">
         <figure class="text-center bg-image overflow-hidden bsb-overlay-hover">
           <a>
             <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{% static 'img/bgrr.jpg' %}" alt="" width="auto"
             style="
-            height: 610px; background-repeat: no-repeat; background-size:cover; opacity: 0.95; object-fit: cover;">
+            height: 720px; background-repeat: no-repeat; background-size:cover; opacity: 0.95; object-fit: cover;">
         </a>
       </figure>
     </div>
     
-    {% include 'messages.html' %}
     <div class="col-lg-5 col-md-6">
       
       <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded" >
         {% csrf_token %}
         {% for field in form %}
         {% if field.name == 'gender' %}
-        <div class="row form-group mb-4">
+        <div class="row form-group mt-3 mb-4">
           <div class="col-md-12 mb-3 mb-md-0">
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="male gender" value="M">
-              <label class="form-check-label" for="male">Male</label>
+            {{ field.label }}
+            <div class="form-check form-check-inline ms-2">
+               <input class="form-check-input red" type="radio" name="gender" id="male" value="M">
+              <label class="form-check-label red" for="male">Male</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="gender" id="female" value="F">
-              <label class="form-check-label" for="female">Female</label>
+              <input class="form-check-input red" type="radio" name="gender" id="female" value="F">
+              <label class="form-check-label red" for="female">Female</label>
             </div>
           </div>
         </div>
 
         {%elif field.name == 'document_type'%}
 
-        <div class="row form-group">
-          <div class="col-md-12 mb-3 mb-md-0">
+        <div class="row form-group mt-3 mb-3">
+          <div class="col-md-12  mb-md-0">
             <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
             {{ field }}
           </div>
@@ -63,21 +64,34 @@
         
         {% else %}
         
-        <div class="row form-group">
-          <div class="col-md-12 mb-3 mb-md-0">
-            <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
-            <input type="{{ field.field.widget.input_type }}" class="form-control" name="{{ field.name }}"
-            id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
-          </div>
-        </div>
-        
-        {% endif %}
-        {% endfor %}
-        <div class="row form-group">
-          
-            <input type="submit" value="Sign Up" class="btn px-4 btn-dark btn-sm text-white mt-2">
-                  </div>
-        
+        <div class="row form-group mt-2">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="id_{{ field.name }}">
+                                {{ field.label }}
+                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+                            </label>
+                            {% if field.field.widget.input_type == 'password' %}
+                                <div class="input-group">
+                                    <input type="password" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
+                                          id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+                                          <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-eye" onclick="togglePassword('id_{{ field.name }}')">
+                                              <i class="fa-solid fa-eye " id="eyeIcon" style="color: #6a6161;"></i> 
+                                            </button> 
+                                          </div>
+                                </div>
+                            {% else %}
+                            
+                                <input type="{{ field.field.widget.input_type }}" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
+                                      id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                            <div class="row form-group mt-4">
+                              
+                              <input type="submit" value="Sign Up" class="btn px-4 btn-dark btn-sm text-white ">
+                            </div>
+                            
       </form>
     </div>
   </div>
@@ -85,45 +99,22 @@
 
 </section>
 <script>
-  // Function to display iziToast notifications
-  function showToast(message, type) {
-    iziToast.show({
-      message: message,
-      color: type === 'error' ? 'red' : 'green',
-      position: 'topCenter',
-    });
-  }
-  
-  // Function to handle form submission and show iziToast notifications for validation errors
-  function handleFormSubmission() {
-    var form = document.getElementById('your-form-id'); // Replace 'your-form-id' with the actual ID of your form
-    form.addEventListener('submit', function (event) {
-      var inputs = form.querySelectorAll('input, select');
-      var hasErrors = false;
-      
-      inputs.forEach(function (input) {
-        if (input.checkValidity() === false) {
-          hasErrors = true;
-          showToast(input.validationMessage, 'error');
-        }
-      });
+  function togglePassword(fieldId) {
+    var eyeIcon = document.getElementById('eyeIcon');
 
-      if (hasErrors) {
-        event.preventDefault();
-      } else {
-        showToast('Form submitted successfully!', 'success');
-        iziToast.success({
-          title: 'OK',
-          message: 'Successfully inserted record!',
-        });
-      }
-    });
-  }
+    // Check the current color
+    var currentColor = eyeIcon.style.color;
 
-  // Call the function when the document is ready
-  document.addEventListener('DOMConAtentLoaded', function () {
-    handleFormSubmission();
-  });
+    // Toggle color
+    // if (currentColor === 'blue') {
+    //   eyeIcon.style.color = '#000000'; // Change back to black
+    // } else {
+    //   eyeIcon.style.color = 'blue'; // Change to purple
+    // }
+    const passwordField = document.getElementById(fieldId);
+    const fieldType = passwordField.type === 'password' ? 'text' : 'password';
+    passwordField.type = fieldType;
+  }
 </script>
 
 

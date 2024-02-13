@@ -21,8 +21,9 @@ class Event(models.Model):
     image = models.ImageField(upload_to='images/', default='default_image.jpg')
     description = RichTextField()
     date = models.DateTimeField(default=datetime.now)
-
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=300,default="Default")
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True)
     category = models.ForeignKey(Category, related_name='events', on_delete=models.CASCADE)    
     ticket_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     is_active = models.BooleanField(default=True)
@@ -62,21 +63,7 @@ class Booking(models.Model):
 
         super().save(*args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-    # Increase the number of attendees for the related event
-        self.event.maximum_attende += self.num_tickets
-
-        # If the maximum_attende is greater than 0, update the status of the event
-        if self.event.maximum_attende > 0:
-            self.event.is_active = True
-            self.event.is_sold = False
-
-        self.event.save()
-
-        super().delete(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.user.username} booked {self.num_tickets} tickets for {self.event.name}"
+   
 
 class saved_event(models.Model):
 

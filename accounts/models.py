@@ -13,10 +13,10 @@ ROLE = (
     ('lessor', _("lessor")),
 )
 DOCUMENT_TYPES = (
-        ('citizenship', _('Citizenship')),
-        ('license', _('License')),
-        ('passport', _('Passport')),
-        ('others', _('Others')),
+        ('Citizenship', _('Citizenship')),
+        ('License', _('License')),
+        ('Passport', _('Passport')),
+        ('Others', _('Others')),
     )
 
 class User(AbstractUser):
@@ -31,7 +31,7 @@ class User(AbstractUser):
 
     
     role = models.CharField(choices=ROLE, max_length=10)
-    gender = models.CharField(choices=Gender_TYPE, max_length=1)
+    gender = models.CharField(choices=Gender_TYPE, max_length=15)
     phone_number = models.CharField(max_length=10, null=True, blank=True)
     photo=models.ImageField(upload_to='images',null=True, blank=True, default='images/default_image.png')
     is_verified=models.BooleanField(default=False)
@@ -47,3 +47,14 @@ class User(AbstractUser):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
     objects = CustomUserManager()
+
+
+
+
+class UserLoginHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(auto_now_add=True)
+    logout_time = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.login_time}"

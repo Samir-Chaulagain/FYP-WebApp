@@ -3,9 +3,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from accounts.models import User
+from accounts.models import User,UserLoginHistory
 
-
+admin.site.register(UserLoginHistory)
 class AddUserForm(forms.ModelForm):
     """
     New User Form. Requires password confirmation.
@@ -19,7 +19,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_number','gender', 'role','photo','document_photo' )
+        fields = ('email', 'first_name', 'last_name', 'phone_number','gender', 'role','photo','document_type','document_photo' )
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -48,7 +48,7 @@ class UpdateUserForm(forms.ModelForm):
         model = User
         fields = (
             'email', 'password', 'first_name', 'gender', 'phone_number','role','photo', 'last_name', 'is_active','is_verified',
-            'is_staff','document_photo'
+            'is_staff','document_photo','document_type'
         )
 
     def clean_password(self):
@@ -64,7 +64,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ('is_active','is_verified' )
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'gender','phone_number', 'photo', 'role','document_photo' )}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'gender','phone_number', 'photo', 'role','document_type','document_photo' )}),
         ('Permissions', {'fields': ('is_active', 'is_staff','is_verified')}),
     )
     add_fieldsets = (
@@ -73,7 +73,7 @@ class UserAdmin(BaseUserAdmin):
             {
                 'classes': ('wide',),
                 'fields': (
-                    'email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo','document_photo', 'password1',
+                    'email', 'first_name', 'last_name', 'gender','phone_number', 'role', 'photo','document_type','document_photo', 'password1',
                     'password2'
                 )
             }
