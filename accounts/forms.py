@@ -162,6 +162,9 @@ class LessorProfileEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
 
         super(LessorProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['gender'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['first_name'].widget.attrs.update(
             {
                 'placeholder': 'Enter First Name',

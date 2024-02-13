@@ -248,7 +248,7 @@ def lessor_edit_profile(request, id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Updated Profile Successfully!!')
-            return redirect(reverse("accounts:lessor-edit-profile", kwargs={'id': id}))
+            return redirect(reverse("accounts:customer-edit-profile", kwargs={'id': id}))
     else:
         form = LessorProfileEditForm(instance=user)
 
@@ -258,7 +258,7 @@ def lessor_edit_profile(request, id):
         'form1':ChangePasswordForm1,
     }
 
-    return render(request, 'accounts/lessor-edit-profile.html', context)
+    return render(request, 'accounts/customer-edit-profile.html', context)
 
 
 
