@@ -48,13 +48,3 @@ class User(AbstractUser):
         return f"{self.first_name} {self.last_name}"
     objects = CustomUserManager()
 
-
-
-
-class UserLoginHistory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    login_time = models.DateTimeField(auto_now_add=True)
-    logout_time = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.login_time}"

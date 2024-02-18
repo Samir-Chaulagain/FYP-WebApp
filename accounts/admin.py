@@ -3,9 +3,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from accounts.models import User,UserLoginHistory
+from accounts.models import User
 
-admin.site.register(UserLoginHistory)
+
 class AddUserForm(forms.ModelForm):
     """
     New User Form. Requires password confirmation.

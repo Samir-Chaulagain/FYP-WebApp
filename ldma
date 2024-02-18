@@ -1,0 +1,262 @@
+<!-- [33mcommit f980797e594f5c9363988a97474a74c30875372a[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Feb 14 02:59:24 2024 +0545
+
+    Updated FIxed bugs and errors
+
+[33mcommit ad258870f1d63f4f7ebe361ca21fd4d874a4666c[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Feb 13 20:14:37 2024 +0545
+
+    rsolving error
+
+[33mcommit 5678756241d12fa128aef3ed85cbfd50cf033509[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Feb 13 19:55:39 2024 +0545
+
+    rsolving error
+
+[33mcommit 99018b002a40162bb498c360ab430d7956fcdcd9[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Feb 13 12:21:08 2024 +0545
+
+    Finalizing Project
+
+[33mcommit fac166ebc1ecf5dec6154cc5c85f87cbfe2d4bd3[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sun Feb 11 00:42:37 2024 +0545
+
+    Updating UI
+
+[33mcommit cbe0c21c005d018f24fed0908230763629ea8aca[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sat Feb 10 21:33:55 2024 +0545
+
+    Updating UI
+
+[33mcommit cf4333ee22f584d165aa89ef45f46cd6089dfe09[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sat Feb 10 21:31:59 2024 +0545
+
+    Updating UI
+
+[33mcommit edeea7fce7e604379fb6e1f749a53553e78517f7[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Feb 9 21:17:38 2024 +0545
+
+    Added Review and Rating
+
+[33mcommit 318ad1a5e904a7825f343ba7fbc2da1722e3fff3[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Feb 8 02:24:44 2024 +0545
+
+    Solving eror
+
+[33mcommit a9e8584c4f61a7bb027d5d085e0beee7ad938c69[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Feb 8 00:50:48 2024 +0545
+
+    Updating docker files
+
+[33mcommit 6c18ecd4db15a096064e9b8febde51594c375a27[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Feb 8 00:45:10 2024 +0545
+
+    Adding docker files
+
+[33mcommit 944679cb1aff6fa6c6138faa7d76ea752909d0f4[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Feb 8 00:41:57 2024 +0545
+
+    Adding docker files
+
+[33mcommit 08de42e7bcf9e75693216e6bc7d6963ec31ec351[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Feb 8 00:39:06 2024 +0545
+
+    Adding docker files
+
+[33mcommit 0402add16425bf363ffddc12b179f7df67317e91[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Feb 7 04:10:57 2024 +0545
+
+    Updated Ui
+
+[33mcommit ac03b839e96243b9ec12cbb836bec2e8924c2f61[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Feb 7 04:10:09 2024 +0545
+
+    Added Map feature
+
+[33mcommit 958ad2f4a71371b72bfb027d7bb5aff8786412b7[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Feb 6 21:46:27 2024 +0545
+
+    Added Map
+
+[33mcommit 0fd80d3b94158ccce52497d038812eeb3673a1a5[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sun Jan 28 00:34:05 2024 +0545
+
+    Added few validation and added document type and added event booking payment
+
+[33mcommit 7545b45b2dcf67c0a8adbc80b5525b23051f7c19[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Jan 24 00:38:24 2024 +0545
+
+    bugs on delete Button
+
+[33mcommit 794bff4f25490adca24d2700e1b3a58145b3523d[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Mon Jan 22 23:02:53 2024 +0545
+
+    added multiple image uploads
+
+[33mcommit 622ac365c70befe1eb397fa02bfadb897c8e88ec[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Jan 19 01:54:49 2024 +0545
+
+    Updated FIxed bugs and errors
+
+[33mcommit 67b452acdb08ed53e0df387281e5c85cd8f9162b[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Jan 17 18:47:54 2024 +0545
+
+    Updated Explore Page
+
+[33mcommit e339a7b37da721c61ca5cb25e350d0b42244a9ec[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sun Jan 14 13:39:30 2024 +0545
+
+    Added Paginators,Verfication BAsed System And Successful PAyment verification
+
+[33mcommit 705e28728139a1ce9710bd5039157d90c4738002[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Jan 12 01:32:07 2024 +0545
+
+    updated few codes
+
+[33mcommit 79ad08a17bc0cc833713eace9edf143ee6332feb[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Jan 10 23:29:24 2024 +0545
+
+    Added saved events Feature, Made verification based system
+
+[33mcommit ffa339f0e4873f33fbc7cb54c9b7c1aab7dbab5f[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Jan 5 08:18:41 2024 +0545
+
+    updated
+
+[33mcommit 816023bef7da0e576a6e402b8a5cf00a748b84ae[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Jan 3 23:56:34 2024 +0545
+
+    Updated Events UI and added save
+
+[33mcommit e70aef1d3dd43a0ed74da49f94e9c57b4eea53ae[m
+Merge: 67f7cf4 9a3e3d4
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Jan 2 23:24:06 2024 +0545
+
+    Merge branch 'master' of https://github.com/Samir-Chaulagain/MuseRentalHub
+
+[33mcommit 67f7cf4bcb9b1b611f34e16482cb6d4d3e656279[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Tue Jan 2 23:21:19 2024 +0545
+
+    UI changes
+
+[33mcommit 9a3e3d41b3603762ceb1320d4777a63ea4481255[m
+Merge: 328edbe 76aa70f
+Author: Samir Chaulagain <89231471+Samir-Chaulagain@users.noreply.github.com>
+Date:   Sat Dec 23 23:05:40 2023 +0545
+
+    Merge pull request #9 from Samir-Chaulagain/signup
+    
+    added files
+
+[33mcommit 76aa70f648e003a7092968647c3063da771a13b1[m[33m ([m[1;31morigin/signup[m[33m)[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sat Dec 23 23:02:40 2023 +0545
+
+    added files
+
+[33mcommit 328edbe897005089e69a7bda0efaca42ccc30c1a[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Dec 20 00:00:49 2023 +0545
+
+    Profile Picture Code and minor changes for payment
+
+[33mcommit 54f66be4326dc21e1a4c9e3f48b991e8c8c56236[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Dec 8 23:50:03 2023 +0545
+
+    UI bug fixed and admin updated
+
+[33mcommit eca1ad56ee990b1abedb52b5a3b053707091bf0b[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Nov 30 20:52:44 2023 +0545
+
+    updated admin-page
+
+[33mcommit 2057d9ff152605cc864008ca208417dd5ef0c08a[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Nov 30 20:51:58 2023 +0545
+
+    admin-page updated
+
+[33mcommit 9708829adbe0ccf4484e38b43c0b8c3ee5a9325e[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Mon Nov 27 22:33:36 2023 +0545
+
+    Updated Front-end and added few backend branch
+
+[33mcommit 8201f5276d5899d73c71ad2a8c14f16e7479f9a5[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Thu Nov 23 01:05:24 2023 +0545
+
+    Added contact us page'
+
+[33mcommit ab54db1c76d4db3ef1f228310f54c384a67945e3[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Wed Nov 22 00:12:52 2023 +0545
+
+    Added Save items
+
+[33mcommit 84336f0658040f87e85dd8858cb6705341d80b4e[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Mon Nov 20 23:04:49 2023 +0545
+
+    Changes on Dashboard added template tags
+
+[33mcommit 3c8dd289b658f2d73809cb1917c100c501a3e6f8[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Mon Nov 20 23:02:35 2023 +0545
+
+    Working on Dashboard section
+
+[33mcommit a481939e23049b71737b3885870a8a32d9398671[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sun Nov 19 18:13:44 2023 +0545
+
+    added event booking system
+
+[33mcommit 476501c3ff2a74474422383dbec01c66a6b482c5[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sat Nov 18 00:52:14 2023 +0545
+
+    Added events part
+
+[33mcommit e8f81acab1df62d3c2f03a5b8e0a004cbfd491c6[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Sat Nov 18 00:50:35 2023 +0545
+
+    Added events part
+
+[33mcommit fa2eaa04cb452c98ba504a894f09f75aa2067e81[m
+Author: Samir Chaulagain <royal.chaulagain321@gmail.com>
+Date:   Fri Nov 17 13:59:20 2023 +0545
+
+    Updated Fontend and changes
+ -->

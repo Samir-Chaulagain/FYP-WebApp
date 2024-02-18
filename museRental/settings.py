@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'user_visit',
     'crispy_forms',
     'leaflet_point',
 ]
@@ -80,6 +81,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://samirchaulagain.com.np']
@@ -252,7 +254,12 @@ JAZZMIN_SETTINGS = {
         "explore.Item":"fas fa-warehouse",
         "explore.Customer":"fas fa-male",
         "explore.saved_item":"fas fa-save",
+        "event.saved_event":"fas fa-save",
+        "explore.Image":"fas fa-save",
+        "explore.Review":"fab fa-usps",
         "main.Post":"fab fa-usps",
+        "User visits":"fab fa-usps",
+       
     },
     "use_google_fonts_cdn": True,
     # Whether to show the UI customizer on the sidebar
