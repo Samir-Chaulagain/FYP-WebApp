@@ -26,7 +26,7 @@
         /* Adjust the scale factor as needed */
 
     }
-    
+
 
     @media (max-width: 576px) {
         .category {
@@ -200,7 +200,7 @@
 
                         <div class="product-body justify-content-center">
                             <span
-                                class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
+                                class="badge badge-lg rounded-pill bg-danger text-white mb-2">{{item.get_item_type_display_name}}</span>
                             <p class="product-category">{{item.category}}</p>
                             <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
                                     {{ item.name}}</a></h3>
