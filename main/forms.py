@@ -1,5 +1,5 @@
 from django import forms
-
+from .models import Dispute
 
 class ContactForm(forms.Form):
         name = forms.CharField(
@@ -20,3 +20,13 @@ class ContactForm(forms.Form):
         required=True, 
         widget=forms.Textarea(attrs={'placeholder': 'Your Message'})
     )
+class DisputeForm(forms.ModelForm):
+    class Meta:
+        model = Dispute
+        fields = ['name', 'email', 'invoice', 'issue']
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Your Name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'Your Email'}),
+            'invoice': forms.TextInput(attrs={'placeholder': 'Invoice'}),
+            'issue': forms.Textarea(attrs={'placeholder': 'Your Message'})
+        }

@@ -108,7 +108,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 mb-5">
-                {% include 'messages.html' %}
+                <div style="padding-top: 35px;">
+                    {% include 'messages.html' %}
+                </div>
 
 
                 {% if user.role == "lessor" %}
@@ -195,7 +197,7 @@
                                         <div class="col col-2" data-label="Verification status">
                                             {% if item.is_published == True %}
 
-                                            <span class="badge rounded-pill bg-success text-black">Verified</span>
+                                            <span class="badge rounded-pill bg-success text-white">Verified</span>
 
                                             {% else %}
 
@@ -264,11 +266,9 @@
                                         </div>
                                         <div class="col col-2" data-label="Expires at">{{ event.event.date| date:'M d,Y'}}</div>
                                         <div class="col col-2" data-label="Actions">
-                                            <form method="post" action="{% url 'event:deletesavedevent_d' event.pk %}"
-                                                id="">
-                                                {%csrf_token%}
-                                                <button type="submit" class="btn btn-primary"> Delete</button>
-                                            </form>
+                                            <button
+                                                onclick="call_sw_alert_func('{% url 'event:deletesavedevent_d' event.pk %}','{{ event.pk }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
+                                                class="btn btn-danger">Delete</button>
                                         </div>
                                     </li>
 
@@ -310,29 +310,29 @@
                                             <img src="{{ event.event.image.url }}" alt="" height="45px" width="50px"
                                                 style="border-radius:50%; border:2px solid black">
                                         </div>
-                                        <div class="col col-4" data-label="Event Name">
+                                        <div class="col col-5" data-label="Event Name">
                                             <a href="{% url 'event:event-details' event.event.pk %}"
                                                 style="text-decoration: none; text-transform: uppercase; color: black;">
                                                 {{event.event.name }}</a>
                                         </div>
                                         <div class="col col-2" data-label="Booked at">
-                                            {{ event.booked_at | date:'M d,Y'}}</div>
+                                            {{ event.booked_at | date:'M d, Y'}}</div>
                                         <div class="col col" data-label="Number of tickets">{{ event.num_tickets }}
                                         </div>
-                                        <div class="col col-2" data-label="Total">{{ event.total_price }}</div>
-                                        <div class="col col-1" data-label="Actions">
+                                        <div class="col col" data-label="Total">{{ event.total_price }}</div>
+                                        <div class="col col-2" style="text-align: center;" data-label="Actions">
                                             {% if not event.is_paid %}
                                             <form method="post" action="{% url 'event:mark-paid' event.pk %}"
                                                 id="applyForm_{{ event.pk }}">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn text-light enrollButton mb-1"
+                                                <button type="submit" class="btn text-light enrollButton"
                                                     style="background-color: rgb(107, 8, 168); color: white;">
                                                     Pay
                                                 </button>
                                             </form>
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-block btn-info mb-1" data-bs-toggle="modal"
-                                                data-bs-target="#myModal">
+                                            <button type="button" class="btn btn-info ms-lg-2 btn-sm-block"
+                                                data-bs-toggle="modal" data-bs-target="#myModal">
                                                 Edit
                                             </button>
 
@@ -373,7 +373,7 @@
 
                                             <form method="post" action="{% url 'event:delete-event' event.pk %}">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger mb-1 text-light">
+                                                <button type="submit" class="btn btn-danger text-light mt-lg-2">
                                                     Delete
                                                 </button>
                                             </form>
@@ -403,9 +403,9 @@
                                                 var checkout = new KhaltiCheckout({
                                                     publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
                                                     productIdentity: 1,
-                                                    productName: "Muse rental HUb",
+                                                    productName: "Muserental HUb",
                                                     productUrl: "http://127.0.0.1:8000/",
-                                                    amount: 1000,
+                                                    amount: '{{event.total_price}}',
                                                     eventHandler: {
                                                         onSuccess: function (payload) {
                                                             console.log(payload);
@@ -510,7 +510,8 @@
                                                 href="{% url 'explore:details' item.item.id %}"
                                                 style="text-decoration: none; text-transform: uppercase; color:black;">{{item.item.name}}</a>
                                         </div>
-                                        <div class="col col-3" data-label="Saved at">{{ item.created_at | date:'M d,Y'}}</div>
+                                        <div class="col col-3" data-label="Saved at">{{ item.created_at | date:'M d,Y'}}
+                                        </div>
                                         <div class="col col-3" data-label="Actions">
                                             <button
                                                 onclick="call_sw_alert_func('{% url 'explore:deletesaveditem_d' item.id %}','{{ item.id }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
@@ -648,11 +649,9 @@
                                         <div class="col col-2" data-label="Expires at">
                                             {{ event.event.date| date:'M d,Y'}}</div>
                                         <div class="col col-2" data-label="Actions">
-                                            <form method="post" action="{% url 'event:deletesavedevent_d' event.pk %}"
-                                                id="">
-                                                {%csrf_token%}
-                                                <button type="submit" class="btn btn-danger"> Delete</button>
-                                            </form>
+                                            <button
+                                                onclick="call_sw_alert_func('{% url 'event:deletesavedevent_d' event.pk %}','{{ event.pk }}','Once Deleted, This Post Will Remove From Your Favourite List!')"
+                                                class="btn btn-danger">Delete</button>
                                         </div>
                                     </li>
 
@@ -680,11 +679,11 @@
                                     <li class="table-header bg-dark text-light text-uppercase"
                                         style="border-radius:15px">
                                         <div class="col col-1">Event Photo</div>
-                                        <div class="col col-4">Event Title</div>
+                                        <div class="col col-5" style="text-align: center;">Event Title</div>
                                         <div class="col col-2">Booking Date</div>
                                         <div class="col col">Tickets</div>
-                                        <div class="col col-2">Total Price</div>
-                                        <div class="col col-1">Action</div>
+                                        <div class="col col">Total Price</div>
+                                        <div class="col col-2" style="text-align: center;">Action</div>
 
                                     </li>
 
@@ -694,7 +693,7 @@
                                             <img src="{{ event.event.image.url }}" alt="" height="45px" width="50px"
                                                 style="border-radius:50%; border:2px solid black">
                                         </div>
-                                        <div class="col col-4" data-label="Event Name">
+                                        <div class="col col-5" data-label="Event Name">
                                             <a href="{% url 'event:event-details' event.event.pk %}"
                                                 style="text-decoration: none; text-transform: uppercase; color: black;">
                                                 {{event.event.name }}</a>
@@ -703,8 +702,8 @@
                                             {{ event.booked_at | date:'M d, Y'}}</div>
                                         <div class="col col" data-label="Number of tickets">{{ event.num_tickets }}
                                         </div>
-                                        <div class="col col-2" data-label="Total">{{ event.total_price }}</div>
-                                        <div class="col col-1" data-label="Actions">
+                                        <div class="col col" data-label="Total">{{ event.total_price }}</div>
+                                        <div class="col col-2" style="text-align: center;" data-label="Actions">
                                             {% if not event.is_paid %}
                                             <form method="post" action="{% url 'event:mark-paid' event.pk %}"
                                                 id="applyForm_{{ event.pk }}">
@@ -715,8 +714,8 @@
                                                 </button>
                                             </form>
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-block btn-info" data-bs-toggle="modal"
-                                                data-bs-target="#myModal">
+                                            <button type="button" class="btn btn-info ms-lg-2 btn-sm-block"
+                                                data-bs-toggle="modal" data-bs-target="#myModal">
                                                 Edit
                                             </button>
 
@@ -757,7 +756,7 @@
 
                                             <form method="post" action="{% url 'event:delete-event' event.pk %}">
                                                 {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger text-light">
+                                                <button type="submit" class="btn btn-danger text-light mt-lg-2">
                                                     Delete
                                                 </button>
                                             </form>
@@ -787,9 +786,9 @@
                                                 var checkout = new KhaltiCheckout({
                                                     publicKey: "test_public_key_61122209af3a49b280ae500817fb0a73",
                                                     productIdentity: 1,
-                                                    productName: "Muse rental HUb",
+                                                    productName: "Muserental HUb",
                                                     productUrl: "http://127.0.0.1:8000/",
-                                                    amount: 1000,
+                                                    amount: '{{event.total_price}}',
                                                     eventHandler: {
                                                         onSuccess: function (payload) {
                                                             console.log(payload);

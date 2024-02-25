@@ -1,6 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style>
+    .my-card {
+        transition: transform 0.2s ease-in-out;
+
+    }
+
+    .my-card:hover {
+        transform: scale(101.9%);
+        /* Adjust the scale factor as needed */
+
+    }
+
+
+    @media (max-width: 576px) {
+
+        .my-card {
+            transform: none;
+        }
+
+    }
+</style>
 
 <div class="text-center bg-image" data-aos="zoom-in-up"
     style="
@@ -27,13 +48,12 @@
 </div>
 
 <div class="container mt-0 mx-auto">
-    <h2 class="text-center pb-4">
-        Our blog
-    </h2>
-    <div class="row">
-        {% for post in posts reversed %}
+    {% include 'messages.html' %}
+
+    <div class="row mt-5 pt-4">
+        {% for post in page_obj reversed %}
         <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="card mb-5 shadow-lg">
+            <div class="card mb-5 shadow-lg my-card">
                 <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
                     <a href="{%url 'main:post' post.pk %}" style="height:249px;">
                         <img class="img-fluid bsb-scale bsb-hover-scale-up" loading="lazy" src="{{ post.image.url }}"
@@ -56,11 +76,11 @@
 
                 <div class="card-body ">
                     <div class="card-title">
-                        <h2>{{post.title|truncatewords:5}}</h2>
+                        <h2>{{post.title|truncatewords:3}}</h2>
                     </div>
                     <div class="card-text">
                         <p align="justify">
-                            {{post.body|truncatewords:15}}
+                            {{post.body|truncatechars:75}}
                         </p>
 
                     </div>
@@ -85,7 +105,7 @@
     </div>
 </div>
 
-
+{% include 'paginator.html' %}
 
 
 {%endblock %}

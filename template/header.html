@@ -89,11 +89,7 @@
 
             {% if user.is_authenticated and user.role == 'lessor' and user.is_verified %}
 
-            <li class="nav-item mt-0">
-                <a class="nav-link mynav" href="{% url 'explore:add_item' %}">
-                    Add item</a>
 
-            </li>
             <li class="dropdown nav-item  ">
 
                 <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
@@ -106,10 +102,11 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink"
                     style=" background-color: white;">
-                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
                     <li><a class="dropdown-item text-black"
                             href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
-                    <!-- -->
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">Dashboard</a></li>
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:add_item' %}">Add item</a></li>
+
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
 
                 </ul>
@@ -117,11 +114,7 @@
 
 
             {% elif user.is_authenticated and user.role == 'lessor' and not user.is_verified %}
-            <li class="nav-item mt-0">
-                <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true" hidden>
-                    Add item</a>
 
-            </li>
             <li class="dropdown nav-item  ">
 
                 <a class="nav-link dropdown-toggle  " href="#" id="navbarDropdownMenuLink" role="button"
@@ -140,6 +133,11 @@
                             href="{% url 'accounts:lessor-edit-profile' request.user.id %}">Profile</a></li>
                     <!-- -->
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
+                    <li class="nav-item mt-0">
+                        <a class="nav-link mynav" href="{% url 'explore:add_item' %}" aria-disabled="true" hidden>
+                            Add item</a>
+
+                    </li>
 
                 </ul>
             </li>
@@ -161,7 +159,7 @@
                     style=" background-color: white;">
                     <li><a class="dropdown-item text-black"
                             href="{% url 'accounts:customer-edit-profile' request.user.id %}">Profile </a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">View Items</a></li>
+                    <li><a class="dropdown-item text-black" href="{% url 'explore:dashboard' %}">Dashboard</a></li>
 
                     <li><a class="dropdown-item text-black" href="{% url 'accounts:logout' %}">Logout</a></li>
 
@@ -204,7 +202,7 @@
                 <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdownMenuLink">
                     <li><a class="dropdown-item text-black"
                             href="{% url 'accounts:customer_registration' %}">Customer</a></li>
-                    <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">lessor</a>
+                    <li><a class="dropdown-item text-black" href="{% url 'accounts:lessor_registration' %}">Tenant</a>
                     </li>
 
                 </ul>

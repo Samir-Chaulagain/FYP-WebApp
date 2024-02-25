@@ -119,16 +119,19 @@
 
     .event-card:hover {
         transform: scale(1.1);
+        box-shadow: 3px 2px rgb(180, 178, 178);
         /* Adjust the scale factor as needed */
 
     }
-    
+
+
     @media (max-width: 576px) {
         .event-hero {
             object-fit: cover;
             object-position: center;
             display: none;
         }
+
         .with-arrow .nav-link.active::after {
 
             position: none;
@@ -138,7 +141,7 @@
         }
 
         .second-image {
-            
+
             margin-top: 40px;
             height: 50%;
             width: 94vw;
@@ -179,16 +182,16 @@
 
 <section class="site-section">
     <div class="container">
-        
+
         <div class="row mb-5">
-            <div class="col-lg-8 mb-4 mb-lg-0">
+            <div class="col-lg-8 mb-2 mb-lg-0">
                 <div class="d-lg-flex align-items-center">
                     <div class="d-inline-block start-0 rounded position-relative"
-                    style="margin-top: -150px; margin-right: 15px;">
-                    <img class="second-image" src="{{ event.image.url }}" alt="Image" height="290px" width="290px"
+                        style="margin-top: -150px; margin-right: 15px;">
+                        <img class="second-image" src="{{ event.image.url }}" alt="Image" height="290px" width="290px"
                             style="object-fit: cover; object-position: center; position: relative; z-index: 1;">
-                            
-                        </div>
+
+                    </div>
                     <div>
                         <h2 class="">{{ event.name }}</h2>
 
@@ -196,15 +199,15 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="row align-items-center mt-5">
+                <div class="row mt-lg-5 mt-sm-0">
                     <div class="col-5">
                         {% if user.is_authenticated and user.is_verified %}
                         {% is_event_already_saved event request.user as is_saved %}
                         {% if is_saved %}
 
                         <button type="button" id="example" class="btn btn-danger book-now" data-bs-toggle="popover"
-                        data-bs-placement="top" data-bs-trigger="hover"
-                        data-bs-content="Please Check Dashboard To View Saved Events"><i
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Check Dashboard To View Saved Events"><i
                                 class="fa-solid fa-heart"></i>
                             Saved
                         </button>
@@ -221,58 +224,58 @@
 
                         {% elif user.is_authenticated and not user.is_verified %}
                         <button type="button" id="example" class="btn btn-danger save-btn" data-bs-toggle="popover"
-                        data-bs-placement="top" data-bs-trigger="click"
-                        data-bs-content="Please Verify by uploading document in Profile page"><i
+                            data-bs-placement="top" data-bs-trigger="click"
+                            data-bs-content="Please Verify by uploading document in Profile page"><i
                                 class="fa-solid fa-heart"></i>
                             Save
                         </button>
 
-                        
+
                         {% elif not user.is_authenticated and not user.is_verified %}
-                        
+
                         <form id="saveForm" action="{% url 'event:saved-event' event.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="event" value="{{ event.id }}">
-                            
+
                             <button class="btn save-btn " type="submit"><i class="fa-solid fa-heart"></i> Save</button>
                         </form>
 
                         {% endif %}
-                        
+
                     </div>
-                    
-                    
-                    
+
+
+
                     <div class="col-6">
-                        
+
                         {% if user.is_authenticated and user.is_verified %}
-                        
+
                         {% is_event_already_booked event request.user as is_applied %}
                         {% if is_applied %}
-                        
-                        
+
+
                         <button type="button" id="example" class="btn btn-dark book-now" data-bs-toggle="popover"
-                        data-bs-placement="top" data-bs-trigger="hover"
-                        data-bs-content="Please Check Dashboard To View Booked Events">
+                            data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Please Check Dashboard To View Booked Events">
                             Booked
                         </button>
 
                         {%elif event.is_sold%}
-                        
+
                         <button type="button" id="example" class="btn btn-outline-danger book-now"
-                        data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
-                        data-bs-content="Sold out ticket for {{event.name}}">
-                        Sold
-                    </button>
-                    
-                    
-                    
-                    {% else %}
-                    
-                    {% include 'messages.html' %}
-                    
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-block btn-outline-dark book-now " data-bs-toggle="modal"
+                            data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover"
+                            data-bs-content="Sold out ticket for {{event.name}}">
+                            Sold
+                        </button>
+
+
+
+                        {% else %}
+
+
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-block btn-outline-dark book-now " data-bs-toggle="modal"
                             data-bs-target="#myModal">
                             Book now
                         </button>
@@ -307,7 +310,7 @@
                             </div>
                         </div>
 
-                        
+
                         {% endif %}
 
                         {% elif not user.is_authenticated and not user.is_verified %}
@@ -330,6 +333,8 @@
             </div>
         </div>
         <div class="row">
+            {% include 'messages.html' %}
+
             <div class="col-lg-8">
                 <div class="mb-5">
 
@@ -365,6 +370,7 @@
 
 
             </div>
+
             <div class="col-lg-4 mt-2">
                 <div class="p-3 border rounded mb-4 mt-3 event-card ">
                     <h3 class="text-danger  mt-3 h5 pl-3 mb-3 ">Event</h3>
@@ -378,12 +384,13 @@
 
                         <li class="mb-2"><strong class="text-black">Tickets:</strong> {{event.maximum_attende}}
                         </li>
-                        <li class="mb-2"><strong class="text-black">Published on:</strong> {{event.created_date|date:"d M Y" }}
+                        <li class="mb-2"><strong class="text-black">Published on:</strong> {{event.created_date|date:"d
+                            M Y" }}
                         </li>
                     </ul>
                 </div>
 
-                
+
 
             </div>
         </div>

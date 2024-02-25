@@ -13,6 +13,7 @@
 
 <section class="site-section">
   <div class="container">
+    {% include 'messages.html' %}
     {% if form.errors %}
     {% for field in form %}
     {% for error in field.errors %}
@@ -196,8 +197,8 @@
     var files = this.files;
 
     // Check if the number of files exceeds the limit (5 in this case)
-    if (files.length > 5) {
-      alert('Please select up to 5 files.');
+    if (files.length > 4) {
+      alert('Please select up to 4 files.');
       this.value = ''; // Clear the selected files
     }
   });

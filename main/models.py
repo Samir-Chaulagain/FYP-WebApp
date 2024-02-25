@@ -13,3 +13,14 @@ class Post(models.Model):
     
     def __str__(self):
         return self.title
+
+
+
+class Dispute(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    invoice = models.CharField(max_length=200)
+    issue = models.TextField()
+
+    def __str__(self):
+        return self.invoice

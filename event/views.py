@@ -26,11 +26,6 @@ def event(request):
     category_id = request.GET.get('category', 0)
     categories = Category.objects.all()
     all_events = Event.objects.all()
-
-    
-
-    
-
     if category_id:
         filtered_events = all_events.filter(category__id=category_id)
     else:
@@ -42,7 +37,7 @@ def event(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    print(f"Category ID: {category_id}, Filtered Events Count: {filtered_events.count()}")
+    print(f"Category ID: {category_id}, Filtered Events Count: {filtered_events.count()},")
 
     return render(request, 'events/event.html', {
         'page_obj': page_obj,
@@ -103,7 +98,7 @@ def event_saved_view(request, pk):
                 instance.user = user
                 instance.save()
 
-                messages.success(request, 'You have successfully saved this item!')
+                messages.success(request, 'You have successfully saved this event! Please check your dashboard.')
                 return redirect(reverse("event:event-details", kwargs={'pk': pk}))
 
         else:
@@ -112,28 +107,58 @@ def event_saved_view(request, pk):
     
     return redirect(reverse("event:event-details", kwargs={'pk': pk}))
 
+# @login_required(login_url=reverse_lazy('accounts:login'))
+# def delete_savedevent_d(request, pk):
+#     try:
+#         event = get_object_or_404(saved_event, user=request.user, event=pk).first()
+
+#         # Debugging prints
+#         print(f"Requested pk: {pk}")
+#         print(f"Request user: {request.user}")
+#         print(f"Found saved event: {saved_event.event}")
+
+#         if event:
+#             event.delete()
+#             messages.success(request, 'Saved item was successfully deleted!')
+#         else:
+#             messages.error(request, 'Saved item not found or you do not have permission to delete it.')
+#     except saved_event.DoesNotExist:
+#         messages.error(request, 'Saved item not found or you do not have permission to delete it.')
+
+#     # Assuming 'event-details' is a valid URL pattern, redirect to it after deletion
+#     return redirect(reverse('explore:dashboard', kwargs={'pk': pk}))
+
+
 @login_required(login_url=reverse_lazy('accounts:login'))
 def delete_savedevent_d(request, pk):
     try:
-        event = saved_event.objects.filter(event=pk, user=request.user).first()
+        # Ensure the saved event exists and belongs to the current user
+        saved = get_object_or_404(saved_event, user=request.user, pk=pk)
+        
+        # Delete the saved event
+        saved.delete()
+        
+        messages.success(request, 'Saved item was successfully deleted! Pleaese check your dashboard.')
+    except saved.DoesNotExist:
+        messages.error(request, 'Saved item not found.')
+        return redirect(reverse('explore:dashboard'))
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect(reverse('explore:dashboard'))
+    
+    # Redirect to the dashboard after deletion
+    return redirect(reverse('explore:dashboard'))
 
-        # Debugging prints
-        print(f"Requested pk: {pk}")
-        print(f"Request user: {request.user}")
-        print(f"Found saved event: {saved_event.event}")
-
-        if event:
-            event.delete()
-            messages.success(request, 'Saved item was successfully deleted!')
-        else:
-            messages.error(request, 'Saved item not found or you do not have permission to delete it.')
-    except saved_event.DoesNotExist:
-        messages.error(request, 'Saved item not found or you do not have permission to delete it.')
-
-    # Assuming 'event-details' is a valid URL pattern, redirect to it after deletion
-    return redirect('explore:dashboard')
 
 
+import random
+from django.utils.crypto import get_random_string
+def generate_invoice_number():
+    prefix = "MRH"  # Prefix for the invoice number
+    random_int = random.randint(10000, 99999)  # Generate a random integer between 10000 and 99999
+    suffix = "EBS"  # Suffix for the invoice number
+    print(f"{prefix}{random_int}{suffix}")
+    return f"{prefix}{random_int}{suffix}"
 
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -143,6 +168,9 @@ def mark_paid_view(request, pk):
     if booking:
         booking.is_paid = True
         booking.save()
+        # Generate an invoice number
+        invoice_number = generate_invoice_number()
+        booking.invoice_number = invoice_number
         
         try:
             # Send email to the user
@@ -190,10 +218,10 @@ def event_view(request, pk):
                 )
                 instance.save()
 
-                messages.success(request, 'You have successfully applied for this event!')
+                messages.success(request, 'You have successfully applied for this event! Please check your dashboard.')
                 return redirect(reverse("event:event-details", kwargs={'pk': pk}))
             else:
-                messages.error(request, 'You have already booked tickets for this event!')
+                messages.error(request, 'You have already booked tickets for this event! Please check your dashoard.')
         else:
             messages.error(request, 'Please enter a valid number of tickets (greater than zero).')
 
@@ -212,16 +240,25 @@ def delete_booking(request, pk):
     return render(request, 'explore/dashboard.html', {'booking': booking})
 
 
+# This decorator ensures that only logged-in users can access this view.
+# If a user tries to access it while not logged in, they will be redirected
+# to the login page.
 @login_required(login_url=reverse_lazy('accounts:login'))
 def edit_booking(request, pk):
+ # Fetch the booking object corresponding to the provided pk (primary key).
     booking = get_object_or_404(Booking, pk=pk)
-
+ # If the request method is POST, it means form data has been submitted.
     if request.method == 'POST':
+        # Retrieve the number of tickets from the submitted form 
         num_tickets = request.POST.get('no_of_tickets')
         if num_tickets:
+            # If the number of tickets is provided, update the booking object
+#             # with the new value and save it to the database.
             booking.num_tickets = num_tickets
             booking.save()
+            # Display a success message to the user
             messages.success(request, 'Booking updated successfully.')
+             # Redirect the user to the dashboard page 
             return redirect('explore:dashboard')
 
     return redirect('explore:dashboard')  # Redirect back to dashboard if GET request

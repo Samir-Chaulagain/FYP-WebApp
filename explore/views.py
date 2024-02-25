@@ -1,7 +1,11 @@
 
+
+import os
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.template.loader import render_to_string
+
+from accounts import apps
 
 from .forms import *
 from django.urls import reverse, reverse_lazy
@@ -10,6 +14,7 @@ from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from .models import Item
 from django.db.models import Q, Avg
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from accounts.models import User
@@ -29,13 +34,44 @@ from django.urls import reverse_lazy
 from datetime import datetime, date
 from .models import Customer, Item
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from xhtml2pdf import pisa
 
 
 
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
+from django.http import JsonResponse
+import os
+from django.conf import settings
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+import json
+import datetime
+from django.utils import timezone
 from .models import Customer
 
-
 from datetime import date, datetime
+
+
+
+import os
+import json
+from io import BytesIO
+from datetime import datetime
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.lib.units import inch
+from PIL import Image as PILImage
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
+from django.http import JsonResponse
 User = get_user_model()
 
 
@@ -184,10 +220,12 @@ def add_item(request):
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_lessor
 def item_edit_view(request, id=id):
+    # Delete existing images
     item = get_object_or_404(Item, id=id, user=request.user.id)
     categories = Category.objects.all()
     form = edititemForm(request.POST or None,request.FILES or None, instance=item)
     if form.is_valid():
+        item.image_set.all().delete()
         instance = form.save(commit=False)
         
         item.latitude = request.POST.get('latitude')
@@ -195,22 +233,19 @@ def item_edit_view(request, id=id):
         item.save()
         print(item.latitude,item.longitude)
         
-        # Retrieve the item object after saving the form
-        
-        # Delete existing images only after saving the instance
-        images = Image.objects.filter(item=instance)
-        images.delete()
+        for file in request.FILES.getlist('file'):
+                # Create an Image instance and associate it with the created item
+
+                Image.objects.create(item=instance, image=file)
         
         # Save the instance first to get the updated ID
         
         
-        # Save new images with the updated instance
-        for file in request.FILES.getlist('file'):
-            Image.objects.create(item=instance, image=file)
-        instance = form.save()
+      
+    
 
         
-        messages.success(request, 'Your item Post Was Successfully Updated!')
+        messages.success(request, 'Your item post was successfully updated! Please check your dashboard.')
         return redirect(reverse("explore:edit-item", kwargs={'id': instance.id}))
     
     context = {
@@ -294,7 +329,7 @@ def delete_item(request, id):
     if item:
 
         item.delete()
-        messages.success(request, 'Your item Post was successfully deleted!')
+        messages.success(request, 'Your item post was successfully deleted!')
 
     return redirect('explore:dashboard')
 
@@ -323,6 +358,7 @@ def item_saved_view(request, id):
         
         return redirect(reverse("explore:details", kwargs={'id': id}))
 
+# details
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def delete_save_view(request, id):
@@ -332,10 +368,12 @@ def delete_save_view(request, id):
 
     if item:
         item.delete()
-        messages.success(request, 'Saved item was successfully removed!')
+        messages.success(request, 'Saved item was successfully removed! Please check your dashboard.')
 
     return redirect('explore:details', id=id)
 
+
+# Dashboard
 @login_required(login_url=reverse_lazy('accounts:login'))
 @user_is_customer
 def deletesaveditem(request, id):
@@ -345,7 +383,7 @@ def deletesaveditem(request, id):
 
     if item:
         item.delete()
-        messages.success(request, 'Saved item was successfully deleted!')
+        messages.success(request, 'Saved item was successfully deleted! Please check your dashboard.')
 
     return redirect('explore:dashboard')
 
@@ -394,7 +432,14 @@ def CheckAvailability(request, id):
     rent_data = {"Rentitem_Date_of_Booking": Rentitem_Date_of_Booking, "Rentitem_Date_of_Return": Rentitem_Date_of_Return, "days": (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1, "total": item.price * ((Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1)}
     return render(request, 'explore/details.html', {'Message': Message,'Available': Available, 'item': item, 'customer': customer, 'rent_data': rent_data})
 
-
+import random
+from django.utils.crypto import get_random_string
+def generate_invoice_number():
+    prefix = "MRH"  # Prefix for the invoice number
+    random_int = random.randint(10000, 99999)  # Generate a random integer between 10000 and 99999
+    suffix = "IRS"  # Suffix for the invoice number
+    print(f"{prefix}{random_int}{suffix}")
+    return f"{prefix}{random_int}{suffix}"
 
 
 @login_required(login_url=reverse_lazy('accounts:login'))
@@ -410,10 +455,11 @@ def rent_item_view(request, id):
             latitude = request.POST.get('latitude','')
             longitude = request.POST.get('longitude','')
             time = request.POST.get('time','')
+            invoice_number = generate_invoice_number()
             
 
-            Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%b. %d, %Y').date()
-            Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%b. %d, %Y').date()
+            Rentitem_Date_of_Booking = datetime.strptime(Rentitem_Date_of_Booking, '%B %d, %Y').date()
+            Rentitem_Date_of_Return = datetime.strptime(Rentitem_Date_of_Return, '%B %d, %Y').date()
 
             item = get_object_or_404(Item, id=id)
             total_days = (Rentitem_Date_of_Return - Rentitem_Date_of_Booking).days + 1
@@ -428,21 +474,26 @@ def rent_item_view(request, id):
                 Rentitem_Total_amount=total_amount,
                 latitude=latitude,
                 longitude=longitude,
-                time=time
+                time=time,
+                invoice_number=invoice_number,
+                
 
-                
-                
             )
+            context = {
+                'invoice_number': invoice_number,
+                # Add other data to the context as needed
+            }
+        
+
             instance.save()
             
-
-            messages.success(request, 'You have successfully rented this item!')
-            return redirect(reverse("explore:details", kwargs={'id': id}))
+            messages.success(request, 'You have successfully rented this item! Please check your dashboard.')
+            return redirect(reverse("explore:details", kwargs={'id': id}),context)
 
     else:
-        messages.error(request, 'You already applied for the item!')
+        messages.error(request, 'You already applied for the item! Please check your dashboard')
 
-    return redirect(reverse("explore:details", kwargs={'id': id}))
+    return redirect(reverse("explore:details", kwargs={'id': id}),context)
     
 
 
@@ -453,34 +504,180 @@ logger = logging.getLogger(__name__)
 
 # Decorators to exempt CSRF protection and require POST method for this view
 @csrf_exempt
-@require_POST
 def send_email_after_payment(request):
+    data = json.loads(request.body)
+    lessor_email = data.get('lessor_email')
+    customer_email = data.get('customer_email')
+    bookingdate = data.get('bookingdate')
+    returndate = data.get('returndate')
+    days = data.get('days')
+    amt = data.get('amt')
+    name = data.get('name')
+    tenant_name = data.get('tenant_name')
+    customer_name = data.get('customer_name')
+    time = data.get('time')
+    invoice_number = generate_invoice_number()
     
-    try:
-        
-        data = json.loads(request.body)
-        lessor_email = data.get('lessor_email')
-        customer_email = data.get('customer_email')
+    
+    
 
+    context = {
+        'bookingdate': bookingdate,
+        'returndate': returndate,
+        'days': days,
+        'amt': amt,
+        'name': name,
+        'tenant_name': tenant_name,
+        "lessor_email": lessor_email,
+        'customer_email': customer_email,
+        'customer_name': customer_name,
+        'invoice': invoice_number,
+        'time': time,
+        'request': request  # Passing request object in the context
+    }
+    print('1234'+invoice_number)
+    print("hi")
+    # Render the template
+    html = render_to_string('landing_pages/invoice_template.html', context)
+    print("h2")
+
+    # Create a PDF file
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+
+    # Check if there were any errors during PDF creation
+    if not pdf.err:
+        # PDF created successfully, proceed with sending emails
+        print("h3")
+        filename = 'Invoice.pdf'
         subject = 'Payment Successful'
-        from_email = 'muserentalhub@gmail.com'
 
-        # Load HTML templates and render with context
-        lessor_html_message = render_to_string('explore/lessor_email_after_payment.html')
-        customer_html_message = render_to_string('explore/customer_email_after_payment.html')
+        # Send email to lessor
+        lessor_email_message = EmailMessage(subject, 'Please find invoice attached with this email.', 'muserentalhub@gmail.com', [lessor_email])
+        lessor_email_message.attach(filename, result.getvalue(), 'application/pdf')
+        lessor_email_message.send()
 
-         # Send email to the lessor with lessor_html_message
-        send_mail(subject, '', from_email, [lessor_email], html_message=lessor_html_message)
-        print(lessor_email)
+        # Send email to customer
+        customer_email_message = EmailMessage(subject, 'Payment Receipt, Congratulations! You have successfully rented . You will have your desired instrument by the time . Thank you! Here are the details:', 'muserentalhub@gmail.com', [customer_email])
+        customer_email_message.attach(filename, result.getvalue(), 'application/pdf')
+        customer_email_message.send()
 
-        # Send email to the customer with customer_html_message
-        send_mail(subject, '', from_email, [customer_email], html_message=customer_html_message)
-        print(customer_email)
         return JsonResponse({'status': 'success'})
-    except Exception as e:
-        logger.error(f"Error sending email: {e}")
-        return JsonResponse({'status': 'error'}, status=500)
+    else:
+        # There was an error creating the PDF
+        return JsonResponse({'status': 'error', 'message': 'Error creating PDF'}, status=500)
 
+
+# def send_email_after_payment(request):
+#     try:
+#         data = json.loads(request.body)
+#         lessor_email = data.get('lessor_email')
+#         customer_email = data.get('customer_email')
+
+#         subject = 'Payment Successful'
+#         from_email = 'muserentalhub@gmail.com'
+
+#         # Load HTML templates and render with context
+#         lessor_html_message = render_to_string('explore/lessor_email_after_payment.html')
+#         customer_html_message = render_to_string('explore/customer_email_after_payment.html')
+
+#         # Generate PDF attachment
+#         pdf_buffer = BytesIO()
+
+#         # Create a PDF document with a table
+#         doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+#         table_data = [['', 'Column 2', 'Column 3'],
+#                       ['Row 1 Data 1', 'Row 1 Data 2', 'Row 1 Data 3'],
+#                       ['Row 2 Data 1', 'Row 2 Data 2', 'Row 2 Data 3']]
+#         table = Table(table_data)
+#         style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+#                             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+#                             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+#                             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+#                             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+#                             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+#                             ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+#         table.setStyle(style)
+#         doc.build([table])
+
+#         # Move the buffer pointer to the beginning to read the PDF content
+#         pdf_buffer.seek(0)
+
+#         # Create EmailMessage objects for both lessor and customer
+#         lessor_email_message = EmailMessage(subject, lessor_html_message, from_email, [lessor_email])
+#         lessor_email_message.attach('table_data.pdf', pdf_buffer.getvalue(), 'application/pdf')
+#         lessor_email_message.content_subtype = 'html'
+#         lessor_email_message.send()
+
+#         customer_email_message = EmailMessage(subject, customer_html_message, from_email, [customer_email])
+#         customer_email_message.attach('table_data.pdf', pdf_buffer.getvalue(), 'application/pdf')
+#         customer_email_message.content_subtype = 'html'
+#         customer_email_message.send()
+
+#         return JsonResponse({'status': 'success'})
+#     except Exception as e:
+#         logger.error(f"Error sending email: {e}")
+#         return JsonResponse({'status': 'error'}, status=500)
+
+
+
+
+
+# def send_email_after_payment(request):
+#     try:
+#         data = json.loads(request.body)
+#         lessor_email = data.get('lessor_email')
+#         customer_email = data.get('customer_email')
+
+#         # Retrieve customer details to include in the invoice PDF
+#         customer = Customer.objects.get(user__email=customer_email)
+#         invoice_data = {
+#             'invoice':customer.invoice,
+#             'booking_date': customer.Rentitem_Date_of_Booking,
+#             'return_date': customer.Rentitem_Date_of_Return,
+#             'total_days': customer.Total_days,
+#             'total_amount': customer.Rentitem_Total_amount,
+#             'created_at': customer.created_at,
+#             'time': customer.time,
+#         }
+
+#         # Render the HTML template for the invoice
+#         invoice_html = render_to_string('landing_pages/invoice_template.html', invoice_data)
+
+#         # Generate PDF from HTML template
+#         pdf_file_path = os.path.join(settings.BASE_DIR, 'invoice.pdf')
+#         html_template = get_template('landing_pages/invoice_template.html')
+#         rendered_html = html_template.render(invoice_data)
+
+#         # Write rendered HTML to PDF file
+#         import pdfkit
+#         pdfkit.from_string(rendered_html, pdf_file_path)
+
+#         subject = 'Payment Successful'
+#         from_email = 'muserentalhub@gmail.com'
+
+#         # Load HTML templates and render with context
+#         lessor_html_message = render_to_string('explore/lessor_email_after_payment.html')
+#         customer_html_message = render_to_string('explore/customer_email_after_payment.html')
+
+#         # Send email to the lessor with lessor_html_message and attach the PDF
+#         msg_to_lessor = EmailMultiAlternatives(subject, '', from_email, [lessor_email])
+#         msg_to_lessor.attach_alternative(lessor_html_message, "text/html")
+#         with open(pdf_file_path, 'rb') as pdf_file:
+#             msg_to_lessor.attach('invoice.pdf', pdf_file.read(), 'application/pdf')
+#         msg_to_lessor.send()
+
+#         # Send email to the customer with customer_html_message and attach the PDF
+#         msg_to_customer = EmailMultiAlternatives(subject, '', from_email, [customer_email])
+#         msg_to_customer.attach_alternative(customer_html_message, "text/html")
+#         with open(pdf_file_path, 'rb') as pdf_file:
+#             msg_to_customer.attach('invoice.pdf', pdf_file.read(), 'application/pdf')
+#         msg_to_customer.send()
+
+#         return JsonResponse({'status': 'success'})
+#     except Exception as e:
+#         logger.error(f"Error sending email: {e}")
+#         return JsonResponse({'status': 'error'}, status=500)
 
 
 
@@ -499,7 +696,8 @@ def update_status(request):
     customer = Customer.objects.get(id=user_id)
     customer.request_status = new_status
     customer.save()
-    print("hello")
+    
+    messages.success(request, 'Status updated successfully!')
     return JsonResponse({'status': 'success'})
     
 

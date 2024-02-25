@@ -303,6 +303,8 @@
 </div>
 <div class="container my-5 py-2 ">
     {% include 'messages.html' %}
+
+
     <div class="row" height="100vh">
         <!-- carousel Image -->
         <div class="col-md-6 col-md-push-2">
@@ -367,9 +369,9 @@
                             style="text-decoration: none; color:#D10024;">{{item.get_item_type_display_name}}</a></li>
                     <li><a href="#" style="text-decoration: none; color:#D10024;">{{item.category}}</a></li>
                 </ul>
-                <p>{{ item.description | safe}}
+                <p>{{ item.description | safe | truncatechars:200 }}
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#descriptionModal">Read more</a>
                 </p>
-
 
             </div>
 
@@ -596,13 +598,14 @@
                         <div class="form-row">
                             <div class="form-group col-6 mb-2">
                                 <label for="pickupdate"><b>Pickup Date</b></label>
-                                <input type="text" class="form-control " id="pickupdate" name="Rentitem_Date_of_Booking"
-                                    value="{{rent_data.Rentitem_Date_of_Booking}}" readonly>
+                                <input type="text" class="form-control" id="pickupdate" name="Rentitem_Date_of_Booking"
+                                    value="{{ rent_data.Rentitem_Date_of_Booking|date:'F d, Y' }}" readonly>
+
                             </div>
                             <div class="form-group col-6 mb-2">
                                 <label for="returndate"><b>Return Date</b></label>
                                 <input type="text" class="form-control" id="returndate" name="Rentitem_Date_of_Return"
-                                    value="{{rent_data.Rentitem_Date_of_Return}}" readonly>
+                                    value="{{rent_data.Rentitem_Date_of_Return|date:'F d, Y' }}" readonly>
                             </div>
                             <div class="form-group col-6 mb-2">
                                 <label for="time"><b>Time:</b></label>
@@ -631,6 +634,7 @@
                             <!-- Add fields for capturing user location -->
                             <input type="hidden" name="latitude" id="latitude" value="">
                             <input type="hidden" name="longitude" id="longitude" value="">
+                            <input type="hidden" name="invoice_number" id="invoice_number" value="">
 
                             {% is_item_already_rented item request.user as is_rented %}
                             {% if is_rented %}
@@ -681,81 +685,95 @@
                         <div class="container">
                             <div class="row">
                                 {% for item in page_obj %}
+
                                 <div class="col-lg-4 col-md-4 col-sm-6 my-3  " data-aos="zoom-in-up">
-                                    <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
-                                        <div id="instrument_{{item.id}}" class="carousel slide"
-                                            data-bs-interval="false">
-                                            <div class="carousel-indicators">
-                                                {% for image in item.image_set.all %}
-                                                <button type="button" data-bs-target="#instrument_{{ item.id }}"
-                                                    data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first
-                                                    %}class="active" {% endif %
-                                                    aria-label="Slide {{ forloop.counter }}">
+                                    <a href="{% url 'explore:details' item.id %}" class="card-link"
+                                        style="text-decoration:none;">
+
+
+
+                                        <div class="card shadow mb-5 h-80 explore-card" style="width: Auto">
+                                            <div id="instrument_{{item.id}}" class="carousel slide"
+                                                data-bs-interval="false">
+                                                <div class="carousel-indicators">
+                                                    {% for image in item.image_set.all %}
+                                                    <button type="button" data-bs-target="#instrument_{{ item.id }}"
+                                                        data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first
+                                                        %}class="active" {%endif%
+                                                        aria-label="Slide {{ forloop.counter }}">
+                                                    </button>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="carousel-inner">
+                                                    {% for image in item.image_set.all %}
+                                                    <div class="carousel-item {% if forloop.first %}active{% endif %}"
+                                                        style="height: 200px;">
+                                                        <img class="card-img-top img-fluid carousel-image"
+                                                            src="{{ image.image.url }}"
+                                                            alt="Slide {{ forloop.counter }}"
+                                                            style="max-height: 100%; max-width: 100%;">
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <button class="carousel-control-prev" type="button"
+                                                    data-bs-target="#instrument_{{ item.id }}" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
                                                 </button>
-                                                {% endfor %}
-                                            </div>
-                                            <div class="carousel-inner">
-                                                {% for image in item.image_set.all %}
-                                                <div class="carousel-item {% if forloop.first %}active{% endif %}"
-                                                    style="height: 200px;">
-                                                    <img class="card-img-top" src="{{ image.image.url }}"
-                                                        alt="Slide {{ forloop.counter }}">
-                                                </div>
-                                                {% endfor %}
+                                                <button class="carousel-control-next" type="button"
+                                                    data-bs-target="#instrument_{{ item.id }}" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
                                             </div>
 
-                                            <button class="carousel-control-prev" type="button"
-                                                data-bs-target="#instrument_{{ item.id }}" data-bs-slide="prev">
-                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                <span class="visually-hidden">Previous</span>
-                                            </button>
-                                            <button class="carousel-control-next" type="button"
-                                                data-bs-target="#instrument_{{ item.id }}" data-bs-slide="next">
-                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                <span class="visually-hidden">Next</span>
-                                            </button>
-                                        </div>
-
-                                        <div class="card-body">
+                                            <div class="card-body">
 
 
-                                            <div class="product-body justify-content-center">
-                                                <span
-                                                    class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
-                                                <p class="product-category">{{item.category}}</p>
-                                                <h3 class="product-name"><a href="{% url 'explore:details' item.id  %}">
-                                                        {{ item.name}}</a></h3>
-                                                <h4 class="product-price">रु {{ item.price }} </h4>
+                                                <div class="product-body justify-content-center">
+                                                    <span
+                                                        class="badge badge-lg rounded-pill bg-danger text-black mb-2">{{item.get_item_type_display_name}}</span>
+                                                    <p class="product-category">{{item.category}}</p>
+                                                    <h3 class="product-name"><a
+                                                            href="{% url 'explore:details' item.id  %}">
+                                                            {{ item.name}}</a></h3>
+                                                    <h4 class="product-price">रु {{ item.price }} </h4>
 
 
 
 
 
 
-                                                <div class="product-btns justify-content-center"
-                                                    style="background-color: rgba(0, 0, 0, 0);  ">
+                                                    <div class="product-btns justify-content-center"
+                                                        style="background-color: rgba(0, 0, 0, 0);  ">
 
-                                                    <a class="add-to-wishlist" href="" style="margin-right: 15px;"><i
-                                                            class="fa fa-heart-o fa-lg"></i><span class="tooltipp">Save
-                                                            Item</span></a>
 
-                                                    <a href="{% url 'explore:details' item.id  %}" class="quick-view"><i
-                                                            class="fa fa-eye fa-lg"></i><span class="tooltipp">
-                                                            view details</span></a>
+
+                                                        <a href="{% url 'explore:details' item.id  %}"
+                                                            class="quick-view"><i class="fa fa-eye fa-lg"></i><span
+                                                                class="tooltipp">
+                                                                view details</span></a>
+                                                    </div>
+
+
                                                 </div>
 
 
+
                                             </div>
-
-
-
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                                 {% endfor %}
                             </div>
                         </div>
                         {% include 'paginator.html' %}
+                        <div style="text-align: center;">
+
+                            <a href="{%url 'explore:items'%}" class=" btn btn-dark mx-auto" align="center">View
+                                All</a>
+                        </div>
                     </div>
 
                     <div id="profile1" role="tabpanel" aria-labelledby="profile-tab" class="tab-pane fade px-4 py-5">
@@ -917,66 +935,10 @@
 
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center bg-dark">
-                <h5 class="modal-title text-light" id="exampleModalLongTitle">Check
-                    Availability</h5>
-                <button type="button" class="close btn btn-light" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
 
 
-                </h5>
-                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3 bg-light " method="post"
-                    enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-row bg-light">
 
-                        <div class="modal-body bg-light">
-                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
-
-
-                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date"
-                                required>
-
-                        </div>
-
-
-                        <div class="modal-footer text-center justify-content-center bg-light ">
-
-                            <input type="submit" class="btn btn-outline-dark" value="Check Availability" />
-                            <button class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-                        </div>
-
-                    </div>
-                </form>
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-</div>
 
 
 <!-- iTEMS LOCATION -->
@@ -1026,8 +988,8 @@
     console.log(latitude)
     setTimeout(function () {
         initMap(latitude, longitude);
-    }, 3500); 
-    
+    }, 3500);
+
 </script>
 
 <!-- for popover -->
@@ -1121,9 +1083,21 @@
         // const emailSendingEndpoint = '/explore:send_email_after_payment/';
 
         // Get the total amount from Django context
+
         const amt = '{{ rent_data.total }}';
+        const bookingdate = '{{ rent_data.Rentitem_Date_of_Booking }}';
+        const returndate = '{{ rent_data.Rentitem_Date_of_Return }}';
+        const days = '{{ rent_data.days }}';
         const mail_1 = '{{ item.user.email }}';
+        const name = '{{ item.name }}';
+        const tenant_name = '{{ item.user.get_full_name }}';
+        const time = document.getElementById('time').value;
+        const invoice_number = document.getElementById('invoice_number').value;
+        console.log(invoice_number)
+
         const mail_2 = '{{ request.user.email }}';
+        const customer_name = '{{ request.user.get_full_name }}';
+
 
         async function sendEmailAfterPayment() {
             try {
@@ -1136,6 +1110,16 @@
                     body: JSON.stringify({
                         lessor_email: mail_1,
                         customer_email: mail_2,
+                        bookingdate: bookingdate,
+                        returndate: returndate,
+                        amt: amt,
+                        name: name,
+                        tenant_name: tenant_name,
+                        customer_name: customer_name,
+                        days: days,
+                        time: time,
+                        invoice_number: invoice_number,
+
                     }),
                 });
 
@@ -1266,5 +1250,80 @@
         });
     });
 </script>
+<!-- First Modal (Description Modal) -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-dark">
+                <h2 class="modal-title text-light text-center" id="exampleModalLongTitle" style="padding-left: 30%;">
+                    Description</h2>
+                <button type="button" class="close btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
+                    <!-- Ensure this button has the data-dismiss attribute to close the modal -->
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{item.description | safe}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-dark">
+                <h5 class="modal-title text-light" id="exampleModalLongTitle">Check
+                    Availability</h5>
+                <button type="button" class="close btn btn-light" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                </h5>
+                <form action="{% url 'explore:CheckAvailability' item.id %}" class="px-4 py-3 bg-light " method="post"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row bg-light">
+
+                        <div class="modal-body bg-light">
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Booking" class="form-control" placeholder="Pickup date" required>
+
+
+                            <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                name="Rentitem_Date_of_Return" class="form-control mt-3" placeholder="Return date"
+                                required>
+
+                        </div>
+
+
+                        <div class="modal-footer text-center justify-content-center bg-light ">
+
+                            <input type="submit" class="btn btn-outline-dark" value="Check Availability" />
+                            <button class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

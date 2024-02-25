@@ -2,6 +2,8 @@ import datetime
 from django.db import models
 from accounts.models import User
 from ckeditor.fields import RichTextField
+import PIL 
+from PIL import Image as PILimage
 # Create your models here.
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -54,26 +56,40 @@ class Image(models.Model):
     image=models.ImageField(upload_to='images/')
 
     def __str__(self):
-        return str(self.pk)    
+        return str(self.item.name)  
+
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        img = PILimage.open(self.image.path)
+        
+        # Define new dimensions
+        new_width = 910
+        new_height = 607
+        
+        # Resize image without maintaining aspect ratio
+        img = img.resize((new_width, new_height), PILimage.LANCZOS)
+        img.save(self.image.path)
+    
     
 
 class Customer(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item= models.ForeignKey(Item, on_delete=models.CASCADE)
-    Rentitem_Date_of_Booking = models.DateField(blank=True,null=True)
-    Rentitem_Date_of_Return = models.DateField(blank=True,null=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    Rentitem_Date_of_Booking = models.DateField(blank=True, null=True)
+    Rentitem_Date_of_Return = models.DateField(blank=True, null=True)
     Total_days = models.IntegerField(default=0)
-    Rentitem_Total_amount = models.IntegerField(blank=True,null=True)
+    Rentitem_Total_amount = models.IntegerField(blank=True, null=True)
     isAvailable = models.BooleanField(default=True)    
     created_at = models.DateTimeField(auto_now=True, auto_now_add=False)
-    time= models.TimeField(default=datetime.time(hour=0, minute=0))
-    
-    request_status = models.CharField(max_length=30,default="Pending")
+    time = models.TimeField(default=datetime.time(hour=0, minute=0))
+    request_status = models.CharField(max_length=30, default="Pending")
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
+    invoice_number = models.CharField(max_length=30,default="default")
 
-
+    
 
     def __str__(self):
         return self.item.name

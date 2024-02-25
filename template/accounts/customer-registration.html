@@ -3,12 +3,6 @@
 {% block content %}
 
 <!-- HOME -->
-
-
-
-
-
-
 <section>
   <nav aria-label="breadcrumb" style="margin-left: 8%; font-size: 20px; ">
     <ol class="breadcrumb">
@@ -19,98 +13,246 @@
   <div class="container shadow-lg" data-aos="zoom-in-up">
     <h2 class="text-center font-weight-bold ">Sign up
     </h2>
- 
-    
+
+
     {% include 'messages.html' %}
     <div class="row g-0" style="margin-top: 20px;">
       <div class="col-lg-7 col-md-6 ">
         <figure class="text-center bg-image overflow-hidden bsb-overlay-hover">
           <a>
             <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{% static 'img/bgrr.jpg' %}" alt="" width="auto"
-            style="
-            height: 720px; background-repeat: no-repeat; background-size:cover; opacity: 0.95; object-fit: cover;">
-        </a>
-      </figure>
+              style="
+            height: 735px; background-repeat: no-repeat; background-size:cover; opacity: 0.95; object-fit: cover;">
+          </a>
+        </figure>
+      </div>
+
+      <div class="col-lg-5 col-md-6">
+
+        <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded">
+          {% csrf_token %}
+          {% for field in form %}
+          {% if field.name == 'gender' %}
+          <div class="row form-group mt-3 mb-4">
+            <div class="col-md-12 mb-3 mb-md-0">
+              {{ field.label }}
+              <div class="form-check form-check-inline ms-2">
+                <input class="form-check-input red" type="radio" name="gender" id="male" value="M">
+                <label class="form-check-label red" for="male">Male</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input red" type="radio" name="gender" id="female" value="F">
+                <label class="form-check-label red" for="female">Female</label>
+              </div>
+            </div>
+          </div>
+
+          {%elif field.name == 'document_type'%}
+
+          <div class="row form-group mt-3 mb-3">
+            <div class="col-md-12  mb-md-0">
+              <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
+              {{ field }}
+            </div>
+          </div>
+
+          {% else %}
+
+          <div class="row form-group mt-2">
+            <div class="col-md-12 mb-3 mb-md-0">
+              <label class="text-black" for="id_{{ field.name }}">
+                {{ field.label }}
+                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+              </label>
+              {% if field.field.widget.input_type == 'password' %}
+              <div class="input-group">
+                <input type="password" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
+                  id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-dark" onclick="togglePassword('id_{{ field.name }}')">
+                    <i class="fa-solid fa-eye " id="eyeIcon" sstyle="color: #6a6161;"></i>
+                  </button>
+                </div>
+              </div>
+              {% else %}
+
+              <input type="{{ field.field.widget.input_type }}" class="form-control focus-ring focus-ring-danger"
+                name="{{ field.name }}" id="id_{{ field.name }}"
+                placeholder="{{ field.field.widget.attrs.placeholder }}">
+              {% endif %}
+              {% endif %}
+              {% endfor %}
+              <input type="checkbox" id="terms" name="terms" value="accepted" required>
+              <label for="terms" style="margin-top: 15px;"> I accept the <a href="#" id="terms_conditions_link"
+                  class="text-danger text-decoration-none" data-toggle="modal" data-target="#termsModal">Terms and
+                  Conditions</a></label><br><br>
+
+              <div class="row form-group mt-3">
+
+                <input type="submit" value="Sign Up" class="btn px-4 btn-dark btn-sm text-white ">
+              </div>
+
+        </form>
+      </div>
     </div>
-    
-    <div class="col-lg-5 col-md-6">
-      
-      <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded" >
-        {% csrf_token %}
-        {% for field in form %}
-        {% if field.name == 'gender' %}
-        <div class="row form-group mt-3 mb-4">
-          <div class="col-md-12 mb-3 mb-md-0">
-            {{ field.label }}
-            <div class="form-check form-check-inline ms-2">
-               <input class="form-check-input red" type="radio" name="gender" id="male" value="M">
-              <label class="form-check-label red" for="male">Male</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input red" type="radio" name="gender" id="female" value="F">
-              <label class="form-check-label red" for="female">Female</label>
-            </div>
-          </div>
-        </div>
+  </div>
 
-        {%elif field.name == 'document_type'%}
 
-        <div class="row form-group mt-3 mb-3">
-          <div class="col-md-12  mb-md-0">
-            <label class="text-black" for="id_{{ field.name }}">{{ field.label }}</label>
-            {{ field }}
-          </div>
-        </div>
-        
-        {% else %}
-        
-        <div class="row form-group mt-2">
-                        <div class="col-md-12 mb-3 mb-md-0">
-                            <label class="text-black" for="id_{{ field.name }}">
-                                {{ field.label }}
-                                {% if field.field.required %}<span class="text-danger">*</span>{% endif %}
-                            </label>
-                            {% if field.field.widget.input_type == 'password' %}
-                                <div class="input-group">
-                                    <input type="password" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
-                                          id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
-                                          <div class="input-group-append">
-                                            <button type="button" class="btn btn-outline-eye" onclick="togglePassword('id_{{ field.name }}')">
-                                              <i class="fa-solid fa-eye " id="eyeIcon" style="color: #6a6161;"></i> 
-                                            </button> 
-                                          </div>
-                                </div>
-                            {% else %}
-                            
-                                <input type="{{ field.field.widget.input_type }}" class="form-control focus-ring focus-ring-danger" name="{{ field.name }}"
-                                      id="id_{{ field.name }}" placeholder="{{ field.field.widget.attrs.placeholder }}">
-                            {% endif %}
-                            {% endif %}
-                            {% endfor %}
-                            <div class="row form-group mt-4">
-                              
-                              <input type="submit" value="Sign Up" class="btn px-4 btn-dark btn-sm text-white ">
-                            </div>
-                            
-      </form>
+
+
+
+  </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center bg-dark">
+        <h2 class="modal-title text-light text-center" id="exampleModalLongTitle" style="padding-left: 30%;">Terms and
+          Conditions</h2>
+        <button type="button" class="close btn btn-outline-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <p>Welcome to Muserental Hub Portal. By accessing or using our services, you agree to comply with and
+          be bound by the following terms and conditions. If you do not agree to these terms, please do not
+          use our services.</p>
+        <!-- Section 1 -->
+        <h3>1. Acceptance of Terms</h3>
+        <p>By using the Platform, you acknowledge that you have read, understood, and agree to be bound by
+          these
+          terms and any future modifications. We reserve the right to change or update these terms at any
+          time
+          without notice.</p>
+
+        <!-- Section 2 -->
+        <h3>2. User Registration</h3>
+        <p>To access certain features of the Platform, you may be required to register for an account. You
+          are
+          responsible for maintaining the confidentiality of your account information and for all
+          activities
+          that occur under your account. Failure to safeguard your account information may result in the
+          termination of your account.</p>
+
+        <!-- Section 3 -->
+        <h3>3. Content Usage</h3>
+        <p>When using the Platform, you agree to adhere to the following guidelines:</p>
+        <ul>
+          <li>You may use the Platform only for lawful purposes.</li>
+          <li>You are solely responsible for the content you submit to the Platform.</li>
+          <li>We reserve the right to remove or modify any content that violates our policies.</li>
+          <li>You may not use the Platform to post false, misleading, or fraudulent information.</li>
+        </ul>
+
+        <!-- Section 4 -->
+        <h3>4. Instrument Listings</h3>
+        <p>Tenants using the Platform to post instrument listings must comply with the following:</p>
+        <ul>
+          <li>Instruments listings must be accurate and not misleading.</li>
+          <li>Tenants must adhere to equal opportunity fraud laws.</li>
+          <li>We do not guarantee the accuracy or authenticity of instrument listings.</li>
+        </ul>
+
+        <!-- Section 5 -->
+        <h3>5. Privacy</h3>
+        <p>Your privacy is important to us. We collect and process personal information in accordance with
+          our
+          Privacy Policy. By using the Platform, you consent to our data collection and processing
+          practices.
+        </p>
+
+        <!-- Section 6 -->
+        <h3>6. Termination</h3>
+        <p>We reserve the right to terminate or suspend your account at our discretion for violations of
+          these
+          terms or for any other reason. You will be notified of the termination, and you may appeal the
+          decision within a reasonable timeframe.</p>
+
+        <!-- Section 7 -->
+        <h3>7. Disclaimer of Warranties</h3>
+        <p>The Platform is provided "as is" without warranties of any kind. We do not guarantee the
+          availability, accuracy, or reliability of the Platform. Your use of the Platform is at your own
+          risk.</p>
+
+        <!-- Section 8 -->
+        <h3>8. Limitation of Liability</h3>
+        <p>We are not liable for any indirect, incidental, consequential, or punitive damages arising from
+          your
+          use of the Platform. Our total liability for any claims arising from or related to the Platform
+          is
+          limited to the amount you paid for the services.</p>
+
+        <!-- Section 9 -->
+        <h3>9. Governing Law</h3>
+        <p>These terms are governed by and construed in accordance with the laws of Muserental Hub. Any
+          legal
+          action or proceeding arising from or related to these terms must be brought in the courts
+          located
+          within the jurisdiction of Muserental Hub.</p>
+        <!-- Section 10 -->
+        <h3>10. User Responsibilities</h3>
+        <p>As a user of the Platform, you are responsible for:</p>
+        <ul>
+          <li>Ensuring the accuracy of the information you provide.</li>
+          <li>Maintaining the security of your login credentials.</li>
+          <li>Complying with all applicable laws and regulations.</li>
+          <li>Respecting the rights and privacy of other users.</li>
+        </ul>
+
+        <!-- Section 11 -->
+        <h3>11. Updates to the Terms</h3>
+        <p>We may update these terms from time to time to reflect changes in our services and user feedback.
+          You
+          will be notified of any significant changes, and your continued use of the Platform after such
+          changes constitutes your acceptance of the updated terms.</p>
+
+        <!-- Section 12 -->
+        <h3>12. Prohibited Activities</h3>
+        <p>Users are prohibited from engaging in the following activities:</p>
+        <ul>
+          <li>Violating any laws or regulations.</li>
+          <li>Interfering with the operation of the Platform.</li>
+          <li>Engaging in fraudulent or deceptive practices.</li>
+          <li>Harassing or harming other users.</li>
+        </ul>
+
+        <!-- Section 13 -->
+        <h3>13. Indemnification</h3>
+        <p>You agree to indemnify and hold us harmless from any claims, actions, or liabilities arising out
+          of
+          your use of the Platform or your violation of these terms. This includes reasonable attorney's
+          fees
+          and costs.</p>
+
+        <!-- Section 14 -->
+        <h3>14. Modifications to the Platform</h3>
+        <p>We reserve the right to modify or discontinue the Platform at any time without notice. We are not
+          liable for any loss or inconvenience caused by such modifications or discontinuation.</p>
+
+        <!-- Section 15 -->
+        <h3>15. Contact Information</h3>
+        <p style="text-align: justify;">If you have any questions or concerns regarding these terms and
+          conditions, please contact us at <a href="muserentalhub@gmail.com"
+            class="text-danger">muserentalhub@gmail.com</a>.
+        </p>
+
+      </div>
+
     </div>
   </div>
 </div>
 
-</section>
+<!-- vIew Passwords -->
 <script>
   function togglePassword(fieldId) {
     var eyeIcon = document.getElementById('eyeIcon');
 
     // Check the current color
     var currentColor = eyeIcon.style.color;
-
-    // Toggle color
-    // if (currentColor === 'blue') {
-    //   eyeIcon.style.color = '#000000'; // Change back to black
-    // } else {
-    //   eyeIcon.style.color = 'blue'; // Change to purple
-    // }
     const passwordField = document.getElementById(fieldId);
     const fieldType = passwordField.type === 'password' ? 'text' : 'password';
     passwordField.type = fieldType;

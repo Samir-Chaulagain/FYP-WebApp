@@ -198,7 +198,7 @@
                             {% with first_image=item.image_set.first %}
                             <a href="{% url 'explore:details' item.id %}">
                                 <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{{ first_image.image.url }}"
-                                    alt="" style="height: 100%; width: 100%; object-fit: cover;">
+                                    alt="" style="height: 350px; width: 100%; object-fit: cover;">
                             </a>
                             {% endwith %}
                             {% else %}
@@ -228,7 +228,7 @@
                         <figure class="card-img-top m-0 overflow-hidden bsb-overlay-hover">
                             <a href="{% url 'event:event-details' event.id %}">
                                 <img class="img-fluid bsb-scale bsb-hover-scale-up" src="{{ event.image.url }}" alt=""
-                                    style="height: 100%; width: auto; object-fit: cover;">
+                                    style="height: 350px; width: auto; object-fit: cover;">
                             </a>
 
                         </figure>
@@ -268,20 +268,20 @@
         <div class="row gy-5 gy-md-6">
             <div class="col-6 col-sm-3 sm-start-0 align-self-center text-center">
 
-                <img src="{%static 'img/client2.png'%}" alt="" class="img-fluid" width="350" height="155" viewBox="0 0 125 155"
-                    fill="currentColor" class="text-dark">
+                <img src="{%static 'img/client2.png'%}" alt="" class="img-fluid" width="350" height="155"
+                    viewBox="0 0 125 155" fill="currentColor" class="text-dark">
             </div>
             <div class="col-6 col-sm-3 align-self-center text-center">
-                <img src="{%static 'img/client1.png'%}" alt="" class="img-fluid" width="200" height="155" viewBox="0 0 125 155"
-                    fill="currentColor" class="text-dark">
+                <img src="{%static 'img/client1.png'%}" alt="" class="img-fluid" width="200" height="155"
+                    viewBox="0 0 125 155" fill="currentColor" class="text-dark">
             </div>
             <div class="col-6 col-sm-3 align-self-center text-center">
-                <img src="{%static 'img/client3.png'%}" alt="" class="img-fluid" width="200" height="75" viewBox="0 0 125 155"
-                    fill="currentColor" class="text-dark">
+                <img src="{%static 'img/client3.png'%}" alt="" class="img-fluid" width="200" height="75"
+                    viewBox="0 0 125 155" fill="currentColor" class="text-dark">
             </div>
             <div class="col-6 col-sm-3 align-self-center text-center">
-                <img src="{%static 'img/client4.png'%}" alt="" class="img-fluid" width="250" height="155" viewBox="0 0 155 155"
-                    fill="currentColor" class="text-dark">
+                <img src="{%static 'img/client4.png'%}" alt="" class="img-fluid" width="250" height="155"
+                    viewBox="0 0 155 155" fill="currentColor" class="text-dark">
 
             </div>
         </div>
