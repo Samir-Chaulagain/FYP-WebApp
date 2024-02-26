@@ -417,7 +417,8 @@ def CheckAvailability(request, id):
     rentItem = Customer.objects.filter(item_id=id, isAvailable=True)
     
     for i in rentItem:
-        if (i.Rentitem_Date_of_Booking <= Rentitem_Date_of_Return and Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return) and (Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return and Rentitem_Date_of_Return <= i.Rentitem_Date_of_Return):
+        if (Rentitem_Date_of_Booking <= i.Rentitem_Date_of_Return and Rentitem_Date_of_Return >= i.Rentitem_Date_of_Booking):
+
             # Overlapping date range with an available item
             NotAvailable = True
             Message = "Note that somebody has also requested for this item from " + str(i.Rentitem_Date_of_Booking) + " to " + str(i.Rentitem_Date_of_Return)+" So there are some chances that you might not get it. As items are rented on First come first serve policy."
