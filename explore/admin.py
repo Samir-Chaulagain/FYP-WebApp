@@ -52,3 +52,5 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ('item', 'rating')
 
 admin.site.register(Review,ReviewAdmin)
+
+
